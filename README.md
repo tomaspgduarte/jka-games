@@ -1,0 +1,199 @@
+# JKA games
+
+Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
+
+Logo personalizado em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho. O nome interno do pacote/pasta continua a ser `popsala`.
+
+## Correr no teu computador
+
+Instala **Node.js 24 LTS** (também funciona com Node >= 22.12) a partir de https://nodejs.org/. Abre um terminal nesta pasta e executa:
+
+```sh
+npm ci
+npm run dev
+```
+
+Abre **http://localhost:3000**. Um único processo serve a interface e a ligação em tempo real. O frontend atualiza automaticamente durante desenvolvimento; se mudares o backend, reinicia o comando.
+
+Para a versão de produção:
+
+```sh
+npm run build
+npm start
+```
+
+Para parar, usa Ctrl+C. O servidor termina de forma controlada. As salas são temporárias e desaparecem ao parar ou reiniciar o processo.
+
+### Amigos na mesma rede Wi-Fi
+
+Com o servidor ligado, os amigos abrem `http://IP-LOCAL-DO-TEU-COMPUTADOR:3000`, substituindo o IP pelo endereço local mostrado nas definições de rede. Usa esse endereço também no teu browser antes de copiares o convite: um link com `localhost` aponta para o computador de quem o abre. Pode ser necessário permitir a aplicação na firewall. O computador deve continuar ligado.
+
+Para amigos noutras redes, publica o projeto num servidor; segue a secção abaixo.
+
+## Como jogar
+
+1. Escolhe um nickname e cria uma sala privada.
+2. Copia o convite ou partilha o código de 6 caracteres.
+3. O host edita os temas, perguntas e respostas alternativas. Carrega em **Guardar perguntas** antes de iniciar.
+4. Os amigos escolhem nicknames diferentes e entram pelo convite ou código.
+5. O host pode iniciar **sozinho para testar** ou com amigos. A sala suporta **1 a 20 jogadores**; podes jogar com 6 ou mais.
+6. Há uma contagem de 3 segundos apenas antes da primeira pergunta. Escreve e carrega Enter para responder.
+7. Depois de todos acertarem ou de o tempo acabar, aparece a resposta e a classificação durante **3 segundos**. A próxima pergunta começa automaticamente, sem botão nem nova contagem inicial.
+8. **Ganha o primeiro jogador a atingir ou ultrapassar o objetivo de pontos.** Nesse instante a ronda termina; os restantes envios dessa ronda já não pontuam. Após os 3 segundos de resposta, aparece o ranking final. O host pode editar perguntas/objetivo e iniciar outra partida, com os pontos a zero.
+
+O host define **Pontos para ganhar**, entre 1 e 1000; o valor inicial é **50**. A partida não tem um número fixo de rondas. As perguntas são sempre baralhadas: todas são usadas uma vez antes de voltar a baralhar. Se ainda ninguém tiver atingido o objetivo, o jogo continua num novo ciclo. Havendo várias perguntas, a última de um ciclo não se repete imediatamente no seguinte. Com uma só pergunta, ela repete-se até alguém atingir o objetivo.
+
+Quem entra a meio assiste e só participa na próxima partida. A lista de jogadores mostra ligação, host e quem já acertou. O host conhece as respostas porque é quem as prepara; pode optar por não responder, caso em que a ronda termina pelo temporizador.
+
+### Pontuação e medição do tempo
+
+- Uma resposta correta vale **entre 1 e 10 pontos**, em números inteiros, conforme a velocidade.
+- Fórmula: `max(1, min(10, ceil(10 × (1 − elapsedMs / durationMs))))`.
+- Acertar no primeiro décimo do tempo dá 10 pontos; no seguinte, 9; e assim sucessivamente até 1 no último décimo. No limite exato de cada intervalo aplica-se o valor seguinte.
+- Exemplo: acerto aos 5 segundos numa ronda de 20 segundos = **8 pontos**. O total da partida soma os pontos das rondas, podendo ultrapassar 10; 10 é o máximo por acerto.
+- Respostas erradas não retiram pontos. Cada jogador só pontua uma vez em cada ronda.
+- O relógio de referência é **o do servidor**, usando `performance.now()` (monotónico). Começa no instante de início programado e termina na receção da resposta correta. O servidor ignora pontos, datas ou tempos enviados pelo cliente.
+- Inclui o tempo de a pergunta chegar, a leitura, a escrita e o envio da resposta. **Não há compensação de latência**. A precisão apresentada de 0,001 s não significa igualdade de condições na rede.
+- O contador visual é uma estimativa baseada no relógio sincronizado por ida e volta; o servidor é sempre quem decide se o prazo expirou. Atualizar a página não reinicia o tempo.
+- Uma resposta recebida antes do início ou no/pós prazo não conta. O servidor verifica o prazo na própria receção, mesmo se o evento do temporizador tiver atrasado.
+- A pergunta só é enviada aos jogadores quando começa. As respostas e perguntas futuras não são enviadas aos participantes; o host recebe a lista editável no lobby e no fim.
+- Ordenação: pontos descendentes, acertos descendentes, soma dos tempos dos acertos ascendente, nickname por ordem alfabética para desempate restante.
+
+### Validação das respostas
+
+Ignora maiúsculas/minúsculas e acentos, converte pontuação em espaços e reduz espaços repetidos. `LISBÓA!` equivale a `Lisboa`. Usa alternativas para sinónimos, traduções, abreviaturas ou respostas com palavras diferentes.
+
+Com **Aceitar pequenas gralhas** ligado, cada resposta esperada com 5–9 caracteres normalizados aceita uma edição, e com 10 ou mais aceita duas: inserção, remoção, substituição ou troca de duas letras adjacentes. Respostas esperadas com até 4 caracteres exigem correspondência exata após normalização. As sequências numéricas têm de ser iguais, mesmo em respostas longas: `Toy Story 4` não conta como `Toy Story 3`. É uma aproximação textual, não uma avaliação semântica; desliga a tolerância para perguntas com nomes muito parecidos.
+
+Bloqueia a repetição de uma tentativa normalizada. Intervalo mínimo de 300 ms e máximo de 50 tentativas por jogador/ronda. Reenvios do mesmo pedido devolvem o recibo original e não somam pontos. O browser não guarda respostas para enviar depois de uma reconexão.
+
+## As tuas perguntas
+
+O jogo já inclui **252 perguntas: 240 de texto e 12 com fotografia**, sobre VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas e personagens. Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas.
+
+O editor mostra dez perguntas por página e permite filtrar o tema para facilitar a edição. Esse filtro não altera o sorteio da partida: todas as perguntas guardadas entram no jogo. Para jogar apenas um tema, podes importar o ficheiro correspondente de `examples/temas/`. O banco completo está em `examples/banco-completo.json`. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
+
+O painel do host permite adicionar e remover perguntas, alterar tema/texto, duração global (5–120 segundos), objetivo (1–1000 pontos) e tolerância. A ordem é sempre aleatória. No campo das respostas, separa alternativas com `|`. Esse separador é reservado no editor.
+
+Cada pergunta tem um campo **Imagem opcional** para escolher um ficheiro PNG, JPEG ou WebP do computador (original até 10 MB). O browser ajusta-o para caber em 1280 × 900 e comprime-o para até 300 KB. A imagem aparece com o texto da pergunta; para uma pista essencialmente visual, usa um texto como «Quem é?» ou «Que filme é este?». Podes alternar livremente perguntas com e sem imagem.
+
+As imagens são incluídas na exportação JSON, sem dependências de links externos. O campo opcional `image` contém um data URL de PNG, JPEG ou WebP. Durante a partida, cada imagem é servida por HTTP apenas quando a sua pergunta começa; as atualizações de jogadores/pontos não reenviam o ficheiro por Socket.IO. O tempo de carregamento da imagem, tal como o texto, faz parte da latência da rede e não é descontado do tempo de resposta.
+
+Também podes importar/exportar um JSON. O ficheiro `examples/perguntas.json` contém um exemplo pronto a editar. Estrutura:
+
+```json
+{
+  "durationSeconds": 20,
+  "targetPoints": 50,
+  "fuzzy": true,
+  "shuffle": true,
+  "questions": [
+    { "theme": "Geografia", "prompt": "Capital de Portugal?", "answers": ["Lisboa", "Lisbon"] }
+  ]
+}
+```
+
+Limites: 1–500 perguntas; tema de 60 caracteres; pergunta de 500; 1–10 alternativas por pergunta, de 120 caracteres cada; textos/créditos até 200 KB; imagem até 300 KB; lista incluindo imagens em base64 até 2 MB. O servidor valida os limites independentemente do browser. Os temas são etiquetas de cada pergunta; todas as perguntas guardadas entram na partida.
+
+Ficheiros de versões anteriores continuam a funcionar: se faltar `targetPoints`, usa 50. O campo antigo `shuffle` é aceite por compatibilidade, mas a ordem aleatória fica sempre ligada.
+
+**Exporta uma cópia para guardares os teus temas.** Guardar no painel mantém-nos apenas na sala em memória. As edições não guardadas não entram na partida e perdem-se se saíres da sala. A interface avisa ao fechar/atualizar uma página com alterações pendentes.
+
+## Desconexões e sessões
+
+- O browser guarda um token aleatório em `sessionStorage`, por separador. Uma atualização ou quebra de ligação recupera jogador, pontuação e acerto atual, enquanto a sala existir. Se o armazenamento estiver bloqueado, a ligação atual funciona mas pode não recuperar após atualizar.
+- Mantém o mesmo separador para voltar. Um novo separador/dispositivo precisa de outro nickname. Se alguém possuir o mesmo token, a ligação mais recente substitui a anterior; nunca partilhes esse token.
+- Uma desconexão mantém o participante e o tempo continua. O servidor espera pelos participantes que ainda não acertaram até ao limite de tempo, mesmo que estejam desligados.
+- O host mantém o controlo se regressar em 30 s; após esse prazo o primeiro jogador ligado por ordem de entrada recebe o controlo. Se ninguém estiver ligado, o próximo a recuperar a sessão torna-se host. Um host antigo não retira a função ao novo ao regressar.
+- **Sair da sala** invalida a sessão. O jogador fica identificado como «Saiu» na classificação; poderá entrar de novo como uma nova entrada/espectador. Uma sala aceita no máximo 20 entradas ao longo da sua vida; cria outra para renovar as vagas.
+- Salas sem jogadores ligados expiram após cerca de 30 minutos; qualquer sala expira após 12 horas. A limpeza corre a cada minuto. Máximo de 100 salas por processo. Há limites de frequência de pedidos e de criação de salas para proteger o serviço de erros e uso abusivo básico.
+- Os códigos são convites, não autenticação: qualquer pessoa com o código/link pode entrar. Adequado a grupos de amigos; sem contas, moderação ou proteção contra abuso deliberado em grande escala.
+
+## Publicar online com WebSockets
+
+**Frontend e backend ficam no mesmo serviço Node**, no mesmo domínio. Não publiques só a pasta `dist` num alojamento estático: faltaria o servidor das salas. Usa HTTPS; o Socket.IO passa a usar WSS automaticamente. Tem fallback HTTP long polling para redes que bloqueiem WebSocket.
+
+### Render (configuração incluída)
+
+1. Coloca o conteúdo desta pasta num repositório Git teu e envia-o para GitHub/GitLab/Bitbucket.
+2. No Render, cria um **Web Service** ligado a esse repositório (ou usa Blueprint com `render.yaml`). Se o projeto estiver dentro de outra pasta, define essa pasta como Root Directory.
+3. Runtime: Node. Build: `npm ci && npm run build`. Start: `npm start`. Health check: `/health`.
+4. Mantém **uma única instância**. Escolhe uma região próxima dos jogadores (por exemplo Frankfurt para Europa) e um plano sem suspensão se precisares de disponibilidade contínua. Verifica o preço e as condições apresentados pelo fornecedor.
+5. Partilha o URL HTTPS fornecido pelo Render. A variável `PORT` é fornecida pelo serviço e o servidor escuta em `0.0.0.0`. Não precisas de portas diferentes para WebSockets.
+
+O ficheiro `render.yaml` não cria contas nem contrata um plano por si só. O plano é escolhido no fornecedor. Documentação oficial: [Web Services](https://render.com/docs/web-services) e [WebSockets](https://render.com/docs/websocket).
+
+### Link público temporário para amigos (Cloudflare Tunnel)
+
+Permite jogar de outras redes sem configurar o router. O computador tem de ficar ligado e sem suspensão, com os dois processos abaixo ativos. Não é alojamento independente nem tem garantia de disponibilidade. Cada arranque do túnel gera outro endereço. As salas continuam a viver só na memória do servidor.
+
+Instala `cloudflared` pela [fonte oficial](https://developers.cloudflare.com/tunnel/downloads/). Primeiro prepara e inicia a versão de produção:
+
+```sh
+npm run build
+PORT=3002 HOST=127.0.0.1 NODE_ENV=production npm start
+```
+
+Noutro terminal, inicia o túnel:
+
+```sh
+cloudflared tunnel --no-autoupdate --url http://127.0.0.1:3002 --protocol http2
+```
+
+Abre o endereço HTTPS `trycloudflare.com` mostrado, cria uma sala e copia o convite desse endereço. Quem estiver noutra rede usa esse convite; o código de uma sala de outro processo (por exemplo o servidor de desenvolvimento na porta 3000) não funciona aqui. Usa sempre a versão de produção para o túnel. Terminar o túnel desativa o link; terminar o servidor também apaga as salas. [Limitações oficiais](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
+
+### Docker / VPS
+
+```sh
+docker build -t popsala .
+docker run --rm --name popsala -p 3000:3000 popsala
+```
+
+Para publicar num domínio com HTTPS num VPS, usa um reverse proxy como Caddy. Exemplo de `Caddyfile`, com Caddy e a aplicação no mesmo host:
+
+```text
+jogo.exemplo.pt {
+    reverse_proxy 127.0.0.1:3000
+}
+```
+
+Nesse caso, liga a porta do contentor apenas ao host com `-p 127.0.0.1:3000:3000`. O DNS do domínio deve apontar para o VPS. O reverse proxy deve permitir upgrade de WebSocket e ter timeout superior a 30 segundos. Usa um gestor de processos/restart policy para voltar a iniciar a aplicação depois de uma falha.
+
+Configuração opcional:
+
+| Variável | Valor por omissão | Função |
+| --- | --- | --- |
+| `PORT` | `3000` | Porta do serviço |
+| `HOST` | `0.0.0.0` | Endereço de escuta; usa `127.0.0.1` num túnel local |
+| `PUBLIC_ORIGIN` | mesmo host do pedido | Origem permitida, por exemplo `https://jogo.exemplo.pt`, sem `/` final |
+| `NODE_ENV` | ambiente local | Usa `production` em alojamento |
+
+Para definir variáveis localmente, usa o mecanismo normal do teu sistema ou `node --env-file=.env server/index.js`. O projeto não carrega `.env` automaticamente com `npm start`. Nunca envies ficheiros `.env` para um repositório público.
+
+**Limite desta arquitetura:** o estado vive na memória de um processo. Não uses várias réplicas/autoscaling ou PM2 em cluster. Um reinício, publicação ou falha perde salas, temas não exportados e partidas ativas. Para esta primeira versão escolheu-se uma única instância para simplicidade e pouca latência. Persistência/Redis e coordenação das salas seriam uma evolução própria antes de escalar.
+
+## Testes
+
+```sh
+npm test
+npm run test:load
+```
+
+Os testes abrem portas locais temporárias e usam clientes Socket.IO reais. Incluem partida completa de 6 jogadores, 20 jogadores concorrentes, normalização, pontuação, duplicados, temporizador, informação privada, permissões, isolamento de salas, troca/recuperação de host, reconexão, expiração e fallback long polling. O teste de carga faz 10 rondas com 20 jogadores e mede o tempo até à confirmação local; não representa latência pela Internet. O relatório da execução entregue está em `TESTES.md`.
+
+## Estrutura
+
+```text
+client/src/        interface React e estilos
+server/game.js    salas, relógio, pontuação e eventos
+server/answers.js normalização e tolerância a gralhas
+server/app.js     HTTP, Socket.IO e limites de origem/payload
+server/index.js   arranque, frontend e encerramento
+server/defaults.js perguntas iniciais
+tests/            testes de integração e carga
+examples/         perguntas para importar
+Dockerfile        publicação em contentor
+render.yaml       configuração para Render
+```
+
+O projeto usa versões exatas resolvidas em `package-lock.json`; instala com `npm ci` para reproduzir a versão testada. Consulta também a [documentação de Socket.IO](https://socket.io/docs/v4/).

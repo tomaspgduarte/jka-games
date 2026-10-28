@@ -1,0 +1,23 @@
+{
+  "durationSeconds": 20,
+  "targetPoints": 50,
+  "fuzzy": true,
+  "shuffle": true,
+  "questions": [
+    {
+      "theme": "O nosso grupo",
+      "prompt": "Qual foi a cidade da nossa primeira viagem juntos?",
+      "answers": ["Porto", "O Porto"]
+    },
+    {
+      "theme": "Música",
+      "prompt": "Que banda britânica lançou Bohemian Rhapsody?",
+      "answers": ["Queen"]
+    },
+    {
+      "theme": "Geografia",
+      "prompt": "Qual é a capital de Portugal?",
+      "answers": ["Lisboa", "Lisbon"]
+    }
+  ]
+}

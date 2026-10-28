@@ -1,0 +1,42 @@
+[
+  {
+    "theme": "VALORANT",
+    "count": 33,
+    "photos": 3
+  },
+  {
+    "theme": "Counter-Strike",
+    "count": 30,
+    "photos": 0
+  },
+  {
+    "theme": "F1",
+    "count": 32,
+    "photos": 2
+  },
+  {
+    "theme": "Basquetebol",
+    "count": 32,
+    "photos": 2
+  },
+  {
+    "theme": "Futebol",
+    "count": 32,
+    "photos": 2
+  },
+  {
+    "theme": "Hip-hop / Rap",
+    "count": 33,
+    "photos": 3
+  },
+  {
+    "theme": "Músicas",
+    "count": 30,
+    "photos": 0
+  },
+  {
+    "theme": "Personagens",
+    "count": 30,
+    "photos": 0
+  }
+]
