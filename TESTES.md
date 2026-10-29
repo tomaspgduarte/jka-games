@@ -73,3 +73,14 @@ Executado em Windows 11 com Node.js 26.13.0. Banco alargado de 252 para **436 pe
 - Browser (`npm run dev`): sala nova com 436/500 perguntas; filtro do editor com os 14 temas e contagens corretas; tema Emojis com 42 perguntas em 5 páginas e emojis apresentados corretamente.
 
 Não foi jogada uma ronda no browser com uma pergunta específica dos temas novos, porque a ordem é aleatória; a aceitação das respostas é coberta pelos testes.
+
+## Iniciar com alterações, fechar sala e inglês — 29 de outubro de 2026
+
+Executado em Windows 11 com Node.js 26.13.0.
+
+- **Iniciar com alterações por guardar:** antes, mudar qualquer opção no editor desativava **Iniciar partida** e **Jogar novamente** até se carregar em **Guardar perguntas**. Agora o botão passa a **Guardar e iniciar partida**, guarda e começa. No browser: sala nova, «Aceitar pequenos erros de escrita» desligado e partida iniciada com um clique.
+- **Host fecha a sala:** `room:leave` do host apaga a sala e envia `room:closed` aos restantes. O teste de integração do host cobre agora um jogador normal a sair (a sala continua), o host a sair (a sala desaparece e o outro jogador recebe `room:closed`) e a sessão invalidada. No browser, com dois separadores a meio de uma partida: confirmação pedida ao host e o segundo jogador de volta ao início com o aviso. A perda de ligação continua a passar o controlo após 30 s.
+- **Inglês:** botão **English**/**Português** no cabeçalho do catálogo e do Trigo, com a escolha guardada no browser. Verificados em inglês: lobby, editor, pergunta, resposta errada, classificação, confirmação de fecho, aviso de sala fechada e mensagens do servidor. Os textos das perguntas e os nomes dos temas ficam em português. Sem erros na consola.
+- `npm test`: **16 testes passaram, 0 falharam**. `npm run build`: compilação de produção concluída.
+
+Não foi testado num telemóvel físico; o cabeçalho passa a quebrar linha em ecrãs estreitos para caber o botão de idioma.

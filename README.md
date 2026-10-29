@@ -2,7 +2,7 @@
 
 **JKA games é a marca principal. Trigo é o primeiro jogo**, de perguntas e adivinhas. A página `/` apresenta os jogos da marca; o Trigo abre em `/trigo`, com o seu próprio nome no cabeçalho e no título do browser. Os convites antigos `/?sala=CODIGO` continuam a abrir diretamente o jogo. O repositório é da marca e pode acolher outros jogos com nomes próprios.
 
-Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
+Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, com um botão **English** no cabeçalho para mudar a interface para inglês (as perguntas continuam como estão no banco). Sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
 
 Tema azul escuro, com painéis e campos em tons de azul e texto claro. As cores estão centralizadas nas variáveis de `client/src/styles.css`.
 
@@ -38,7 +38,7 @@ Para amigos noutras redes, publica o projeto num servidor; segue a secção abai
 
 1. Escolhe um nickname e cria uma sala privada.
 2. Copia o convite ou partilha o código de 6 caracteres.
-3. O host edita os temas, perguntas e respostas alternativas. Carrega em **Guardar perguntas** antes de iniciar.
+3. O host edita os temas, perguntas e respostas alternativas. As alterações por guardar são guardadas automaticamente ao carregar em **Guardar e iniciar partida** (ou **Guardar e jogar novamente**); também podes usar **Guardar perguntas**.
 4. Os amigos escolhem nicknames diferentes e entram pelo convite ou código.
 5. O host pode iniciar **sozinho para testar** ou com amigos. A sala suporta **1 a 20 jogadores**; podes jogar com 6 ou mais.
 6. Há uma contagem de 3 segundos apenas antes da primeira pergunta. Escreve e carrega Enter para responder.
@@ -108,8 +108,9 @@ Ficheiros de versões anteriores continuam a funcionar: se faltar `targetPoints`
 - O browser guarda um token aleatório em `sessionStorage`, por separador. Uma atualização ou quebra de ligação recupera jogador, pontuação e acerto atual, enquanto a sala existir. Se o armazenamento estiver bloqueado, a ligação atual funciona mas pode não recuperar após atualizar.
 - Mantém o mesmo separador para voltar. Um novo separador/dispositivo precisa de outro nickname. Se alguém possuir o mesmo token, a ligação mais recente substitui a anterior; nunca partilhes esse token.
 - Uma desconexão mantém o participante e o tempo continua. O servidor espera pelos participantes que ainda não acertaram até ao limite de tempo, mesmo que estejam desligados.
-- O host mantém o controlo se regressar em 30 s; após esse prazo o primeiro jogador ligado por ordem de entrada recebe o controlo. Se ninguém estiver ligado, o próximo a recuperar a sessão torna-se host. Um host antigo não retira a função ao novo ao regressar.
+- O host mantém o controlo se regressar em 30 s; após esse prazo o primeiro jogador ligado por ordem de entrada recebe o controlo. Se ninguém estiver ligado, o próximo a recuperar a sessão torna-se host. Um host antigo não retira a função ao novo ao regressar. Isto só acontece quando o host perde a ligação.
 - **Sair da sala** invalida a sessão. O jogador fica identificado como «Saiu» na classificação; poderá entrar de novo como uma nova entrada/espectador. Uma sala aceita no máximo 20 entradas ao longo da sua vida; cria outra para renovar as vagas.
+- Para o host, o botão chama-se **Fechar sala**: pede confirmação quando há outros jogadores e fecha a sala para todos, em qualquer fase. Os restantes voltam ao início com o aviso «O host fechou a sala».
 - Salas sem jogadores ligados expiram após cerca de 30 minutos; qualquer sala expira após 12 horas. A limpeza corre a cada minuto. Máximo de 100 salas por processo. Há limites de frequência de pedidos e de criação de salas para proteger o serviço de erros e uso abusivo básico.
 - Os códigos são convites, não autenticação: qualquer pessoa com o código/link pode entrar. Adequado a grupos de amigos; sem contas, moderação ou proteção contra abuso deliberado em grande escala.
 
@@ -188,7 +189,7 @@ Os testes abrem portas locais temporárias e usam clientes Socket.IO reais. Incl
 ## Estrutura
 
 ```text
-client/src/        interface React e estilos
+client/src/        interface React, estilos e traduções (i18n.js)
 server/game.js    salas, relógio, pontuação e eventos
 server/answers.js normalização e tolerância a gralhas
 server/app.js     HTTP, Socket.IO e limites de origem/payload

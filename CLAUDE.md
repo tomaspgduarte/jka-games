@@ -6,7 +6,8 @@ Guia para agentes de AI neste repositório. O [README.md](README.md) é a refer�
 
 - **JKA games** é a marca; **Trigo** é o primeiro (e por agora único) jogo: quiz multijogador em tempo real entre amigos.
 - `/` mostra o catálogo de jogos (`GamesHome`); `/trigo` abre o Trigo (`App`). Convites antigos `/?sala=CODIGO` também abrem o Trigo e têm de continuar a funcionar.
-- Interface e textos para o utilizador em **português de Portugal** (tu, «ecrã», «ligação», «guardar»). Comentários no código em inglês, curtos, a explicar o porquê.
+- Interface e textos para o utilizador em **português de Portugal** (tu, «ecrã», «ligação», «guardar»), com tradução para inglês. Comentários no código em inglês, curtos, a explicar o porquê.
+- Todo o texto visível passa por `t('texto em português', vars)`. Ao criar ou mudar um texto (incluindo mensagens de `GameError` no servidor), acrescenta a tradução em `client/src/i18n.js`; sem entrada, aparece em português. As perguntas do banco não são traduzidas.
 - Nome interno antigo: `popsala` (pacote, `render.yaml`, imagem Docker, chave `popsala-session` no `sessionStorage`). Não renomear a chave da sessão sem pensar nas sessões existentes.
 
 ## Comandos
@@ -36,7 +37,8 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/defaults.js` | Configuração inicial de cada sala nova |
 | `server/content/text-questions.js` | 424 perguntas de texto em 14 temas (`'pergunta', 'resp1\|resp2'`) |
 | `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
-| `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules` |
+| `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules`, `LanguageToggle` |
+| `client/src/i18n.js` | Dicionário PT → EN, `useT()` e `useMessage()`; idioma guardado em `localStorage` (`jka-lang`) |
 | `client/src/styles.css` | Tema azul escuro; cores só em variáveis `:root` |
 | `tests/` | Integração com clientes Socket.IO reais (`helpers.js`), conteúdo do banco, carga |
 | `examples/` | JSON para importar: banco completo, um por tema, resumo de contagens |
@@ -44,7 +46,7 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 ### Protocolo Socket.IO
 
 Pedidos com ack `{ ok, ...}` ou `{ ok: false, error }`: `clock:sync`, `room:create`, `room:join`, `room:resume`, `room:leave`, `config:save`, `game:start`, `answer:submit`.
-Eventos do servidor: `room:state` (snapshot por jogador), `session:replaced`, `room:expired`.
+Eventos do servidor: `room:state` (snapshot por jogador), `session:replaced`, `room:expired`, `room:closed` (o host saiu com `room:leave`; a sala é apagada para todos).
 
 Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … → `finished` → (`game:start` de novo).
 

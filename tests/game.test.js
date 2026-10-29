@@ -102,7 +102,7 @@ test('reconexão ativa mantém acerto; takeover invalida socket anterior', async
   assert.equal(f.server.game.rooms.get(code).players.size, 2);
 });
 
-test('host regressa durante a tolerância; depois da tolerância o controlo é transferido', async t => {
+test('host regressa durante a tolerância; depois da tolerância o controlo é transferido; o host que sai fecha a sala', async t => {
   const f = await fixture(t);
   const { host, players, sessions, code } = await group(f, 3);
   host.disconnect();
@@ -115,8 +115,13 @@ test('host regressa durante a tolerância; depois da tolerância o controlo é t
   await ok(secondResume, 'room:resume', { code, token: sessions[0].token });
   assert.equal(secondResume.state.hostId, sessions[1].playerId);
   assert.equal((await emit(secondResume, 'game:start')).ok, false);
+  await ok(players[2], 'room:leave');
+  assert.equal(f.server.game.rooms.has(code), true, 'um jogador que sai não fecha a sala');
+  const closed = new Promise(resolve => secondResume.once('room:closed', resolve));
   await ok(players[1], 'room:leave');
-  await until(() => secondResume.state.hostId !== sessions[1].playerId);
+  await closed;
+  assert.equal(f.server.game.rooms.has(code), false, 'o host que sai fecha a sala para todos');
+  assert.equal((await emit(secondResume, 'game:start')).ok, false);
   const outsider = await f.connect();
   assert.equal((await emit(outsider, 'room:resume', { code, token: sessions[1].token })).ok, false, 'sair invalida a sessão');
 });

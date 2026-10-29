@@ -186,6 +186,16 @@ export function attachGame(io, options = {}) {
     room.round.openTimer = later(announceQuestion, Math.max(1, leadMs));
     publish(room);
   }
+  function closeRoom(room, event) {
+    for (const p of room.players.values()) {
+      cancel(p.graceTimer);
+      if (p.connected) {
+        const socket = io.sockets.sockets.get(p.socketId);
+        if (socket) { socket.data.roomCode = null; socket.emit(event); }
+      }
+    }
+    cancel(room.round?.timer); cancel(room.round?.openTimer); cancel(room.advanceTimer); rooms.delete(room.code);
+  }
   function detach(socket, explicit = false) {
     const room = rooms.get(socket.data.roomCode);
     const p = room?.players.get(socket.data.playerId);
@@ -194,7 +204,8 @@ export function attachGame(io, options = {}) {
     p.connected = false; p.socketId = null; room.lastActive = Date.now();
     if (explicit) {
       p.left = true; p.token = null;
-      if (room.hostId === p.id) electHost(room);
+      // The host closing the room ends it for everyone; only a lost connection hands over control.
+      if (room.hostId === p.id) { closeRoom(room, 'room:closed'); return; }
     } else {
       p.graceTimer = later(() => {
         if (!p.connected && room.hostId === p.id) { electHost(room); publish(room); }
@@ -313,16 +324,7 @@ export function attachGame(io, options = {}) {
     const now = Date.now();
     for (const room of rooms.values()) {
       const emptyExpired = ![...room.players.values()].some(p => p.connected) && now - room.lastActive > emptyTtlMs;
-      if (emptyExpired || now - room.createdAt > 12 * 60 * 60 * 1000) {
-        for (const p of room.players.values()) {
-          cancel(p.graceTimer);
-          if (p.connected) {
-            const socket = io.sockets.sockets.get(p.socketId);
-            if (socket) { socket.data.roomCode = null; socket.emit('room:expired'); }
-          }
-        }
-        cancel(room.round?.timer); cancel(room.round?.openTimer); cancel(room.advanceTimer); rooms.delete(room.code);
-      }
+      if (emptyExpired || now - room.createdAt > 12 * 60 * 60 * 1000) closeRoom(room, 'room:expired');
     }
     for (const [ip, bucket] of createBuckets) if (now - bucket.at > 60000) createBuckets.delete(ip);
   }, options.cleanupIntervalMs ?? 60000);
