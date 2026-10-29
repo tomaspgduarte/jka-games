@@ -37,16 +37,16 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/defaults.js` | Configuração inicial de cada sala nova |
 | `server/content/text-questions.js` | 424 perguntas de texto em 14 temas (`'pergunta', 'resp1\|resp2'`) |
 | `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
-| `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules`, `LanguageToggle` |
+| `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor` (opções e categorias da partida), `Question`, `Ranking`, `Rules`, `LanguageToggle` |
 | `client/src/sounds.js` | Sons sintetizados (Web Audio): `playCorrect`, `playOtherCorrect`, ligar/desligar em `localStorage` (`jka-sound`) |
 | `client/src/i18n.js` | Dicionário PT → EN, `useT()` e `useMessage()`; idioma guardado em `localStorage` (`jka-lang`) |
 | `client/src/styles.css` | Estilo Morabeza (mar azul, cartões claros, amarelo e vermelho da bandeira); cores em variáveis `:root`, e `.panel` redefine `--muted`/`--focus`/`--link` para o fundo claro. Letra Baloo 2 via `@fontsource/baloo-2` |
 | `tests/` | Integração com clientes Socket.IO reais (`helpers.js`), conteúdo do banco, carga |
-| `examples/` | JSON para importar: banco completo, um por tema, resumo de contagens |
+| `examples/` | Cópia do banco em JSON (completo, uma por tema) e resumo de contagens; gerada a partir de `server/content/` |
 
 ### Protocolo Socket.IO
 
-Pedidos com ack `{ ok, ...}` ou `{ ok: false, error }`: `clock:sync`, `room:create`, `room:join`, `room:resume`, `room:leave`, `player:kick` (só o host), `config:save`, `game:start`, `answer:submit`.
+Pedidos com ack `{ ok, ...}` ou `{ ok: false, error }`: `clock:sync`, `room:create`, `room:join`, `room:resume`, `room:leave`, `player:kick` (só o host), `config:save` (`{ durationSeconds, targetPoints, fuzzy, themes }`; uma lista `questions` ainda é aceite e substitui o banco, usada nos testes), `game:start`, `answer:submit`.
 Eventos do servidor: `room:state` (snapshot por jogador), `session:replaced`, `room:expired`, `room:closed` (o host saiu com `room:leave`; a sala é apagada para todos), `room:kicked` (o host expulsou este jogador).
 
 Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … → `finished` → (`game:start` de novo).
@@ -54,10 +54,10 @@ Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … →
 ## Invariantes que não se podem partir
 
 - **O relógio é do servidor.** O tempo de resposta é `performance.now()` na receção menos `round.startMono`. Nunca aceitar tempos, pontos ou datas do cliente. O prazo é verificado em cada resposta, não só no temporizador.
-- **Não divulgar informação antes do tempo.** `snapshot()` só envia a pergunta/imagem depois de `startMono`, as respostas e créditos só em `results`/`finished`, e a `config` só ao host e fora de partida. `getRoundImage` aplica a mesma regra.
+- **Não divulgar informação antes do tempo.** `snapshot()` só envia a pergunta/imagem depois de `startMono`, as respostas e créditos só em `results`/`finished`, e as perguntas e respostas do banco nunca: o snapshot leva só `settings` (com `themes`) e `categories` (nome e contagem). `getRoundImage` aplica a mesma regra.
 - `answer:submit` usa `socket.volatile` no cliente: respostas não ficam em fila através de uma desconexão. Reenvios com o mesmo `requestId` devolvem o recibo original.
 - Mensagens de erro para o utilizador: lançar `GameError` (texto em português). Outros erros são registados e chegam ao cliente como «Erro interno».
-- Limites (validados no servidor e repetidos no `importFile` do cliente; se mudar um, mudar ambos e o README): 1–500 perguntas, tema 60, pergunta 500, 1–10 respostas de 120, duração 5–120 s, objetivo 1–1000, textos 200 KB, imagem 300 KB, total 2 MB, 20 entradas por sala, 100 salas por processo.
+- Limites (validados em `validateConfig`; se mudar um, atualizar o README): 1–500 perguntas, tema 60, pergunta 500, 1–10 respostas de 120, duração 5–120 s, objetivo 1–1000, textos 200 KB, imagem 300 KB, total 2 MB, 20 entradas por sala, 100 salas por processo.
 - Pontos (`roundPointsFor` em `answers.js`): o 1.º a acertar e quem acerta até 1 s depois dele ganham 10; os seguintes ganham `max(1, min(10, ceil(10 × (1 − elapsed / duration))))` menos 1 por cada jogador que já acertou, com mínimo de 1. Ordenação: pontos ↓, acertos ↓, soma dos tempos ↑, nickname.
 
 ## Convenções

@@ -27,7 +27,9 @@ test('banco completo passa por Socket.IO; aspas serve fotografia e só revela re
   const f = await fixture(t);
   const { host, players } = await group(f, 2);
   await ok(host, 'config:save', { revision: host.state.revision, config: defaultConfig });
-  assert.equal(host.state.config.questions.length, 436);
+  assert.equal(host.state.questionCount, 436);
+  assert.equal(host.state.categories.length, 14);
+  assert.equal(host.state.config, undefined, 'nem o host recebe perguntas e respostas');
   await until(() => players[1].state.questionCount === 436);
   assert.equal(players[1].state.config, undefined);
   const aspas = defaultConfig.questions.find(q => q.image && q.answers.includes('aspas'));

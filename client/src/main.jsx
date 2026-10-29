@@ -78,28 +78,6 @@ function request(event, data = {}) {
   });
 }
 
-async function prepareImage(file) {
-  if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('Escolhe uma imagem PNG, JPEG ou WebP.');
-  if (file.size > 10 * 1024 * 1024) throw new Error('A imagem original deve ter no máximo 10 MB.');
-  const url = URL.createObjectURL(file);
-  try {
-    const source = new Image();
-    await new Promise((resolve, reject) => { source.onload = resolve; source.onerror = () => reject(new Error('Não foi possível abrir esta imagem.')); source.src = url; });
-    const scale = Math.min(1, 1280 / source.naturalWidth, 900 / source.naturalHeight);
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, Math.round(source.naturalWidth * scale));
-    canvas.height = Math.max(1, Math.round(source.naturalHeight * scale));
-    const context = canvas.getContext('2d');
-    if (!context) throw new Error('Este browser não permite preparar a imagem.');
-    context.drawImage(source, 0, 0, canvas.width, canvas.height);
-    for (const quality of [.85, .65, .45]) {
-      const data = canvas.toDataURL('image/webp', quality);
-      if (data.length <= 409600) return data;
-    }
-    throw new Error('A imagem é demasiado pesada. Escolhe uma imagem mais pequena.');
-  } finally { URL.revokeObjectURL(url); }
-}
-
 function Rules({ fuzzy }) {
   const t = useT();
   return <details className="rules"><summary>{t('Como se joga · pontos e tempos')}</summary>
@@ -110,7 +88,7 @@ function Rules({ fuzzy }) {
     <p>{t('Maiúsculas, acentos, pontuação e espaços repetidos são normalizados. As alternativas indicadas pelo host são aceites.')}{' '}
       {t(fuzzy === false ? 'A tolerância a erros de escrita está desligada.' : 'Com tolerância ligada: respostas com 5–9 caracteres aceitam 1 edição; com 10 ou mais, 2 edições (inserir, apagar, substituir ou trocar letras adjacentes). Respostas até 4 caracteres e números exigem correspondência exata após normalização.')}</p>
     <p>{t('Não podes repetir a mesma tentativa normalizada. Intervalo mínimo: 0,3 s; máximo: 50 tentativas por ronda. A ronda termina quando todos os participantes acertam ou o tempo acaba. O ranking final aparece automaticamente.')}</p>
-    <p>{t('Classificação: pontos, depois número de acertos, depois soma dos tempos dos acertos (menor vence); empate restante ordenado por nickname. O host conhece as respostas. Quem entrar a meio assiste e joga na próxima partida.')}</p>
+    <p>{t('Classificação: pontos, depois número de acertos, depois soma dos tempos dos acertos (menor vence); empate restante ordenado por nickname. Ninguém recebe as respostas antes do tempo, nem o host. Quem entrar a meio assiste e joga na próxima partida.')}</p>
     <p>{t('Uma quebra de ligação mantém os pontos. Volta no mesmo separador para recuperar a sessão. Se o host ficar desligado por 30 s, passa a função a um jogador ligado. Se o host sair da sala, a sala fecha para todos. Reiniciar o servidor apaga as salas.')}</p>
   </details>;
 }
@@ -118,103 +96,46 @@ function Rules({ fuzzy }) {
 function Editor({ room, busy, connected, action, onDirty, saveRef }) {
   const t = useT();
   const show = useMessage();
-  const [draft, setDraft] = useState(() => structuredClone(room.config));
+  const fromRoom = () => ({ durationSeconds: room.settings.durationSeconds, targetPoints: room.settings.targetPoints, fuzzy: room.settings.fuzzy, themes: room.settings.themes });
+  const [draft, setDraft] = useState(fromRoom);
   const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState('');
-  const [imageBusy, setImageBusy] = useState(false);
-  const [themeFilter, setThemeFilter] = useState('');
-  const [page, setPage] = useState(0);
-  const fileRef = useRef();
-  const themes = [...new Set(draft.questions.map(q => q.theme || 'Geral'))].sort((a, b) => a.localeCompare(b, 'pt'));
-  const filteredQuestions = draft.questions.map((q, index) => ({ q, index })).filter(({ q }) => !themeFilter || (q.theme || 'Geral') === themeFilter);
-  const pageCount = Math.max(1, Math.ceil(filteredQuestions.length / 10));
-  const visibleQuestions = filteredQuestions.slice(page * 10, page * 10 + 10);
   useEffect(() => {
-    setDraft(structuredClone(room.config)); setDirty(false); onDirty(false);
+    setDraft(fromRoom()); setDirty(false); onDirty(false);
   }, [room.code, room.revision]);
-  useEffect(() => { setPage(current => Math.min(current, pageCount - 1)); }, [pageCount]);
-  useEffect(() => {
-    const warn = event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } };
-    window.addEventListener('beforeunload', warn); return () => window.removeEventListener('beforeunload', warn);
-  }, [dirty]);
+  const names = room.categories.map(c => c.name);
+  const chosen = new Set(draft.themes);
+  const allChosen = chosen.size === names.length;
+  const total = room.categories.reduce((sum, c) => sum + (chosen.has(c.name) ? c.count : 0), 0);
   function change(next) { setDraft(next); setDirty(true); onDirty(true); setMessage(''); }
-  function question(index, field, value) {
-    change({ ...draft, questions: draft.questions.map((q, i) => i === index ? { ...q, [field]: value } : q) });
-  }
+  // Keep the bank's order so the saved list is stable.
+  const toggle = name => change({ ...draft, themes: names.filter(n => n === name ? !chosen.has(n) : chosen.has(n)) });
   async function save() {
-    if (imageBusy) { setMessage('Espera que a imagem fique pronta.'); return null; }
+    if (!draft.themes.length) { setMessage('Escolhe pelo menos uma categoria.'); return null; }
     const result = await action('config:save', { revision: room.revision, config: draft });
-    if (result) setMessage('Perguntas guardadas na sala. Exporta uma cópia para manteres depois de o servidor reiniciar.');
+    if (result) setMessage('Opções guardadas.');
     return result;
   }
-  // Lets the start button save pending edits first.
+  // Lets the start button save pending changes first.
   saveRef.current = save;
-  async function addImage(event, index) {
-    const file = event.target.files?.[0]; event.target.value = '';
-    if (!file) return;
-    setImageBusy(true); onDirty(true); setMessage('A preparar imagem…');
-    try {
-      const image = await prepareImage(file);
-      setDraft(current => ({ ...current, questions: current.questions.map((q, i) => i === index ? { ...q, image } : q) }));
-      setDirty(true); onDirty(true); setMessage('Imagem pronta. Guarda as perguntas para aplicar.');
-    } catch (error) { setMessage(error.message); onDirty(dirty); }
-    finally { setImageBusy(false); }
-  }
-  async function importFile(event) {
-    const file = event.target.files?.[0]; event.target.value = '';
-    if (!file) return;
-    try {
-      if (file.size > 3 * 1024 * 1024) throw new Error('O ficheiro deve ter no máximo 3 MB, incluindo a formatação do JSON.');
-      const value = JSON.parse(await file.text());
-      if (!Array.isArray(value.questions) || !value.questions.length || value.questions.length > 500 ||
-        !Number.isInteger(value.durationSeconds) || value.durationSeconds < 5 || value.durationSeconds > 120 ||
-        typeof value.fuzzy !== 'boolean' ||
-        (value.targetPoints !== undefined && (!Number.isInteger(value.targetPoints) || value.targetPoints < 1 || value.targetPoints > 1000)) ||
-        value.questions.some(q => !q || typeof q.theme !== 'string' || q.theme.length > 60 ||
-          typeof q.prompt !== 'string' || !q.prompt.trim() || q.prompt.length > 500 ||
-          (q.image !== undefined && (typeof q.image !== 'string' || q.image.length > 409664 || !/^data:image\/(png|jpeg|webp);base64,/.test(q.image))) ||
-          !Array.isArray(q.answers) || !q.answers.length || q.answers.length > 10 ||
-          q.answers.some(a => typeof a !== 'string' || !a.trim() || a.length > 120))) {
-        throw new Error('Formato inválido. Usa um ficheiro exportado pelo jogo ou o exemplo do projeto.');
-      }
-      change({ ...value, targetPoints: value.targetPoints ?? 50, shuffle: true }); setThemeFilter(''); setPage(0); setMessage('Ficheiro importado. Carrega em Guardar perguntas para aplicar.');
-    } catch (error) { setMessage(error instanceof SyntaxError ? 'Formato inválido. Usa um ficheiro exportado pelo jogo ou o exemplo do projeto.' : error.message); }
-  }
-  function exportFile() {
-    const url = URL.createObjectURL(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json' }));
-    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'trigo-perguntas.json'; anchor.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
   return <section className="panel">
-    <div className="section-heading"><h2>{t('Perguntas da sala')}</h2><span className="muted">{draft.questions.length}/500</span></div>
-    <p className="muted">{t('Só o host pode editar. As alterações aplicam-se à próxima partida.')}</p>
+    <div className="section-heading"><h2>{t('Opções da partida')}</h2><span className="muted">{t('{count} perguntas', { count: total })}</span></div>
+    <p className="muted">{t('Só o host pode mudar. As alterações aplicam-se à próxima partida.')}</p>
     <div className="settings">
       <label>{t('Segundos por pergunta')}<input type="number" min="5" max="120" step="1" value={draft.durationSeconds} onChange={e => change({ ...draft, durationSeconds: Number(e.target.value) })} /></label>
       <label>{t('Pontos para ganhar')}<input type="number" min="1" max="1000" step="1" value={draft.targetPoints} onChange={e => change({ ...draft, targetPoints: Number(e.target.value) })} /></label>
       <label className="check"><input type="checkbox" checked={draft.fuzzy} onChange={e => change({ ...draft, fuzzy: e.target.checked })} /> {t('Aceitar pequenos erros de escrita')}</label>
-      <span className="muted small">{t('Perguntas sempre aleatórias · resposta visível durante 3 s')}</span>
     </div>
-    <div className="editor-navigation">
-      <label>{t('Mostrar tema no editor')}<select value={themeFilter} onChange={e => { setThemeFilter(e.target.value); setPage(0); }}><option value="">{t('Todos os temas ({count})', { count: draft.questions.length })}</option>{themes.map(theme => <option key={theme} value={theme}>{theme} ({draft.questions.filter(q => (q.theme || 'Geral') === theme).length})</option>)}</select></label>
-      <div className="row"><button disabled={page === 0 || imageBusy} onClick={() => setPage(p => p - 1)}>{t('Anterior')}</button><span className="muted small">{t('Página {page}/{pages}', { page: page + 1, pages: pageCount })}</span><button disabled={page + 1 >= pageCount || imageBusy} onClick={() => setPage(p => p + 1)}>{t('Seguinte')}</button></div>
+    <h3 id="categories-title">{t('Categorias')}</h3>
+    <p className="muted small">{t('Toca numa categoria para a tirar ou voltar a pôr.')}</p>
+    <div className="categories" role="group" aria-labelledby="categories-title">
+      <button type="button" className={allChosen ? 'category all on' : 'category all'} aria-pressed={allChosen} onClick={() => change({ ...draft, themes: allChosen ? [] : names })}>{t('Todas')}</button>
+      {room.categories.map(c => <button type="button" key={c.name} className={chosen.has(c.name) ? 'category on' : 'category'} aria-pressed={chosen.has(c.name)} onClick={() => toggle(c.name)}>
+        {chosen.has(c.name) && <span aria-hidden="true">✓ </span>}{c.name} <small>{c.count}</small></button>)}
     </div>
-    <p className="muted small">{t('Este filtro só organiza a edição. Todas as perguntas guardadas entram no jogo.')}</p>
-    <div className="questions-editor">{visibleQuestions.map(({ q, index }) => <fieldset key={index} disabled={imageBusy}>
-      <legend>{t('Pergunta {n}', { n: index + 1 })}</legend>
-      <label>{t('Tema')}<input maxLength="60" value={q.theme} onChange={e => question(index, 'theme', e.target.value)} /></label>
-      <label>{t('Pergunta')}<textarea rows="2" maxLength="500" value={q.prompt} onChange={e => question(index, 'prompt', e.target.value)} /></label>
-      <label>{t('Imagem opcional · PNG, JPEG ou WebP')}<input type="file" accept="image/png,image/jpeg,image/webp" onChange={e => addImage(e, index)} /></label>
-      {q.image && <div className="image-preview"><img src={q.image} alt={t('Imagem da pergunta {n}', { n: index + 1 })} /><button className="quiet danger" onClick={() => question(index, 'image', undefined)}>{t('Remover imagem')}</button></div>}
-      <label>{t('Respostas aceites · separa alternativas com |')}<input value={q.answers.join('|')} onChange={e => question(index, 'answers', e.target.value.split('|'))} placeholder="Lisboa | Lisbon" /></label>
-      <div className="row end"><button className="quiet danger" onClick={() => change({ ...draft, questions: draft.questions.filter((_, i) => i !== index) })} disabled={draft.questions.length <= 1}>{t('Remover pergunta {n}', { n: index + 1 })}</button></div>
-    </fieldset>)}</div>
-    <div className="row wrap">
-      <button onClick={() => { change({ ...draft, questions: [...draft.questions, { theme: 'Geral', prompt: '', answers: [''] }] }); setThemeFilter(''); setPage(Math.floor(draft.questions.length / 10)); }} disabled={imageBusy || draft.questions.length >= 500}>{t('+ Pergunta')}</button>
-      <button disabled={imageBusy} onClick={() => fileRef.current.click()}>{t('Importar JSON')}</button><button onClick={exportFile}>{t('Exportar JSON')}</button>
-      <input ref={fileRef} type="file" accept=".json,application/json" hidden onChange={importFile} />
-      <button className="primary" disabled={busy || imageBusy || !connected || !dirty} onClick={save}>{t('Guardar perguntas')}</button>
-    </div>
-    <p className={dirty ? 'notice' : 'muted'} role="status">{t(dirty ? 'Tens alterações por guardar. São guardadas ao iniciar a partida.' : 'Perguntas guardadas na sala.')}</p>
+    {!draft.themes.length && <p className="error" role="alert">{t('Escolhe pelo menos uma categoria.')}</p>}
+    <div className="row wrap"><button className="primary" disabled={busy || !connected || !dirty || !draft.themes.length} onClick={save}>{t('Guardar opções')}</button></div>
+    <p className={dirty ? 'notice' : 'muted'} role="status">{t(dirty ? 'Tens alterações por guardar. São guardadas ao iniciar a partida.' : 'Opções guardadas na sala.')}</p>
     {message && <p role="status">{show(message)}</p>}
   </section>;
 }
@@ -445,6 +366,7 @@ function App() {
         {room.phase === 'lobby' && <section className="panel"><h2>{t(isHost ? 'A tua sala está pronta' : 'À espera do host')}</h2>
           <p>{t(isHost ? 'Partilha o convite e edita as perguntas abaixo. Quando todos estiverem aqui, inicia a partida.' : 'O host está a preparar as perguntas. A partida começa para todos ao mesmo tempo.')}</p>
           <p className="muted">{t('{count} perguntas aleatórias · {seconds} s por pergunta · ganha aos {points} pontos', { count: room.questionCount, seconds: room.settings.durationSeconds, points: room.settings.targetPoints })} · {t(room.settings.fuzzy ? 'aceita pequenos erros de escrita' : 'não aceita erros de escrita')}</p>
+          <p className="muted">{t('Categorias: {list}', { list: room.settings.themes.length === room.categories.length ? t('todas') : room.settings.themes.join(', ') })}</p>
           {isHost && <><button className="primary" disabled={!canStart} onClick={start}>{t(dirty ? 'Guardar e iniciar partida' : 'Iniciar partida')}</button><p className="muted small">{t('Podes testar sozinho ou jogar com amigos, até 20 pessoas.')}</p></>}
         </section>}
         {room.round && <Question room={room} connected={connected} busy={busy} action={action} offset={offset} />}
@@ -452,7 +374,7 @@ function App() {
           <p>{t('Objetivo de {points} pontos atingido. Confere a pontuação, os acertos e os tempos na classificação.', { points: room.targetPoints })}</p>
           {isHost ? <><button className="primary" disabled={!canStart} onClick={start}>{t(dirty ? 'Guardar e jogar novamente' : 'Jogar novamente')}</button><p className="muted small">{t('A nova partida começa do zero. Podes editar as perguntas antes.')}</p></> : <p className="muted">{t('O host pode iniciar outra partida.')}</p>}
         </section>}
-        {isHost && room.config && <Editor key={`${room.code}-${room.meId}`} room={room} busy={busy} connected={connected} action={action} onDirty={setDirty} saveRef={saveRef} />}
+        {isHost && ['lobby', 'finished'].includes(room.phase) && <Editor key={`${room.code}-${room.meId}`} room={room} busy={busy} connected={connected} action={action} onDirty={setDirty} saveRef={saveRef} />}
         <Rules fuzzy={room.settings.fuzzy} />
       </div><Ranking room={room} isHost={isHost} disabled={disabled} action={action} /></div>
     </>}

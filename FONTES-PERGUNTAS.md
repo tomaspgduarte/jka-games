@@ -19,7 +19,7 @@
 | Memes do futebol | 25 | 0 |
 | Emojis | 42 | 0 |
 
-O jogo aceita no máximo 500 perguntas por sala, por isso o host pode acrescentar mais 64 ao banco completo. Para mais espaço, remove temas no editor ou importa só os temas de `examples/temas/` que quiseres.
+O host escolhe no lobby que categorias entram na partida (todas, por omissão). Cada banco aceita no máximo 500 perguntas, por isso ainda cabem mais 64 se acrescentares perguntas ao código.
 
 ## Referências e verificação
 
@@ -44,10 +44,10 @@ Pessoas incluídas: aspas, TenZ, Sacy, Lewis Hamilton, Max Verstappen, Cristiano
 
 ## Ficheiros
 
-- `examples/banco-completo.json`: todos os temas, pronto a importar.
+- `examples/banco-completo.json`: cópia do banco completo em JSON, para consulta.
 - `examples/temas/`: catorze ficheiros independentes, um por tema.
 - `examples/resumo-banco.json`: contagens por tema.
 - `server/content/text-questions.js`: perguntas de texto editáveis no projeto.
 - `server/content/photo-questions.json`: fotografias embutidas e respetivos créditos.
 
-O banco completo é o ponto de partida de cada nova sala. O host continua a poder editar, remover ou acrescentar perguntas. As salas já criadas antes de uma alteração ao banco não mudam automaticamente; importa o banco ou cria uma nova sala.
+O banco completo é o ponto de partida de cada nova sala; o host escolhe as categorias no lobby. As perguntas não se editam na interface: alterações ao banco fazem-se nos ficheiros de `server/content/` e só aparecem em salas criadas depois de reiniciar o servidor.

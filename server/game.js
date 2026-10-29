@@ -40,7 +40,12 @@ export function validateConfig(raw) {
   const textOnly = questions.map(({ image, ...question }) => question);
   requireThat(Buffer.byteLength(JSON.stringify(textOnly)) <= 200000, 'Os textos das perguntas excedem o limite de 200 KB.');
   requireThat(Buffer.byteLength(JSON.stringify(questions)) <= MAX_CONFIG_BYTES, 'As perguntas e imagens excedem o limite total de 2 MB.');
-  return { durationSeconds: raw.durationSeconds, targetPoints, fuzzy: raw.fuzzy, shuffle: true, questions };
+  // Categories are the questions' themes; without a choice the whole bank plays.
+  const available = [...new Set(questions.map(q => q.theme))];
+  const themes = raw.themes ?? available;
+  requireThat(Array.isArray(themes) && themes.length && themes.every(theme => available.includes(theme)), 'Escolhe pelo menos uma categoria.');
+  return { durationSeconds: raw.durationSeconds, targetPoints, fuzzy: raw.fuzzy, shuffle: true, questions,
+    themes: available.filter(theme => themes.includes(theme)) };
 }
 
 export function shuffleQuestions(questions, previous = null) {
@@ -63,7 +68,8 @@ export function attachGame(io, options = {}) {
   const hostGraceMs = options.hostGraceMs ?? 30000;
   const emptyTtlMs = options.emptyTtlMs ?? 30 * 60 * 1000;
   const maxRooms = options.maxRooms ?? 100;
-  const initialConfig = options.defaultConfig ?? defaultConfig;
+  // Validated once so every room starts with its categories filled in.
+  const initialConfig = validateConfig(options.defaultConfig ?? defaultConfig);
   const timers = new Set();
   function later(fn, ms) {
     const timer = setTimeout(() => { timers.delete(timer); fn(); }, ms);
@@ -90,6 +96,7 @@ export function attachGame(io, options = {}) {
     return [...room.players.values()].sort((a, b) => b.score - a.score || b.correct - a.correct ||
       a.totalMs - b.totalMs || a.name.localeCompare(b.name, 'pt'));
   }
+  const selected = room => room.config.questions.filter(q => room.config.themes.includes(q.theme));
   function snapshot(room, viewer) {
     const round = room.round;
     const reveal = room.phase === 'results' || room.phase === 'finished';
@@ -97,9 +104,11 @@ export function attachGame(io, options = {}) {
     return {
       code: room.code, phase: room.phase, hostId: room.hostId, meId: viewer.id,
       revision: room.revision, serverNow: Date.now(), advanceAt: room.phase === 'results' ? room.advanceAt : null,
-      settings: { durationSeconds: room.config.durationSeconds, targetPoints: room.config.targetPoints, fuzzy: room.config.fuzzy, shuffle: true },
+      settings: { durationSeconds: room.config.durationSeconds, targetPoints: room.config.targetPoints, fuzzy: room.config.fuzzy, shuffle: true, themes: room.config.themes },
       targetPoints: room.targetPoints ?? room.config.targetPoints, winnerId: room.winnerId ?? null,
-      questionCount: room.config.questions.length,
+      questionCount: selected(room).length,
+      // Category names and sizes only: questions and answers never leave the server.
+      categories: Object.entries(Object.groupBy(room.config.questions, q => q.theme)).map(([name, list]) => ({ name, count: list.length })),
       players: ranked(room).map(p => ({ id: p.id, name: p.name, connected: p.connected, left: p.left, kicked: p.kicked,
         score: p.score, correct: p.correct, averageMs: p.correct ? Math.round(p.totalMs / p.correct) : null,
         participating: room.participants.has(p.id), solved: !!round?.solved.has(p.id),
@@ -116,8 +125,6 @@ export function attachGame(io, options = {}) {
         imageLicense: reveal ? current.imageLicense : undefined,
         mine: round.solved.get(viewer.id) ?? null,
       } : null,
-      // Only the host receives the editable deck, and only outside a match.
-      config: viewer.id === room.hostId && ['lobby', 'finished'].includes(room.phase) ? clone(room.config) : undefined,
     };
   }
   function publish(room) {
@@ -163,7 +170,7 @@ export function attachGame(io, options = {}) {
       else {
         const previous = room.deck[room.index];
         room.index++;
-        if (room.index >= room.deck.length) { room.deck = shuffleQuestions(room.config.questions, previous); room.index = 0; }
+        if (room.index >= room.deck.length) { room.deck = shuffleQuestions(selected(room), previous); room.index = 0; }
         room.roundNumber++; startRound(room);
       }
     }, resultsMs);
@@ -288,8 +295,10 @@ export function attachGame(io, options = {}) {
     on('config:save', raw => {
       const { room } = host(socket);
       requireThat(['lobby', 'finished'].includes(room.phase), 'Só podes editar entre partidas.');
-      requireThat(raw.revision === room.revision, 'As perguntas mudaram. Atualiza o painel antes de guardar.');
-      room.config = validateConfig(raw.config); room.revision++; publish(room); return {};
+      requireThat(raw.revision === room.revision, 'As opções mudaram. Confirma as categorias antes de guardar.');
+      // The lobby sends only settings and categories; a full question list is still accepted (the tests use it).
+      const next = raw.config && typeof raw.config === 'object' && raw.config.questions === undefined ? { ...raw.config, questions: room.config.questions } : raw.config;
+      room.config = validateConfig(next); room.revision++; publish(room); return {};
     });
     on('game:start', () => {
       const { room } = host(socket);
@@ -298,7 +307,7 @@ export function attachGame(io, options = {}) {
       requireThat(connected.length >= 1, 'É preciso pelo menos 1 jogador ligado. A sala suporta 20.');
       room.participants = new Set(connected.map(p => p.id));
       for (const p of room.players.values()) { p.score = 0; p.correct = 0; p.totalMs = 0; }
-      room.deck = shuffleQuestions(room.config.questions);
+      room.deck = shuffleQuestions(selected(room));
       room.targetPoints = room.config.targetPoints; room.winnerId = null;
       room.index = 0; room.roundNumber = 1; startRound(room); return {};
     });

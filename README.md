@@ -38,7 +38,7 @@ Para amigos noutras redes, publica o projeto num servidor; segue a secção abai
 
 1. Escolhe um nickname e cria uma sala privada.
 2. Copia o convite ou partilha o código de 6 caracteres.
-3. O host edita os temas, perguntas e respostas alternativas. As alterações por guardar são guardadas automaticamente ao carregar em **Guardar e iniciar partida** (ou **Guardar e jogar novamente**); também podes usar **Guardar perguntas**.
+3. O host escolhe as categorias e as opções da partida no painel **Opções da partida**. As alterações por guardar são guardadas automaticamente ao carregar em **Guardar e iniciar partida** (ou **Guardar e jogar novamente**); também podes usar **Guardar opções**.
 4. Os amigos escolhem nicknames diferentes e entram pelo convite ou código. Quem abre um link de convite vê um ecrã só para entrar: o código da sala em grande, o campo do nickname e o botão **Entrar na sala** (o Enter também entra); criar outra sala fica num link discreto por baixo. Sem convite, **Criar sala privada** é o botão destacado até se escrever um código completo, e aí passa a ser **Entrar na sala**.
 5. O host pode iniciar **sozinho para testar** ou com amigos. A sala suporta **1 a 20 jogadores**; podes jogar com 6 ou mais.
 6. Há uma contagem de 3 segundos apenas antes da primeira pergunta. Escreve e carrega Enter para responder.
@@ -47,7 +47,7 @@ Para amigos noutras redes, publica o projeto num servidor; segue a secção abai
 
 O host define **Pontos para ganhar**, entre 1 e 1000; o valor inicial é **50**. A partida não tem um número fixo de rondas. As perguntas são sempre baralhadas: todas são usadas uma vez antes de voltar a baralhar. Se ainda ninguém tiver atingido o objetivo, o jogo continua num novo ciclo. Havendo várias perguntas, a última de um ciclo não se repete imediatamente no seguinte. Com uma só pergunta, ela repete-se até alguém atingir o objetivo.
 
-Quem entra a meio assiste e só participa na próxima partida. A lista de jogadores mostra ligação, host e quem já acertou. O host conhece as respostas porque é quem as prepara; pode optar por não responder, caso em que a ronda termina pelo temporizador.
+Quem entra a meio assiste e só participa na próxima partida. A lista de jogadores mostra ligação, host e quem já acertou. As respostas ficam no servidor: nem o host as vê antes de a ronda terminar, por isso também joga em igualdade.
 
 ### Pontuação e medição do tempo
 
@@ -72,37 +72,20 @@ Com **Aceitar pequenos erros de escrita** ligado, cada resposta esperada com 5�
 
 Bloqueia a repetição de uma tentativa normalizada. Intervalo mínimo de 300 ms e máximo de 50 tentativas por jogador/ronda. Reenvios do mesmo pedido devolvem o recibo original e não somam pontos. O browser não guarda respostas para enviar depois de uma reconexão.
 
-## As tuas perguntas
+## Perguntas e categorias
 
-O jogo já inclui **436 perguntas: 424 de texto e 12 com fotografia**, em 14 temas: VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas, personagens, Cabo Verde, desporto de Cabo Verde, memes, memes brasileiros, memes do futebol e emojis (adivinhar filmes, séries, jogos e canções). Como cada sala aceita até 500 perguntas, sobra espaço para mais 64. Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas.
+O jogo inclui **436 perguntas: 424 de texto e 12 com fotografia**, em 14 categorias: VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas, personagens, Cabo Verde, desporto de Cabo Verde, memes, memes brasileiros, memes do futebol e emojis (adivinhar filmes, séries, jogos e canções). Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
 
-O editor mostra dez perguntas por página e permite filtrar o tema para facilitar a edição. Esse filtro não altera o sorteio da partida: todas as perguntas guardadas entram no jogo. Para jogar apenas um tema, podes importar o ficheiro correspondente de `examples/temas/`. O banco completo está em `examples/banco-completo.json`. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
+No lobby, o host tem o painel **Opções da partida**:
 
-O painel do host permite adicionar e remover perguntas, alterar tema/texto, duração global (5–120 segundos), objetivo (1–1000 pontos) e tolerância. A ordem é sempre aleatória. No campo das respostas, separa alternativas com `|`. Esse separador é reservado no editor.
+- **Segundos por pergunta** (5–120), **Pontos para ganhar** (1–1000) e **Aceitar pequenos erros de escrita**.
+- **Categorias**: um botão por categoria, com o número de perguntas. Todas começam escolhidas. Toca numa para a tirar ou voltar a pôr; **Todas** volta a escolher todas, ou tira todas de uma vez quando já estão todas escolhidas. É preciso pelo menos uma.
+- O total de perguntas escolhidas aparece no topo do painel, e os outros jogadores veem no lobby que categorias vão sair.
+- As alterações ficam guardadas com **Guardar opções** ou automaticamente ao **iniciar a partida**.
 
-Cada pergunta tem um campo **Imagem opcional** para escolher um ficheiro PNG, JPEG ou WebP do computador (original até 10 MB). O browser ajusta-o para caber em 1280 × 900 e comprime-o para até 300 KB. A imagem aparece com o texto da pergunta; para uma pista essencialmente visual, usa um texto como «Quem é?» ou «Que filme é este?». Podes alternar livremente perguntas com e sem imagem.
+A ordem é sempre aleatória e só entram perguntas das categorias escolhidas, mesmo quando o baralho recomeça. As perguntas e respostas nunca são enviadas aos jogadores, nem ao host: o browser recebe só os nomes e tamanhos das categorias e, durante a ronda, a pergunta em curso. As fotografias são servidas por HTTP apenas quando a sua pergunta começa; o tempo de carregamento faz parte da latência e não é descontado.
 
-As imagens são incluídas na exportação JSON, sem dependências de links externos. O campo opcional `image` contém um data URL de PNG, JPEG ou WebP. Durante a partida, cada imagem é servida por HTTP apenas quando a sua pergunta começa; as atualizações de jogadores/pontos não reenviam o ficheiro por Socket.IO. O tempo de carregamento da imagem, tal como o texto, faz parte da latência da rede e não é descontado do tempo de resposta.
-
-Também podes importar/exportar um JSON. O ficheiro `examples/perguntas.json` contém um exemplo pronto a editar. Estrutura:
-
-```json
-{
-  "durationSeconds": 20,
-  "targetPoints": 50,
-  "fuzzy": true,
-  "shuffle": true,
-  "questions": [
-    { "theme": "Geografia", "prompt": "Capital de Portugal?", "answers": ["Lisboa", "Lisbon"] }
-  ]
-}
-```
-
-Limites: 1–500 perguntas; tema de 60 caracteres; pergunta de 500; 1–10 alternativas por pergunta, de 120 caracteres cada; textos/créditos até 200 KB; imagem até 300 KB; lista incluindo imagens em base64 até 2 MB. O servidor valida os limites independentemente do browser. Os temas são etiquetas de cada pergunta; todas as perguntas guardadas entram na partida.
-
-Ficheiros de versões anteriores continuam a funcionar: se faltar `targetPoints`, usa 50. O campo antigo `shuffle` é aceite por compatibilidade, mas a ordem aleatória fica sempre ligada.
-
-**Exporta uma cópia para guardares os teus temas.** Guardar no painel mantém-nos apenas na sala em memória. As edições não guardadas não entram na partida e perdem-se se saíres da sala. A interface avisa ao fechar/atualizar uma página com alterações pendentes.
+As perguntas já não se editam na interface. Para acrescentar ou corrigir perguntas, edita `server/content/text-questions.js` (ou `server/content/photo-questions.json`) e reinicia o servidor. Em `examples/` há uma cópia do banco em JSON, completo e por categoria, para consulta. Limites validados pelo servidor: 1–500 perguntas por banco; tema de 60 caracteres; pergunta de 500; 1–10 alternativas por pergunta, de 120 caracteres cada; textos e créditos até 200 KB; imagem até 300 KB; total com imagens até 2 MB.
 
 ## Desconexões e sessões
 
@@ -198,7 +181,7 @@ server/app.js     HTTP, Socket.IO e limites de origem/payload
 server/index.js   arranque, frontend e encerramento
 server/defaults.js perguntas iniciais
 tests/            testes de integração e carga
-examples/         perguntas para importar
+examples/         cópia do banco em JSON (completo e por categoria)
 Dockerfile        publicação em contentor
 render.yaml       configuração para Render
 ```

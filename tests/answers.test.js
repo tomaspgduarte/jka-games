@@ -38,12 +38,13 @@ test('o primeiro a acertar e quem acerta até 1 s depois ganham 10; depois desce
   assert.equal(roundPointsFor(19000, 20000, [1000, 2000, 3000]), 1, 'nunca menos de 1');
 });
 test('configuração rejeita valores inválidos e limita perguntas e respostas', () => {
-  assert.deepEqual(validateConfig(config()), config());
+  assert.deepEqual(validateConfig(config()), { ...config(), themes: ['Teste'] }, 'sem escolha, entram todas as categorias');
   for (const patch of [{ durationSeconds: 0 }, { durationSeconds: 5.5 }, { fuzzy: 'true' },
     { targetPoints: 0 }, { targetPoints: 1001 }, { targetPoints: 2.5 },
     { questions: [] }, { questions: Array(501).fill(config().questions[0]) },
     { questions: [{ theme: '', prompt: '', answers: ['a'] }] },
-    { questions: [{ theme: '', prompt: 'abc', answers: ['!!!'] }] }]) {
+    { questions: [{ theme: '', prompt: 'abc', answers: ['!!!'] }] },
+    { themes: [] }, { themes: ['Outra'] }, { themes: 'Teste' }]) {
     assert.throws(() => validateConfig({ ...config(), ...patch }));
   }
   const legacy = { ...config(), targetPoints: undefined, shuffle: false };

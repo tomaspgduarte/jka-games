@@ -90,7 +90,7 @@ test('temporizador termina, rejeita respostas tardias e não pode ser alterado p
 test('reconexão ativa mantém acerto; takeover invalida socket anterior', async t => {
   const f = await fixture(t);
   const { players, sessions, host, code } = await group(f, 2);
-  const answers = new Map(host.state.config.questions.map(q => [q.prompt, q.answers[0]]));
+  const answers = new Map(config().questions.map(q => [q.prompt, q.answers[0]]));
   await ok(host, 'game:start'); await until(() => host.state.round.prompt);
   const result = await ok(players[1], 'answer:submit', { answer: answers.get(host.state.round.prompt), roundId: host.state.round.id, requestId: 'resume-001' });
   let replaced = false;
@@ -153,6 +153,34 @@ test('host expulsa jogadores no lobby e a meio da ronda; o expulso perde a sess�
   assert.equal(host.state.players.find(p => p.id === sessions[1].playerId).participating, false);
 });
 
+test('o host escolhe as categorias; a partida só usa perguntas dessas categorias', async t => {
+  const bank = config([
+    { theme: 'Geografia', prompt: 'Capital de Portugal?', answers: ['Lisboa'] },
+    { theme: 'Geografia', prompt: 'Capital de Cabo Verde?', answers: ['Praia'] },
+    { theme: 'Espaço', prompt: 'Planeta vermelho?', answers: ['Marte'] },
+  ]);
+  const f = await fixture(t, { defaultConfig: bank });
+  const { host, players } = await group(f, 2);
+  assert.deepEqual(host.state.categories, [{ name: 'Geografia', count: 2 }, { name: 'Espaço', count: 1 }]);
+  assert.deepEqual(host.state.settings.themes, ['Geografia', 'Espaço'], 'por omissão, todas as categorias');
+  assert.equal(host.state.questionCount, 3);
+  const options = { durationSeconds: 5, targetPoints: 100, fuzzy: true };
+  assert.equal((await emit(players[1], 'config:save', { revision: host.state.revision, config: { ...options, themes: ['Espaço'] } })).ok, false, 'só o host escolhe');
+  assert.equal((await emit(host, 'config:save', { revision: host.state.revision, config: { ...options, themes: [] } })).ok, false, 'pelo menos uma categoria');
+  assert.equal((await emit(host, 'config:save', { revision: host.state.revision, config: { ...options, themes: ['Música'] } })).ok, false);
+  await ok(host, 'config:save', { revision: host.state.revision, config: { ...options, themes: ['Espaço'] } });
+  await until(() => players[1].state.questionCount === 1);
+  assert.deepEqual(players[1].state.settings.themes, ['Espaço']);
+  await ok(host, 'game:start');
+  // Three rounds over a one-question pool also cover reshuffling the deck.
+  for (let round = 1; round <= 3; round++) {
+    await until(() => host.state.phase === 'question' && host.state.round.number === round && host.state.round.prompt);
+    assert.equal(host.state.round.theme, 'Espaço', 'só entram perguntas da categoria escolhida');
+    await Promise.all([host, players[1]].map((p, i) => ok(p, 'answer:submit', { roundId: host.state.round.id, answer: 'Marte', requestId: `category-${round}-${i}` })));
+  }
+  assert.equal(host.state.players.find(p => p.id === host.state.meId).score, 30);
+});
+
 test('isolamento de salas, autorização, nickname, configuração e payloads malformados', async t => {
   const f = await fixture(t);
   const { host, players, code } = await group(f, 2);
@@ -195,7 +223,7 @@ test('long polling funciona quando WebSocket não está disponível; origens alh
 test('20 jogadores e respostas concorrentes não duplicam pontos', async t => {
   const f = await fixture(t);
   const { host, players, code } = await group(f, 20);
-  const answers = new Map(host.state.config.questions.map(q => [q.prompt, q.answers[0]]));
+  const answers = new Map(config().questions.map(q => [q.prompt, q.answers[0]]));
   const extra = await f.connect();
   assert.equal((await emit(extra, 'room:join', { code, nickname: 'Jogador 21' })).ok, false);
   await ok(host, 'game:start'); await until(() => players.every(p => p.state.round.prompt));
@@ -214,7 +242,7 @@ test('imagens aleatórias, resposta visível 3 s, objetivo de pontos e avanço m
   const image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=';
   const deck = { ...config([{ ...config().questions[0], image }, config().questions[1]]), targetPoints: 15 };
   await ok(host, 'config:save', { revision: 1, config: deck });
-  assert.equal(host.state.config.questions[0].image, image, 'exportação mantém imagem embutida');
+  assert.equal(host.state.config, undefined, 'as perguntas e respostas nunca são enviadas aos jogadores');
   await ok(host, 'game:start');
   const first = host.state.round.id;
   assert.equal(host.state.round.imageUrl, null);
@@ -247,7 +275,6 @@ test('imagens aleatórias, resposta visível 3 s, objetivo de pontos e avanço m
   await until(() => resumed.state.phase === 'finished', 4500);
   assert.equal(resumed.state.players[0].correct, 2);
   assert.ok(resumed.state.players[0].score >= 2 && resumed.state.players[0].score <= 20);
-  assert.equal(resumed.state.config.questions[0].image, image);
   const invalid = { ...deck, questions: [{ ...deck.questions[0], image: 'data:image/svg+xml;base64,PHN2Zy8+' }] };
   assert.equal((await emit(resumed, 'config:save', { revision: resumed.state.revision, config: invalid })).ok, false);
   await ok(resumed, 'game:start');

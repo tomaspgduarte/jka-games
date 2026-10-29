@@ -138,3 +138,12 @@ Escolhido entre três direções mostradas lado a lado (arcade noturno, Morabeza
 - Browser, em largura de telemóvel (405 px) e de computador (1280 px): catálogo, ecrã de convite, lobby do host, editor, pergunta a decorrer, «Correto!», jogador que acertou a verde e líder marcado. Corrigida a cor das estrelas, que saía branca por causa de uma regra do cabeçalho.
 - Contraste calculado: texto azul-escuro nos cartões ≈ 15:1; texto secundário nos cartões ≈ 5,6:1; azul-escuro no amarelo ≈ 11:1; branco no fundo mais claro do mar ≈ 6:1.
 - `npm test`: 18 testes passaram, 0 falharam; `npm run build` concluído.
+
+## Categorias no lobby em vez do editor de perguntas — 29 de outubro de 2026
+
+O painel do host deixou de permitir editar, acrescentar, remover, importar ou exportar perguntas. Passou a ser **Opções da partida**: tempo, objetivo, tolerância a erros de escrita e um botão por categoria (com contagem), mais **Todas**. O servidor guarda as categorias escolhidas (`themes`), baralha só as perguntas dessas categorias (também ao recomeçar o baralho) e deixou de enviar a lista de perguntas e respostas ao host; o estado leva só `settings.themes` e `categories` (nome e contagem). Antes, o host recebia cerca de 1,2 MB em cada atualização do lobby.
+
+- Teste de integração novo: categorias por omissão (todas), só o host escolhe, lista vazia ou categoria inexistente rejeitadas, os outros jogadores veem a escolha, e três rondas seguidas só com perguntas da categoria escolhida. Testes de configuração e de conteúdo atualizados (nenhum cliente recebe `config`).
+- Browser: sala nova com as 14 categorias escolhidas; **Todas** tirou todas e mostrou «Escolhe pelo menos uma categoria» com o botão de guardar desativado; escolhidas Cabo Verde e Memes → 67 perguntas; «Guardar e iniciar partida» começou com uma pergunta de Memes.
+- Regras do jogo e README corrigidos: o host já não conhece as respostas.
+- `npm test`: **19 testes passaram, 0 falharam**. `npm run build` concluído.
