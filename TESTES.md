@@ -121,3 +121,12 @@ Sons gerados com Web Audio em `client/src/sounds.js`: arpejo dó-mi-sol-dó quan
 - Browser, com um host por script e uma pergunta conhecida: depois de um clique real na página, o host acertou e a página criou as duas notas do «pop» (880 e 1320 Hz); a seguir o jogador acertou e criou as dez notas do arpejo (523, 659, 784 e 1047 Hz, cada uma com a oitava acima). Contagem feita a instrumentar `createOscillator`, porque o som não pode ser ouvido na verificação.
 - Quem já tinha acertado ao entrar ou ao reconectar não toca som; só as novas entradas na ronda.
 - `npm run build` concluído.
+
+## Ecrã de convite — 29 de outubro de 2026
+
+Quem chegava por link via o botão **Criar sala privada** logo a seguir ao nickname e podia criar uma sala nova por engano. Agora:
+
+- Link `/trigo?sala=CODIGO`: ecrã próprio com o código em grande, nickname já com o cursor e um único botão principal **Entrar na sala CODIGO**; Enter entra. «Não é esta sala? Cria uma sala nova» volta ao ecrã normal.
+- Sem convite: **Criar sala privada** destacado; ao escrever um código de 6 caracteres o destaque passa para **Entrar na sala**. Enter no nickname cria a sala (ou entra, se já houver código completo).
+- Browser: convite para uma sala real, nickname escrito sem clicar e Enter → entrou nessa sala como jogador. Sem convite: botão principal «Criar sala privada», que passou a «Entrar na sala» com «ABC234»; Enter no nickname criou uma sala nova.
+- `npm test`: 18 testes passaram, 0 falharam; `npm run build` concluído.

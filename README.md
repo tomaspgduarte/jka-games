@@ -39,7 +39,7 @@ Para amigos noutras redes, publica o projeto num servidor; segue a secção abai
 1. Escolhe um nickname e cria uma sala privada.
 2. Copia o convite ou partilha o código de 6 caracteres.
 3. O host edita os temas, perguntas e respostas alternativas. As alterações por guardar são guardadas automaticamente ao carregar em **Guardar e iniciar partida** (ou **Guardar e jogar novamente**); também podes usar **Guardar perguntas**.
-4. Os amigos escolhem nicknames diferentes e entram pelo convite ou código.
+4. Os amigos escolhem nicknames diferentes e entram pelo convite ou código. Quem abre um link de convite vê um ecrã só para entrar: o código da sala em grande, o campo do nickname e o botão **Entrar na sala** (o Enter também entra); criar outra sala fica num link discreto por baixo. Sem convite, **Criar sala privada** é o botão destacado até se escrever um código completo, e aí passa a ser **Entrar na sala**.
 5. O host pode iniciar **sozinho para testar** ou com amigos. A sala suporta **1 a 20 jogadores**; podes jogar com 6 ou mais.
 6. Há uma contagem de 3 segundos apenas antes da primeira pergunta. Escreve e carrega Enter para responder.
 7. Depois de todos acertarem ou de o tempo acabar, aparece a resposta e a classificação durante **3 segundos**. A próxima pergunta começa automaticamente, sem botão nem nova contagem inicial.

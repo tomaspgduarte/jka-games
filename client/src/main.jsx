@@ -309,6 +309,7 @@ function App() {
   const [room, setRoom] = useState(null);
   const [nickname, setNickname] = useState('');
   const [code, setCode] = useState(() => shortCode(new URLSearchParams(location.search).get('sala') ?? ''));
+  const [invite, setInvite] = useState(() => code.length === 6 ? code : '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -349,7 +350,7 @@ function App() {
     const replaced = () => { setStored(SESSION_KEY, null); setRoom(null); setError('Esta sessão foi aberta noutro separador. Usa esse separador ou entra com outro nickname.'); };
     const expired = () => { setStored(SESSION_KEY, null); setRoom(null); setError('A sala expirou. Cria uma nova sala.'); };
     const removed = message => () => {
-      setStored(SESSION_KEY, null); setRoom(null); setDirty(false); setCode('');
+      setStored(SESSION_KEY, null); setRoom(null); setDirty(false); setCode(''); setInvite('');
       history.replaceState(null, '', location.pathname);
       setError(message);
     };
@@ -389,7 +390,7 @@ function App() {
   async function leave() {
     if (isHost && room.players.some(p => p.id !== room.meId && !p.left) && !confirm(t('Fechar a sala para todos? Os outros jogadores voltam ao início.'))) return;
     const result = await action('room:leave');
-    if (result) { setStored(SESSION_KEY, null); setRoom(null); setDirty(false); setCode(''); history.replaceState(null, '', location.pathname); }
+    if (result) { setStored(SESSION_KEY, null); setRoom(null); setDirty(false); setCode(''); setInvite(''); history.replaceState(null, '', location.pathname); }
   }
   async function copyLink() {
     const url = `${location.origin}${location.pathname}?sala=${room.code}`;
@@ -405,17 +406,32 @@ function App() {
     {notice && <div className="banner" role="status">{show(notice)}</div>}
     {room && !connected && <div className="banner notice">{t('A ligação caiu. A reconexão é automática; os pontos mantêm-se e o tempo da ronda continua.')}</div>}
     {!room ? <div className="home">
-      <section className="panel"><span className="eyebrow">{t('Perguntas e adivinhas')}</span><h1>{QUIZ_NAME}</h1>
-        <p>{t('Junta os amigos. Quem sabe mais depressa?')}</p>
-        <p className="muted">{t('Salas privadas para 1 a 20 pessoas. Testa sozinho ou convida os amigos para jogar no computador ou no telemóvel.')}</p>
-        <label htmlFor="nickname">{t('O teu nickname')}<input id="nickname" maxLength="24" value={nickname} onChange={e => setNickname(e.target.value)} placeholder={t('Como te chamas no jogo?')} autoComplete="nickname" /></label>
-        <button className="primary full" disabled={disabled || !nickname.trim()} onClick={() => enter('create')}>{t('Criar sala privada')}</button>
-        <div className="divider">{t('ou entra numa sala')}</div>
-        <form onSubmit={e => { e.preventDefault(); enter('join'); }}><label htmlFor="code">{t('Código da sala')}<input id="code" className="code-input" value={code} onChange={e => setCode(shortCode(e.target.value))} placeholder="ABC234" maxLength="6" autoCapitalize="characters" autoComplete="off" /></label>
-          <button className="full" disabled={disabled || !nickname.trim() || code.length !== 6}>{t('Entrar na sala')}</button></form>
+      {invite ? <section className="panel invite">
+        {/* Invited players only need a nickname; creating a room is a deliberate detour. */}
+        <span className="eyebrow">{t('Foste convidado')}</span><h1>{QUIZ_NAME}</h1>
+        <p>{t('Foste convidado para jogar na sala')}</p><p className="invite-code">{invite}</p>
+        <form onSubmit={e => { e.preventDefault(); enter('join'); }}>
+          <label htmlFor="nickname">{t('O teu nickname')}<input id="nickname" maxLength="24" value={nickname} onChange={e => setNickname(e.target.value)} placeholder={t('Como te chamas no jogo?')} autoComplete="nickname" autoFocus /></label>
+          <button className="primary full" disabled={disabled || !nickname.trim()}>{t('Entrar na sala {code}', { code: invite })}</button>
+        </form>
+        <button className="quiet full" onClick={() => { setInvite(''); setCode(''); history.replaceState(null, '', location.pathname); }}>{t('Não é esta sala? Cria uma sala nova')}</button>
         {!connected && <button className="quiet full" onClick={() => socket.connect()}>{t('Voltar a ligar')}</button>}
         {getStored(SESSION_KEY) && connected && <button className="quiet full" onClick={() => { socket.disconnect(); socket.connect(); }}>{t('Recuperar sessão anterior')}</button>}
-      </section><Rules />
+      </section> : <section className="panel"><span className="eyebrow">{t('Perguntas e adivinhas')}</span><h1>{QUIZ_NAME}</h1>
+        <p>{t('Junta os amigos. Quem sabe mais depressa?')}</p>
+        <p className="muted">{t('Salas privadas para 1 a 20 pessoas. Testa sozinho ou convida os amigos para jogar no computador ou no telemóvel.')}</p>
+        {/* Enter in the nickname joins when a full code is typed, otherwise creates a room. */}
+        <form onSubmit={e => { e.preventDefault(); enter(code.length === 6 ? 'join' : 'create'); }}>
+          <label htmlFor="nickname">{t('O teu nickname')}<input id="nickname" maxLength="24" value={nickname} onChange={e => setNickname(e.target.value)} placeholder={t('Como te chamas no jogo?')} autoComplete="nickname" /></label>
+          <button type="button" className={code.length === 6 ? 'full' : 'primary full'} disabled={disabled || !nickname.trim()} onClick={() => enter('create')}>{t('Criar sala privada')}</button>
+        </form>
+        <div className="divider">{t('ou entra numa sala')}</div>
+        <form onSubmit={e => { e.preventDefault(); enter('join'); }}><label htmlFor="code">{t('Código da sala')}<input id="code" className="code-input" value={code} onChange={e => setCode(shortCode(e.target.value))} placeholder="ABC234" maxLength="6" autoCapitalize="characters" autoComplete="off" /></label>
+          <button className={code.length === 6 ? 'primary full' : 'full'} disabled={disabled || !nickname.trim() || code.length !== 6}>{t('Entrar na sala')}</button></form>
+        {!connected && <button className="quiet full" onClick={() => socket.connect()}>{t('Voltar a ligar')}</button>}
+        {getStored(SESSION_KEY) && connected && <button className="quiet full" onClick={() => { socket.disconnect(); socket.connect(); }}>{t('Recuperar sessão anterior')}</button>}
+      </section>}
+      <Rules />
     </div> : <>
       <section className="room-heading"><div><span className="eyebrow">{t('Sala privada')}</span><h1 className="room-code">{room.code}</h1></div>
         <div className="row wrap"><button onClick={copyLink}>{t('Copiar convite')}</button><button className={isHost ? 'quiet danger' : 'quiet'} disabled={disabled} onClick={leave}>{t(isHost ? 'Fechar sala' : 'Sair da sala')}</button></div></section>

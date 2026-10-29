@@ -48,6 +48,7 @@ small, .small { font-size: .8rem; font-weight: 400; }
 .connection { font-size: .8rem; color: var(--warning); white-space: nowrap; }
 .connection::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; margin-right: 6px; }
 .lang-toggle { min-height: 36px; padding: 6px 12px; font-size: .8rem; }
+.invite-code { margin: -8px 0 22px; font-size: 2.2rem; font-weight: 800; letter-spacing: .18em; font-variant-numeric: tabular-nums; }
 .kick { min-height: 30px; margin-top: 4px; padding: 2px 8px; font-size: .75rem; }
 .online { color: var(--success); }
 .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 7px; padding: 24px; min-width: 0; }
