@@ -1,27 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { defaultConfig } from '../server/defaults.js';
 import { normalize, isCorrect } from '../server/answers.js';
-import { decodeImage } from '../server/images.js';
+import { decodeImage, loadBankImage } from '../server/images.js';
 import { validateConfig } from '../server/game.js';
 import { fixture, group, ok, until } from './helpers.js';
 
-test('banco de 252 perguntas: 8 temas, respostas válidas, 12 fotos e configuração exportável', () => {
+test('banco de 436 perguntas: 14 temas, respostas válidas, 12 fotos embutidas, 219 pistas em ficheiro e configuração exportável', () => {
   const bank = validateConfig(defaultConfig);
-  assert.equal(bank.questions.length, 252);
-  assert.equal(new Set(bank.questions.map(q => q.theme)).size, 8);
-  assert.deepEqual([...new Set(bank.questions.map(q => q.theme))], ['VALORANT', 'Counter-Strike', 'F1', 'Basketball', 'Football', 'Hip-hop / Rap', 'Songs', 'Characters']);
-  assert.ok(bank.questions.every(q => /^(Which|What|Who|How|In|On)\b.*\?$/.test(q.prompt)), 'todas as perguntas estão em inglês');
-  assert.deepEqual(JSON.parse(readFileSync(new URL('../examples/banco-completo.json', import.meta.url), 'utf8')), defaultConfig, 'o ficheiro de importação usa o banco inglês atual');
-  const rebound = bank.questions.find(q => q.prompt === 'What is recovering the ball after a missed shot called?');
-  assert.ok(isCorrect('REBOUND', rebound.answers, false));
-  assert.ok(isCorrect('ressalto', rebound.answers, false), 'preserva respostas portuguesas já aceites');
-  const five = bank.questions.find(q => q.prompt === 'How many players are on each team in a standard competitive Counter-Strike match?');
-  assert.ok(isCorrect('five', five.answers, false));
-  const flag = bank.questions.find(q => q.prompt === 'Which flag signals the end of an F1 race?');
-  assert.ok(isCorrect('chequered flag', flag.answers, false));
-  assert.ok(isCorrect('checkered flag', flag.answers, false));
+  assert.equal(bank.questions.length, 436);
+  assert.equal(new Set(bank.questions.map(q => q.theme)).size, 14);
   const signatures = new Set();
   for (const q of bank.questions) {
     assert.ok(q.answers.every(a => normalize(a) && isCorrect(a, q.answers, false)));
@@ -32,15 +20,37 @@ test('banco de 252 perguntas: 8 temas, respostas válidas, 12 fotos e configura�
   assert.equal(photos.length, 12);
   assert.ok(photos.every(q => decodeImage(q.image) && q.imageCredit && q.imageSource.startsWith('https://')));
   assert.ok(photos.some(q => q.answers.includes('aspas')));
+  const clues = bank.questions.filter(q => q.imageFile);
+  assert.equal(clues.length, 219, 'fotografias-pista guardadas como ficheiros');
+  assert.ok(clues.every(q => loadBankImage(q.imageFile) && q.imageCredit && q.imageSource.startsWith('https://commons.wikimedia.org/')));
+  assert.equal(new Set(clues.map(q => q.imageFile)).size, clues.length, 'cada pista tem o seu ficheiro');
+  assert.equal(loadBankImage('../defaults.js'), null, 'só nomes simples da pasta de imagens');
   assert.deepEqual(validateConfig(JSON.parse(JSON.stringify(bank))), bank, 'importar/exportar preserva as imagens e créditos');
+});
+
+test('fotografia-pista em ficheiro só é servida depois de a pergunta começar', async t => {
+  const clue = defaultConfig.questions.find(q => q.imageFile && q.answers.includes('Batman'));
+  const f = await fixture(t, { defaultConfig: { ...defaultConfig, targetPoints: 1, questions: [clue] } });
+  const { host, code } = await group(f, 1);
+  await ok(host, 'game:start');
+  assert.equal((await fetch(`${f.url}/media/${code}/${host.state.round.id}`)).status, 404, 'escondida durante a contagem');
+  await until(() => host.state.round.imageUrl);
+  assert.equal(host.state.round.imageCredit, undefined, 'o crédito pode dar a resposta: só no fim');
+  const response = await fetch(`${f.url}${host.state.round.imageUrl}`);
+  assert.equal(response.headers.get('content-type'), 'image/jpeg');
+  assert.equal(Buffer.from(await response.arrayBuffer()).compare(loadBankImage(clue.imageFile).bytes), 0);
+  await ok(host, 'answer:submit', { roundId: host.state.round.id, answer: 'batman', requestId: 'clue-photo-1' });
+  assert.equal(host.state.round.imageCredit, clue.imageCredit);
 });
 
 test('banco completo passa por Socket.IO; aspas serve fotografia e só revela resposta/créditos no fim', async t => {
   const f = await fixture(t);
   const { host, players } = await group(f, 2);
   await ok(host, 'config:save', { revision: host.state.revision, config: defaultConfig });
-  assert.equal(host.state.config.questions.length, 252);
-  await until(() => players[1].state.questionCount === 252);
+  assert.equal(host.state.questionCount, 436);
+  assert.equal(host.state.categories.length, 14);
+  assert.equal(host.state.config, undefined, 'nem o host recebe perguntas e respostas');
+  await until(() => players[1].state.questionCount === 436);
   assert.equal(players[1].state.config, undefined);
   const aspas = defaultConfig.questions.find(q => q.image && q.answers.includes('aspas'));
   await ok(host, 'config:save', { revision: host.state.revision, config: { ...defaultConfig, targetPoints: 1, questions: [aspas] } });

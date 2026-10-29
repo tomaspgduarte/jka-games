@@ -2,41 +2,71 @@
   {
     "theme": "VALORANT",
     "count": 33,
-    "photos": 3
+    "photos": 12
   },
   {
     "theme": "Counter-Strike",
     "count": 30,
-    "photos": 0
+    "photos": 15
   },
   {
     "theme": "F1",
     "count": 32,
-    "photos": 2
+    "photos": 27
   },
   {
     "theme": "Basketball",
     "count": 32,
-    "photos": 2
+    "photos": 21
   },
   {
     "theme": "Football",
     "count": 32,
-    "photos": 2
+    "photos": 27
   },
   {
     "theme": "Hip-hop / Rap",
     "count": 33,
-    "photos": 3
+    "photos": 21
   },
   {
     "theme": "Songs",
     "count": 30,
-    "photos": 0
+    "photos": 16
   },
   {
     "theme": "Characters",
     "count": 30,
+    "photos": 23
+  },
+  {
+    "theme": "Cabo Verde",
+    "count": 33,
+    "photos": 18
+  },
+  {
+    "theme": "Desporto de Cabo Verde",
+    "count": 26,
+    "photos": 9
+  },
+  {
+    "theme": "Memes",
+    "count": 34,
+    "photos": 24
+  },
+  {
+    "theme": "Memes brasileiros",
+    "count": 24,
+    "photos": 5
+  },
+  {
+    "theme": "Memes do futebol",
+    "count": 25,
+    "photos": 13
+  },
+  {
+    "theme": "Emojis",
+    "count": 42,
     "photos": 0
   }
 ]

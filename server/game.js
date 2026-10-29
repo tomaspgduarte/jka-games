@@ -1,8 +1,8 @@
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
-import { normalize, isCorrect, pointsFor } from './answers.js';
+import { normalize, isCorrect, roundPointsFor } from './answers.js';
 import { defaultConfig } from './defaults.js';
-import { decodeImage, MAX_CONFIG_BYTES } from './images.js';
+import { decodeImage, loadBankImage, MAX_CONFIG_BYTES } from './images.js';
 
 class GameError extends Error {}
 const requireThat = (condition, message) => { if (!condition) throw new GameError(message); };
@@ -26,12 +26,13 @@ export function validateConfig(raw) {
       prefix + 'indica entre 1 e 10 respostas aceites.');
     requireThat(q.answers.every(a => safeString(a, 120) && normalize(a)), prefix + 'resposta inválida (máximo 120 caracteres).');
     requireThat(q.image === undefined || q.image === '' || decodeImage(q.image), prefix + 'imagem inválida (PNG, JPEG ou WebP; máximo 300 KB).');
+    requireThat(q.imageFile === undefined || loadBankImage(q.imageFile), prefix + 'imagem inválida (PNG, JPEG ou WebP; máximo 300 KB).');
     requireThat(q.imageCredit === undefined || safeString(q.imageCredit, 500), prefix + 'crédito de imagem inválido.');
     for (const field of ['imageSource', 'imageLicense']) {
       requireThat(q[field] === undefined || (safeString(q[field], 1000) && /^https:\/\/[^\s]+$/.test(q[field])), prefix + 'link de imagem inválido.');
     }
     return { theme: q.theme.trim() || 'Geral', prompt: q.prompt.trim(), answers: [...new Set(q.answers.map(a => a.trim()))],
-      ...(q.image ? { image: q.image,
+      ...(q.image || q.imageFile ? { ...(q.image ? { image: q.image } : { imageFile: q.imageFile }),
         ...(q.imageCredit ? { imageCredit: q.imageCredit } : {}),
         ...(q.imageSource ? { imageSource: q.imageSource } : {}),
         ...(q.imageLicense ? { imageLicense: q.imageLicense } : {}),
@@ -40,7 +41,12 @@ export function validateConfig(raw) {
   const textOnly = questions.map(({ image, ...question }) => question);
   requireThat(Buffer.byteLength(JSON.stringify(textOnly)) <= 200000, 'Os textos das perguntas excedem o limite de 200 KB.');
   requireThat(Buffer.byteLength(JSON.stringify(questions)) <= MAX_CONFIG_BYTES, 'As perguntas e imagens excedem o limite total de 2 MB.');
-  return { durationSeconds: raw.durationSeconds, targetPoints, fuzzy: raw.fuzzy, shuffle: true, questions };
+  // Categories are the questions' themes; without a choice the whole bank plays.
+  const available = [...new Set(questions.map(q => q.theme))];
+  const themes = raw.themes ?? available;
+  requireThat(Array.isArray(themes) && themes.length && themes.every(theme => available.includes(theme)), 'Escolhe pelo menos uma categoria.');
+  return { durationSeconds: raw.durationSeconds, targetPoints, fuzzy: raw.fuzzy, shuffle: true, questions,
+    themes: available.filter(theme => themes.includes(theme)) };
 }
 
 export function shuffleQuestions(questions, previous = null) {
@@ -63,7 +69,8 @@ export function attachGame(io, options = {}) {
   const hostGraceMs = options.hostGraceMs ?? 30000;
   const emptyTtlMs = options.emptyTtlMs ?? 30 * 60 * 1000;
   const maxRooms = options.maxRooms ?? 100;
-  const initialConfig = options.defaultConfig ?? defaultConfig;
+  // Validated once so every room starts with its categories filled in.
+  const initialConfig = validateConfig(options.defaultConfig ?? defaultConfig);
   const timers = new Set();
   function later(fn, ms) {
     const timer = setTimeout(() => { timers.delete(timer); fn(); }, ms);
@@ -84,12 +91,13 @@ export function attachGame(io, options = {}) {
   }
   function newPlayer(name) {
     return { id: randomUUID(), token: randomBytes(24).toString('hex'), name, socketId: null,
-      connected: false, left: false, score: 0, correct: 0, totalMs: 0, graceTimer: null };
+      connected: false, left: false, kicked: false, score: 0, correct: 0, totalMs: 0, graceTimer: null };
   }
   function ranked(room) {
     return [...room.players.values()].sort((a, b) => b.score - a.score || b.correct - a.correct ||
       a.totalMs - b.totalMs || a.name.localeCompare(b.name, 'pt'));
   }
+  const selected = room => room.config.questions.filter(q => room.config.themes.includes(q.theme));
   function snapshot(room, viewer) {
     const round = room.round;
     const reveal = room.phase === 'results' || room.phase === 'finished';
@@ -97,10 +105,12 @@ export function attachGame(io, options = {}) {
     return {
       code: room.code, phase: room.phase, hostId: room.hostId, meId: viewer.id,
       revision: room.revision, serverNow: Date.now(), advanceAt: room.phase === 'results' ? room.advanceAt : null,
-      settings: { durationSeconds: room.config.durationSeconds, targetPoints: room.config.targetPoints, fuzzy: room.config.fuzzy, shuffle: true },
+      settings: { durationSeconds: room.config.durationSeconds, targetPoints: room.config.targetPoints, fuzzy: room.config.fuzzy, shuffle: true, themes: room.config.themes },
       targetPoints: room.targetPoints ?? room.config.targetPoints, winnerId: room.winnerId ?? null,
-      questionCount: room.config.questions.length,
-      players: ranked(room).map(p => ({ id: p.id, name: p.name, connected: p.connected, left: p.left,
+      questionCount: selected(room).length,
+      // Category names and sizes only: questions and answers never leave the server.
+      categories: Object.entries(Object.groupBy(room.config.questions, q => q.theme)).map(([name, list]) => ({ name, count: list.length })),
+      players: ranked(room).map(p => ({ id: p.id, name: p.name, connected: p.connected, left: p.left, kicked: p.kicked,
         score: p.score, correct: p.correct, averageMs: p.correct ? Math.round(p.totalMs / p.correct) : null,
         participating: room.participants.has(p.id), solved: !!round?.solved.has(p.id),
         roundPoints: reveal ? round?.solved.get(p.id)?.points ?? 0 : null,
@@ -109,15 +119,13 @@ export function attachGame(io, options = {}) {
       round: round ? { id: round.id, number: room.roundNumber,
         startsAt: round.startsAt, deadline: round.deadline, durationMs: round.durationMs,
         theme: current.theme, prompt: performance.now() >= round.startMono || reveal ? current.prompt : null,
-        imageUrl: current.image && (performance.now() >= round.startMono || reveal) ? `/media/${room.code}/${round.id}` : null,
+        imageUrl: (current.image || current.imageFile) && (performance.now() >= round.startMono || reveal) ? `/media/${room.code}/${round.id}` : null,
         answers: reveal ? current.answers : undefined,
         imageCredit: reveal ? current.imageCredit : undefined,
         imageSource: reveal ? current.imageSource : undefined,
         imageLicense: reveal ? current.imageLicense : undefined,
         mine: round.solved.get(viewer.id) ?? null,
       } : null,
-      // Only the host receives the editable deck, and only outside a match.
-      config: viewer.id === room.hostId && ['lobby', 'finished'].includes(room.phase) ? clone(room.config) : undefined,
     };
   }
   function publish(room) {
@@ -163,7 +171,7 @@ export function attachGame(io, options = {}) {
       else {
         const previous = room.deck[room.index];
         room.index++;
-        if (room.index >= room.deck.length) { room.deck = shuffleQuestions(room.config.questions, previous); room.index = 0; }
+        if (room.index >= room.deck.length) { room.deck = shuffleQuestions(selected(room), previous); room.index = 0; }
         room.roundNumber++; startRound(room);
       }
     }, resultsMs);
@@ -186,6 +194,16 @@ export function attachGame(io, options = {}) {
     room.round.openTimer = later(announceQuestion, Math.max(1, leadMs));
     publish(room);
   }
+  function closeRoom(room, event) {
+    for (const p of room.players.values()) {
+      cancel(p.graceTimer);
+      if (p.connected) {
+        const socket = io.sockets.sockets.get(p.socketId);
+        if (socket) { socket.data.roomCode = null; socket.emit(event); }
+      }
+    }
+    cancel(room.round?.timer); cancel(room.round?.openTimer); cancel(room.advanceTimer); rooms.delete(room.code);
+  }
   function detach(socket, explicit = false) {
     const room = rooms.get(socket.data.roomCode);
     const p = room?.players.get(socket.data.playerId);
@@ -194,7 +212,8 @@ export function attachGame(io, options = {}) {
     p.connected = false; p.socketId = null; room.lastActive = Date.now();
     if (explicit) {
       p.left = true; p.token = null;
-      if (room.hostId === p.id) electHost(room);
+      // The host closing the room ends it for everyone; only a lost connection hands over control.
+      if (room.hostId === p.id) { closeRoom(room, 'room:closed'); return; }
     } else {
       p.graceTimer = later(() => {
         if (!p.connected && room.hostId === p.id) { electHost(room); publish(room); }
@@ -257,11 +276,30 @@ export function attachGame(io, options = {}) {
       return bind(socket, room, player);
     });
     on('room:leave', () => { membership(socket); detach(socket, true); return {}; });
+    on('player:kick', raw => {
+      const { room, player } = host(socket);
+      requireThat(raw.playerId !== player.id, 'Não te podes expulsar a ti próprio. Usa Fechar sala.');
+      const target = typeof raw.playerId === 'string' ? room.players.get(raw.playerId) : null;
+      requireThat(target && !target.left, 'Jogador não encontrado.');
+      cancel(target.graceTimer);
+      if (target.connected) {
+        const old = io.sockets.sockets.get(target.socketId);
+        if (old) { old.data.roomCode = null; old.emit('room:kicked'); }
+      }
+      // Kicked players keep their row and points, but lose the session and stop counting for the round.
+      Object.assign(target, { connected: false, socketId: null, left: true, kicked: true, token: null });
+      room.participants.delete(target.id);
+      if (room.phase === 'question' && room.participants.size && [...room.participants].every(id => room.round.solved.has(id))) finishRound(room);
+      else publish(room);
+      return {};
+    });
     on('config:save', raw => {
       const { room } = host(socket);
       requireThat(['lobby', 'finished'].includes(room.phase), 'Só podes editar entre partidas.');
-      requireThat(raw.revision === room.revision, 'As perguntas mudaram. Atualiza o painel antes de guardar.');
-      room.config = validateConfig(raw.config); room.revision++; publish(room); return {};
+      requireThat(raw.revision === room.revision, 'As opções mudaram. Confirma as categorias antes de guardar.');
+      // The lobby sends only settings and categories; a full question list is still accepted (the tests use it).
+      const next = raw.config && typeof raw.config === 'object' && raw.config.questions === undefined ? { ...raw.config, questions: room.config.questions } : raw.config;
+      room.config = validateConfig(next); room.revision++; publish(room); return {};
     });
     on('game:start', () => {
       const { room } = host(socket);
@@ -270,7 +308,7 @@ export function attachGame(io, options = {}) {
       requireThat(connected.length >= 1, 'É preciso pelo menos 1 jogador ligado. A sala suporta 20.');
       room.participants = new Set(connected.map(p => p.id));
       for (const p of room.players.values()) { p.score = 0; p.correct = 0; p.totalMs = 0; }
-      room.deck = shuffleQuestions(room.config.questions);
+      room.deck = shuffleQuestions(selected(room));
       room.targetPoints = room.config.targetPoints; room.winnerId = null;
       room.index = 0; room.roundNumber = 1; startRound(room); return {};
     });
@@ -296,7 +334,7 @@ export function attachGame(io, options = {}) {
       attempts.add(normalized); round.attempts.set(player.id, attempts); round.lastAttempt.set(player.id, receivedAt);
       const correct = isCorrect(raw.answer, room.deck[room.index].answers, room.config.fuzzy);
       const elapsedMs = Math.max(0, Math.round(elapsed));
-      const result = { correct, roundId: round.id, elapsedMs, points: correct ? pointsFor(elapsed, round.durationMs) : 0 };
+      const result = { correct, roundId: round.id, elapsedMs, points: correct ? roundPointsFor(elapsed, round.durationMs, [...round.solved.values()].map(s => s.elapsedMs)) : 0 };
       round.requests.set(requestKey, result);
       if (correct) {
         round.solved.set(player.id, result); player.score += result.points;
@@ -313,16 +351,7 @@ export function attachGame(io, options = {}) {
     const now = Date.now();
     for (const room of rooms.values()) {
       const emptyExpired = ![...room.players.values()].some(p => p.connected) && now - room.lastActive > emptyTtlMs;
-      if (emptyExpired || now - room.createdAt > 12 * 60 * 60 * 1000) {
-        for (const p of room.players.values()) {
-          cancel(p.graceTimer);
-          if (p.connected) {
-            const socket = io.sockets.sockets.get(p.socketId);
-            if (socket) { socket.data.roomCode = null; socket.emit('room:expired'); }
-          }
-        }
-        cancel(room.round?.timer); cancel(room.round?.openTimer); cancel(room.advanceTimer); rooms.delete(room.code);
-      }
+      if (emptyExpired || now - room.createdAt > 12 * 60 * 60 * 1000) closeRoom(room, 'room:expired');
     }
     for (const [ip, bucket] of createBuckets) if (now - bucket.at > 60000) createBuckets.delete(ip);
   }, options.cleanupIntervalMs ?? 60000);
@@ -331,7 +360,8 @@ export function attachGame(io, options = {}) {
     getRoundImage(code, roundId) {
       const room = rooms.get(code);
       if (!room?.round || room.round.id !== roundId || performance.now() < room.round.startMono) return null;
-      return decodeImage(room.deck[room.index].image);
+      const question = room.deck[room.index];
+      return question.image ? decodeImage(question.image) : loadBankImage(question.imageFile);
     },
     dispose() { clearInterval(cleanup); for (const timer of timers) clearTimeout(timer); timers.clear(); },
   };
