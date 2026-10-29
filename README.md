@@ -2,7 +2,7 @@
 
 **JKA games é a marca principal. Trigo é o primeiro jogo**, de perguntas e adivinhas. A página `/` apresenta os jogos da marca; o Trigo abre em `/trigo`, com o seu próprio nome no cabeçalho e no título do browser. Os convites antigos `/?sala=CODIGO` continuam a abrir diretamente o jogo. O repositório é da marca e pode acolher outros jogos com nomes próprios.
 
-Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, com um botão **English** no cabeçalho para mudar a interface para inglês (as perguntas continuam como estão no banco). Sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
+Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, com um botão **English** no cabeçalho para mudar a interface para inglês (as perguntas continuam como estão no banco) e um botão 🔊/🔇 para o som. Sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
 
 Tema azul escuro, com painéis e campos em tons de azul e texto claro. As cores estão centralizadas nas variáveis de `client/src/styles.css`.
 
@@ -56,6 +56,7 @@ Quem entra a meio assiste e só participa na próxima partida. A lista de jogado
 - Os seguintes ganham os pontos pelo tempo, `max(1, min(10, ceil(10 × (1 − elapsedMs / durationMs))))` (10 no primeiro décimo do tempo, 9 no seguinte, até 1 no último), **menos 1 ponto por cada jogador que já acertou** nessa ronda, com um mínimo de 1.
 - Exemplo numa ronda de 20 s: o 1.º acerta aos 5 s (**10**), o 2.º aos 5,5 s (**10**), o 3.º aos 8 s fica com 6 − 2 = **4** e o 4.º aos 10 s fica com 5 − 3 = **2**. O total da partida soma os pontos das rondas; 10 é o máximo por acerto.
 - Respostas erradas não retiram pontos. Cada jogador só pontua uma vez em cada ronda.
+- Sons: quando acertas toca um arpejo curto e o «Correto!» aparece com uma pequena animação; quando outro jogador acerta toca um «pop» discreto. Os sons são gerados no browser (Web Audio), sem ficheiros, e só começam depois do primeiro clique ou tecla, como os browsers exigem. O botão 🔊/🔇 no cabeçalho do Trigo liga e desliga o som, e a escolha fica guardada no browser.
 - O relógio de referência é **o do servidor**, usando `performance.now()` (monotónico). Começa no instante de início programado e termina na receção da resposta correta. O servidor ignora pontos, datas ou tempos enviados pelo cliente.
 - Inclui o tempo de a pergunta chegar, a leitura, a escrita e o envio da resposta. **Não há compensação de latência**. A precisão apresentada de 0,001 s não significa igualdade de condições na rede.
 - O contador visual é uma estimativa baseada no relógio sincronizado por ida e volta; o servidor é sempre quem decide se o prazo expirou. Atualizar a página não reinicia o tempo.

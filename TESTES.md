@@ -113,3 +113,11 @@ Nova regra em `roundPointsFor` (`server/answers.js`): o primeiro a acertar ganha
 - Ronda real de 20 s com 3 jogadores: 540 ms → 10 pontos; 3053 ms → 8 (9 pelo tempo − 1); 6068 ms → 5 (7 pelo tempo − 2).
 - Regras dentro do jogo (português e inglês), README e CLAUDE.md atualizados.
 - `npm test`: **18 testes passaram, 0 falharam**. `npm run build` concluído.
+
+## Som ao acertar — 29 de outubro de 2026
+
+Sons gerados com Web Audio em `client/src/sounds.js`: arpejo dó-mi-sol-dó quando o próprio jogador acerta e um «pop» curto quando outro acerta. Botão 🔊/🔇 no cabeçalho do Trigo, guardado em `localStorage`. Animação curta no «Correto!», desligada com `prefers-reduced-motion`.
+
+- Browser, com um host por script e uma pergunta conhecida: depois de um clique real na página, o host acertou e a página criou as duas notas do «pop» (880 e 1320 Hz); a seguir o jogador acertou e criou as dez notas do arpejo (523, 659, 784 e 1047 Hz, cada uma com a oitava acima). Contagem feita a instrumentar `createOscillator`, porque o som não pode ser ouvido na verificação.
+- Quem já tinha acertado ao entrar ou ao reconectar não toca som; só as novas entradas na ronda.
+- `npm run build` concluído.

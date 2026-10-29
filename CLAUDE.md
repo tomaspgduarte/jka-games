@@ -38,6 +38,7 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/content/text-questions.js` | 424 perguntas de texto em 14 temas (`'pergunta', 'resp1\|resp2'`) |
 | `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
 | `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules`, `LanguageToggle` |
+| `client/src/sounds.js` | Sons sintetizados (Web Audio): `playCorrect`, `playOtherCorrect`, ligar/desligar em `localStorage` (`jka-sound`) |
 | `client/src/i18n.js` | Dicionário PT → EN, `useT()` e `useMessage()`; idioma guardado em `localStorage` (`jka-lang`) |
 | `client/src/styles.css` | Tema azul escuro; cores só em variáveis `:root` |
 | `tests/` | Integração com clientes Socket.IO reais (`helpers.js`), conteúdo do banco, carga |

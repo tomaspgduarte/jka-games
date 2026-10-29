@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { io } from 'socket.io-client';
 import { LangContext, loadLang, saveLang, useMessage, useT } from './i18n.js';
+import { playCorrect, playOtherCorrect, setSoundEnabled, soundEnabled, unlockAudio } from './sounds.js';
 import './styles.css';
 
 const socket = io({ autoConnect: false, reconnection: true });
@@ -25,6 +26,14 @@ function LanguageToggle() {
   return lang === 'en'
     ? <button className="lang-toggle" lang="pt-PT" aria-label="Mudar para português" onClick={() => setLang('pt')}>Português</button>
     : <button className="lang-toggle" lang="en" aria-label="Switch to English" onClick={() => setLang('en')}>English</button>;
+}
+
+function SoundToggle() {
+  const t = useT();
+  const [on, setOn] = useState(soundEnabled);
+  const toggle = () => { setSoundEnabled(!on); setOn(!on); if (!on) { unlockAudio(); playOtherCorrect(); } };
+  const label = t(on ? 'Desligar som' : 'Ligar som');
+  return <button className="lang-toggle sound-toggle" aria-label={label} title={label} aria-pressed={on} onClick={toggle}>{on ? '🔊' : '🔇'}</button>;
 }
 
 function GamesHome() {
@@ -250,12 +259,21 @@ function Question({ room, connected, busy, action, offset }) {
   useEffect(() => { const interval = setInterval(() => setNow(Date.now()), 50); return () => clearInterval(interval); }, []);
   useEffect(() => { roundIdRef.current = round.id; setAnswer(''); setFeedback(null); }, [round.id]);
   useEffect(() => { if (!disabled) inputRef.current?.focus(); }, [disabled, round.id]);
+  // Play a pop when someone else newly solves this round; players already solved on load stay silent.
+  const solvedIds = room.players.filter(p => p.solved).map(p => p.id);
+  const heardRef = useRef({ round: null, ids: new Set() });
+  useEffect(() => {
+    const heard = heardRef.current;
+    if (heard.round !== round.id) { heardRef.current = { round: round.id, ids: new Set(solvedIds) }; return; }
+    for (const id of solvedIds) if (!heard.ids.has(id)) { heard.ids.add(id); if (id !== room.meId) playOtherCorrect(); }
+  }, [round.id, solvedIds.join()]);
   async function submit(event) {
     event.preventDefault(); if (disabled || !answer.trim()) return;
     const id = round.id;
     const result = await action('answer:submit', { answer, roundId: id, requestId: makeId() });
     if (roundIdRef.current !== id) return;
     if (result) {
+      if (result.correct) playCorrect();
       setFeedback(result.correct ? { type: 'success', points: result.points, elapsedMs: result.elapsedMs } : { type: 'error' });
       setAnswer('');
     }
@@ -274,7 +292,7 @@ function Question({ room, connected, busy, action, offset }) {
       <div className="row"><input ref={inputRef} id="answer" autoComplete="off" autoCapitalize="off" spellCheck="false" maxLength="120" value={answer} onChange={e => setAnswer(e.target.value)} disabled={disabled} placeholder={t(me?.participating ? 'Escreve e carrega Enter' : 'Jogas na próxima partida')} /><button className="primary" disabled={disabled || !answer.trim()}>{t('Enviar')}</button></div>
     </form>}
     <div className="feedback" role="status" aria-live="polite">
-      {round.mine ? <p className="success">{correct(round.mine)}</p> : feedback ? <p className={feedback.type}>{feedback.type === 'success' ? correct(feedback) : t('Ainda não. Tenta outra resposta.')}</p> : !me?.participating ? <p className="notice">{t('Estás a assistir. Participas na próxima partida.')}</p> : null}
+      {round.mine ? <p key={`ok-${round.id}`} className="success pop">{correct(round.mine)}</p> : feedback ? <p key={`ok-${round.id}`} className={feedback.type === 'success' ? 'success pop' : 'error'}>{feedback.type === 'success' ? correct(feedback) : t('Ainda não. Tenta outra resposta.')}</p> : !me?.participating ? <p className="notice">{t('Estás a assistir. Participas na próxima partida.')}</p> : null}
     </div>
     {reveal && <div className="revealed"><span className="muted">{t(round.answers.length > 1 ? 'Respostas aceites' : 'Resposta')}</span><p><strong>{round.answers.join(' / ')}</strong></p></div>}
     {reveal && round.imageCredit && <p className="muted small">{t('Fotografia: {credit}', { credit: round.imageCredit })}{round.imageSource && <> · <a href={round.imageSource} target="_blank" rel="noreferrer">{t('Fonte')}</a></>}{round.imageLicense && <> · <a href={round.imageLicense} target="_blank" rel="noreferrer">{t('Licença')}</a></>}</p>}
@@ -382,7 +400,7 @@ function App() {
   const canStart = !disabled && room?.players.some(p => p.connected);
   return <main>
     <header className="site-header"><div className="brand-row"><BrandLogo /><div className="game-identity"><strong>{QUIZ_NAME}</strong><span>{t('Um jogo JKA games')}</span></div></div>
-      <div className="row"><LanguageToggle /><span className={`connection ${connected ? 'online' : ''}`} role="status">{t(restoring ? 'A recuperar sessão…' : connected ? 'Ligado' : 'A ligar…')}</span></div></header>
+      <div className="row"><SoundToggle /><LanguageToggle /><span className={`connection ${connected ? 'online' : ''}`} role="status">{t(restoring ? 'A recuperar sessão…' : connected ? 'Ligado' : 'A ligar…')}</span></div></header>
     {error && <div className="banner error" role="alert">{show(error)}</div>}
     {notice && <div className="banner" role="status">{show(notice)}</div>}
     {room && !connected && <div className="banner notice">{t('A ligação caiu. A reconexão é automática; os pontos mantêm-se e o tempo da ronda continua.')}</div>}
@@ -423,6 +441,11 @@ function App() {
 function Root() {
   const [lang, setLangState] = useState(loadLang);
   useEffect(() => { document.documentElement.lang = lang === 'en' ? 'en' : 'pt-PT'; }, [lang]);
+  useEffect(() => {
+    // Audio may only start after a user gesture; joining or answering always involves one.
+    window.addEventListener('pointerdown', unlockAudio, { passive: true }); window.addEventListener('keydown', unlockAudio);
+    return () => { window.removeEventListener('pointerdown', unlockAudio); window.removeEventListener('keydown', unlockAudio); };
+  }, []);
   const setLang = value => { saveLang(value); setLangState(value); };
   // Older invitations used /?sala=CODE. Keep them opening the quiz directly.
   const quizRoute = location.pathname.replace(/\/+$/, '') === QUIZ_PATH || new URLSearchParams(location.search).has('sala');

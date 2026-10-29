@@ -135,3 +135,7 @@ footer { text-align: center; font-size: .75rem; color: var(--muted); padding: 40
   .question-theme { font-size: 1.05rem; padding: 3px 12px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+.sound-toggle { min-width: 40px; padding: 6px 8px; font-size: 1rem; line-height: 1; }
+.feedback .pop { display: inline-block; animation: pop .45s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes pop { from { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .feedback .pop { animation: none; } }

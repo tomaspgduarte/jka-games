@@ -20,6 +20,8 @@ const en = {
   'Um jogo JKA games': 'A JKA games game',
   '{name} · um jogo JKA games': '{name} · a JKA games game',
   'Todos os jogos': 'All games',
+  'Desligar som': 'Turn sound off',
+  'Ligar som': 'Turn sound on',
 
   // Connection and requests
   'A recuperar sessão…': 'Restoring session…',
