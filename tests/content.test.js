@@ -6,7 +6,7 @@ import { decodeImage, loadBankImage } from '../server/images.js';
 import { validateConfig } from '../server/game.js';
 import { fixture, group, ok, until } from './helpers.js';
 
-test('banco de 436 perguntas: 14 temas, respostas válidas, 12 fotos embutidas, 73 pistas em ficheiro e configuração exportável', () => {
+test('banco de 436 perguntas: 14 temas, respostas válidas, 12 fotos embutidas, 219 pistas em ficheiro e configuração exportável', () => {
   const bank = validateConfig(defaultConfig);
   assert.equal(bank.questions.length, 436);
   assert.equal(new Set(bank.questions.map(q => q.theme)).size, 14);
@@ -21,7 +21,7 @@ test('banco de 436 perguntas: 14 temas, respostas válidas, 12 fotos embutidas, 
   assert.ok(photos.every(q => decodeImage(q.image) && q.imageCredit && q.imageSource.startsWith('https://')));
   assert.ok(photos.some(q => q.answers.includes('aspas')));
   const clues = bank.questions.filter(q => q.imageFile);
-  assert.equal(clues.length, 73, 'fotografias-pista guardadas como ficheiros');
+  assert.equal(clues.length, 219, 'fotografias-pista guardadas como ficheiros');
   assert.ok(clues.every(q => loadBankImage(q.imageFile) && q.imageCredit && q.imageSource.startsWith('https://commons.wikimedia.org/')));
   assert.equal(new Set(clues.map(q => q.imageFile)).size, clues.length, 'cada pista tem o seu ficheiro');
   assert.equal(loadBankImage('../defaults.js'), null, 'só nomes simples da pasta de imagens');

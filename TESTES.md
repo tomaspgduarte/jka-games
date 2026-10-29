@@ -155,3 +155,12 @@ O painel do host deixou de permitir editar, acrescentar, remover, importar ou ex
 - Testes novos: 73 pistas em ficheiro, todas válidas, com crédito e fonte do Commons, sem ficheiros repetidos; nomes com caminho (`../`) rejeitados; numa ronda real a imagem dá 404 durante a contagem, é servida como `image/jpeg` com os mesmos bytes depois de a pergunta começar, e o crédito só aparece depois da resposta.
 - Browser: sala com três perguntas com pista; «Que herói da DC é o alter ego de Bruce Wayne?» mostrou a fotografia de Christian Bale (500 px, carregada) e «batman» foi aceite com 10 pontos.
 - `npm test`: **20 testes passaram, 0 falharam**. `npm run build` concluído. Ficheiros de `examples/` regenerados, com a contagem de fotografias por tema.
+
+## Segunda leva de fotografias-pista — 29 de outubro de 2026
+
+Mais 146 perguntas de texto com fotografia-pista (219 no total; 231 perguntas com imagem contando as 12 de «Quem é?»). Pistas no mesmo espírito: uma mamba-negra para o «Black Mamba», um pássaro para o Larry Bird, uma pulga para «La Pulga», o retrato de Maquiavel para «Makaveli», a CN Tower para o Drake, o quadro da capa de «Viva la Vida», um tubarão-azul para os Tubarões Azuis, o carro de cada campeão de F1 em vez do piloto, uma chávena de chá para o Cocas.
+
+- Pesquisa agrupada (uma consulta SPARQL ao Wikidata e pedidos em lote ao Commons): 153 de 157 encontradas. Revisão das miniaturas no browser: 11 trocadas ou retiradas (um jogo de tabuleiro chamado «Tikal», outro «Niko», um cavalo chamado «Air Jordan», uma futebolista com o nome da Emma Watson, uma imagem gerada por IA, um logótipo, licenças GPL/GFDL, imagens pouco claras). Estádios e arenas cuja resposta é o clube vistos em tamanho real: nenhum mostra o nome legível.
+- Descarga de 146 imagens de 500 px (ou menos), todas JPEG/PNG até 266 KB; pasta com cerca de 16 MB. Créditos acrescentados ao `IMAGENS.md` e a `server/content/question-images.json`.
+- O dono do projeto decidiu que, por o jogo ser entre amigos, imagens sem licença livre são aceitáveis; registado no CLAUDE.md (marcar como «sem licença livre» no `IMAGENS.md`). Esta leva continua a ser só de imagens livres.
+- `npm test`: **20 testes passaram, 0 falharam** (o teste do banco verifica as 219 pistas). `npm run build` concluído. Ficheiros de `examples/` regenerados.
