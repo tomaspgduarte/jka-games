@@ -45,8 +45,8 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 
 ### Protocolo Socket.IO
 
-Pedidos com ack `{ ok, ...}` ou `{ ok: false, error }`: `clock:sync`, `room:create`, `room:join`, `room:resume`, `room:leave`, `config:save`, `game:start`, `answer:submit`.
-Eventos do servidor: `room:state` (snapshot por jogador), `session:replaced`, `room:expired`, `room:closed` (o host saiu com `room:leave`; a sala é apagada para todos).
+Pedidos com ack `{ ok, ...}` ou `{ ok: false, error }`: `clock:sync`, `room:create`, `room:join`, `room:resume`, `room:leave`, `player:kick` (só o host), `config:save`, `game:start`, `answer:submit`.
+Eventos do servidor: `room:state` (snapshot por jogador), `session:replaced`, `room:expired`, `room:closed` (o host saiu com `room:leave`; a sala é apagada para todos), `room:kicked` (o host expulsou este jogador).
 
 Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … → `finished` → (`game:start` de novo).
 

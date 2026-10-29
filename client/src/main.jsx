@@ -204,14 +204,18 @@ function Editor({ room, busy, connected, action, onDirty, saveRef }) {
   </section>;
 }
 
-function Ranking({ room }) {
+function Ranking({ room, isHost, disabled, action }) {
   const t = useT();
   const reveal = ['results', 'finished'].includes(room.phase);
+  async function kick(player) {
+    if (confirm(t('Expulsar {name} da sala?', { name: player.name }))) await action('player:kick', { playerId: player.id });
+  }
   return <aside className="panel ranking"><h2>{t(room.phase === 'lobby' ? 'Jogadores' : 'Classificação')}</h2>
     <p className="muted">{t('{count} ligados · máximo 20', { count: room.players.filter(p => p.connected).length })}<br /><strong>{t('Objetivo: {points} pontos', { points: room.targetPoints })}</strong></p>
     <ol className="player-list">{room.players.map(p => <li key={p.id}>
       <div className="player-main"><div><strong>{p.name}</strong>{p.id === room.meId && <small> {t('tu')}</small>}
-        <div className="muted player-status">{p.id === room.hostId ? `${t('Host')} · ` : ''}{t(p.left ? 'Saiu' : !p.connected ? 'Desligado' : room.phase === 'lobby' ? 'No lobby' : !p.participating ? 'Espectador' : p.solved ? 'Acertou' : reveal ? 'Sem acerto' : 'A responder')}</div>
+        <div className="muted player-status">{p.id === room.hostId ? `${t('Host')} · ` : ''}{t(p.kicked ? 'Expulso' : p.left ? 'Saiu' : !p.connected ? 'Desligado' : room.phase === 'lobby' ? 'No lobby' : !p.participating ? 'Espectador' : p.solved ? 'Acertou' : reveal ? 'Sem acerto' : 'A responder')}</div>
+        {isHost && p.id !== room.meId && !p.left && <button className="quiet danger kick" disabled={disabled} onClick={() => kick(p)} aria-label={t('Expulsar {name}', { name: p.name })}>{t('Expulsar')}</button>}
       </div><strong className="points">{p.score}<small> pts</small></strong></div>
       {reveal && p.participating && <div className="round-stats">{t('Ronda: +{points} · {time}', { points: p.roundPoints, time: p.responseMs === null ? '—' : secs(p.responseMs) })}</div>}
       {room.phase === 'finished' && <div className="round-stats">{t('{count} acertos · média {time}', { count: p.correct, time: p.averageMs === null ? '—' : secs(p.averageMs) })}</div>}
@@ -326,19 +330,21 @@ function App() {
     const connectionError = () => { if (mounted) { setConnected(false); setRestoring(false); setError('Não foi possível ligar ao servidor. A tentar novamente…'); } };
     const replaced = () => { setStored(SESSION_KEY, null); setRoom(null); setError('Esta sessão foi aberta noutro separador. Usa esse separador ou entra com outro nickname.'); };
     const expired = () => { setStored(SESSION_KEY, null); setRoom(null); setError('A sala expirou. Cria uma nova sala.'); };
-    const closed = () => {
+    const removed = message => () => {
       setStored(SESSION_KEY, null); setRoom(null); setDirty(false); setCode('');
       history.replaceState(null, '', location.pathname);
-      setError('O host fechou a sala. Cria uma nova sala ou entra noutra.');
+      setError(message);
     };
+    const closed = removed('O host fechou a sala. Cria uma nova sala ou entra noutra.');
+    const kicked = removed('O host expulsou-te da sala.');
     socket.on('connect', connect); socket.on('disconnect', disconnect); socket.on('connect_error', connectionError);
-    socket.on('room:state', state); socket.on('session:replaced', replaced); socket.on('room:expired', expired); socket.on('room:closed', closed);
+    socket.on('room:state', state); socket.on('session:replaced', replaced); socket.on('room:expired', expired); socket.on('room:closed', closed); socket.on('room:kicked', kicked);
     socket.connect();
     const interval = setInterval(() => { if (socket.connected) synchronize(); }, 20000);
     return () => {
       mounted = false; clearInterval(interval);
       socket.off('connect', connect); socket.off('disconnect', disconnect); socket.off('connect_error', connectionError);
-      socket.off('room:state', state); socket.off('session:replaced', replaced); socket.off('room:expired', expired); socket.off('room:closed', closed); socket.disconnect();
+      socket.off('room:state', state); socket.off('session:replaced', replaced); socket.off('room:expired', expired); socket.off('room:closed', closed); socket.off('room:kicked', kicked); socket.disconnect();
     };
   }, []);
 
@@ -408,7 +414,7 @@ function App() {
         </section>}
         {isHost && room.config && <Editor key={`${room.code}-${room.meId}`} room={room} busy={busy} connected={connected} action={action} onDirty={setDirty} saveRef={saveRef} />}
         <Rules fuzzy={room.settings.fuzzy} />
-      </div><Ranking room={room} /></div>
+      </div><Ranking room={room} isHost={isHost} disabled={disabled} action={action} /></div>
     </>}
     <footer>{t('{name} · um jogo JKA games', { name: QUIZ_NAME })} · <a href="/">{t('Todos os jogos')}</a></footer>
   </main>;

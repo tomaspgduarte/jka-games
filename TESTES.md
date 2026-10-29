@@ -84,3 +84,13 @@ Executado em Windows 11 com Node.js 26.13.0.
 - `npm test`: **16 testes passaram, 0 falharam**. `npm run build`: compilação de produção concluída.
 
 Não foi testado num telemóvel físico; o cabeçalho passa a quebrar linha em ecrãs estreitos para caber o botão de idioma.
+
+## Expulsar jogadores — 29 de outubro de 2026
+
+Executado em Windows 11 com Node.js 26.13.0.
+
+- Novo pedido `player:kick`, só para o host. Novo teste de integração: um jogador normal não consegue expulsar; o host não se expulsa a si próprio nem expulsa um id inexistente ou alguém já expulso; o expulso recebe `room:kicked`, fica marcado como expulso, perde a sessão e pode criar outra sala. A meio de uma ronda, expulsar o único participante que ainda não acertou termina a ronda logo.
+- `npm test`: **17 testes passaram, 0 falharam**. `npm run build`: compilação de produção concluída.
+- Browser, com dois separadores: o botão **Expulsar** só aparece ao host e só junto dos outros jogadores; confirmação «Expulsar Amigo da sala?»; o host vê «Expulso» na lista; o separador do jogador expulso volta ao início com o aviso, sem sessão guardada e sem o código no endereço.
+
+A expulsão não é um banimento: o jogador pode voltar a entrar com o código, como nova entrada.

@@ -84,7 +84,7 @@ export function attachGame(io, options = {}) {
   }
   function newPlayer(name) {
     return { id: randomUUID(), token: randomBytes(24).toString('hex'), name, socketId: null,
-      connected: false, left: false, score: 0, correct: 0, totalMs: 0, graceTimer: null };
+      connected: false, left: false, kicked: false, score: 0, correct: 0, totalMs: 0, graceTimer: null };
   }
   function ranked(room) {
     return [...room.players.values()].sort((a, b) => b.score - a.score || b.correct - a.correct ||
@@ -100,7 +100,7 @@ export function attachGame(io, options = {}) {
       settings: { durationSeconds: room.config.durationSeconds, targetPoints: room.config.targetPoints, fuzzy: room.config.fuzzy, shuffle: true },
       targetPoints: room.targetPoints ?? room.config.targetPoints, winnerId: room.winnerId ?? null,
       questionCount: room.config.questions.length,
-      players: ranked(room).map(p => ({ id: p.id, name: p.name, connected: p.connected, left: p.left,
+      players: ranked(room).map(p => ({ id: p.id, name: p.name, connected: p.connected, left: p.left, kicked: p.kicked,
         score: p.score, correct: p.correct, averageMs: p.correct ? Math.round(p.totalMs / p.correct) : null,
         participating: room.participants.has(p.id), solved: !!round?.solved.has(p.id),
         roundPoints: reveal ? round?.solved.get(p.id)?.points ?? 0 : null,
@@ -268,6 +268,23 @@ export function attachGame(io, options = {}) {
       return bind(socket, room, player);
     });
     on('room:leave', () => { membership(socket); detach(socket, true); return {}; });
+    on('player:kick', raw => {
+      const { room, player } = host(socket);
+      requireThat(raw.playerId !== player.id, 'Não te podes expulsar a ti próprio. Usa Fechar sala.');
+      const target = typeof raw.playerId === 'string' ? room.players.get(raw.playerId) : null;
+      requireThat(target && !target.left, 'Jogador não encontrado.');
+      cancel(target.graceTimer);
+      if (target.connected) {
+        const old = io.sockets.sockets.get(target.socketId);
+        if (old) { old.data.roomCode = null; old.emit('room:kicked'); }
+      }
+      // Kicked players keep their row and points, but lose the session and stop counting for the round.
+      Object.assign(target, { connected: false, socketId: null, left: true, kicked: true, token: null });
+      room.participants.delete(target.id);
+      if (room.phase === 'question' && room.participants.size && [...room.participants].every(id => room.round.solved.has(id))) finishRound(room);
+      else publish(room);
+      return {};
+    });
     on('config:save', raw => {
       const { room } = host(socket);
       requireThat(['lobby', 'finished'].includes(room.phase), 'Só podes editar entre partidas.');

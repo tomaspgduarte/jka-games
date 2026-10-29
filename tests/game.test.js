@@ -126,6 +126,32 @@ test('host regressa durante a tolerância; depois da tolerância o controlo é t
   assert.equal((await emit(outsider, 'room:resume', { code, token: sessions[1].token })).ok, false, 'sair invalida a sessão');
 });
 
+test('host expulsa jogadores no lobby e a meio da ronda; o expulso perde a sessão', async t => {
+  const f = await fixture(t);
+  const { host, players, sessions, code } = await group(f, 3);
+  assert.equal((await emit(players[1], 'player:kick', { playerId: sessions[2].playerId })).ok, false, 'só o host expulsa');
+  assert.equal((await emit(host, 'player:kick', { playerId: sessions[0].playerId })).ok, false, 'o host não se expulsa');
+  assert.equal((await emit(host, 'player:kick', { playerId: 'x' })).ok, false);
+  const kicked = new Promise(resolve => players[2].once('room:kicked', resolve));
+  await ok(host, 'player:kick', { playerId: sessions[2].playerId });
+  await kicked;
+  await until(() => host.state.players.find(p => p.id === sessions[2].playerId)?.kicked);
+  assert.equal((await emit(host, 'player:kick', { playerId: sessions[2].playerId })).ok, false, 'não expulsa duas vezes');
+  assert.equal((await emit(players[2], 'game:start')).ok, false);
+  const again = await f.connect();
+  assert.equal((await emit(again, 'room:resume', { code, token: sessions[2].token })).ok, false, 'a sessão expulsa é invalidada');
+  await ok(players[2], 'room:create', { nickname: 'Novo' });
+  // Kicking the only participant still answering ends the round early.
+  await ok(host, 'game:start');
+  await until(() => host.state.round?.prompt);
+  const answer = host.state.round.prompt === 'Capital de Portugal?' ? 'Lisboa' : 'Marte';
+  await ok(host, 'answer:submit', { roundId: host.state.round.id, answer, requestId: 'kick-answer-1' });
+  assert.equal(host.state.phase, 'question');
+  await ok(host, 'player:kick', { playerId: sessions[1].playerId });
+  await until(() => host.state.phase === 'results');
+  assert.equal(host.state.players.find(p => p.id === sessions[1].playerId).participating, false);
+});
+
 test('isolamento de salas, autorização, nickname, configuração e payloads malformados', async t => {
   const f = await fixture(t);
   const { host, players, code } = await group(f, 2);
