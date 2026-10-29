@@ -264,7 +264,7 @@ function Question({ room, connected, busy, action, offset }) {
   const correct = solved => t('Correto! +{points} pontos · {time}', { points: solved.points, time: secs(solved.elapsedMs) });
   const nextIn = Math.min(3, Math.max(0, Math.ceil((room.advanceAt - serverNow) / 1000)));
   return <section className="panel question-panel">
-    <div className="section-heading"><span className="eyebrow">{t('Pergunta {n} · {theme}', { n: round.number, theme: round.theme })}<br />{t('Objetivo: {points} pontos', { points: room.targetPoints })}</span>
+    <div className="section-heading"><div><span className="question-theme">{round.theme}</span><span className="eyebrow">{t('Pergunta {n} · objetivo: {points} pontos', { n: round.number, points: room.targetPoints })}</span></div>
       <strong className="timer" aria-label={t('Tempo restante')}>{reveal ? t('Terminou') : countdown ? t('Começa em {n}', { n: countdown }) : `${remaining.toFixed(1)} s`}</strong></div>
     <progress max={round.durationMs} value={reveal ? 0 : countdown ? round.durationMs : remaining * 1000} aria-label={t('Tempo da ronda')} />
     <h2 className="prompt">{countdown && !reveal ? t('Prepara-te…') : round.prompt ?? t('A receber pergunta…')}</h2>

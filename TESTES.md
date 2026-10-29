@@ -94,3 +94,7 @@ Executado em Windows 11 com Node.js 26.13.0.
 - Browser, com dois separadores: o botão **Expulsar** só aparece ao host e só junto dos outros jogadores; confirmação «Expulsar Amigo da sala?»; o host vê «Expulso» na lista; o separador do jogador expulso volta ao início com o aviso, sem sessão guardada e sem o código no endereço.
 
 A expulsão não é um banimento: o jogador pode voltar a entrar com o código, como nova entrada.
+
+## Tema da pergunta em destaque — 29 de outubro de 2026
+
+O tema passa a aparecer numa etiqueta grande por cima da pergunta (1,25 rem; 1,05 rem em ecrãs estreitos), com o número da pergunta e o objetivo numa linha pequena por baixo. Verificado no browser em largura de computador e de telemóvel (375 px) com uma pergunta de «Memes». `npm test`: 17 testes passaram, 0 falharam; `npm run build` concluído.

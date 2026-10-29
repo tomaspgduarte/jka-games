@@ -140,7 +140,7 @@ const en = {
   'Imagem para adivinhar': 'Image to guess',
   'Correto! +{points} pontos · {time}': 'Correct! +{points} points · {time}',
   'Ainda não. Tenta outra resposta.': 'Not yet. Try another answer.',
-  'Pergunta {n} · {theme}': 'Question {n} · {theme}',
+  'Pergunta {n} · objetivo: {points} pontos': 'Question {n} · goal: {points} points',
   'Tempo restante': 'Time left',
   'Terminou': 'Over',
   'Começa em {n}': 'Starts in {n}',

@@ -70,6 +70,8 @@ small, .small { font-size: .8rem; font-weight: 400; }
 .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 14px; }
 .section-heading h2 { margin-bottom: 0; }
 .timer { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.question-theme { display: inline-block; margin-bottom: 8px; padding: 4px 14px; border: 1px solid var(--banner-border); border-radius: 999px; background: var(--banner); color: var(--text); font-size: 1.25rem; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.question-theme + .eyebrow { display: block; }
 progress { width: 100%; height: 5px; display: block; accent-color: var(--primary); border: 0; border-radius: 0; }
 progress::-webkit-progress-bar { background: var(--track); }
 progress::-webkit-progress-value { background: var(--primary); }
@@ -128,5 +130,6 @@ footer { text-align: center; font-size: .75rem; color: var(--muted); padding: 40
   .prompt { font-size: 1.35rem; }
   .section-heading { align-items: flex-start; }
   .timer { font-size: .85rem; }
+  .question-theme { font-size: 1.05rem; padding: 3px 12px; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
