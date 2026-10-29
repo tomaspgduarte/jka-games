@@ -37,3 +37,12 @@ export function isCorrect(input, aliases, fuzzy) {
 export function pointsFor(elapsedMs, durationMs) {
   return Math.max(1, Math.min(10, Math.ceil(10 * (1 - elapsedMs / durationMs))));
 }
+
+export const SAME_TIME_MS = 1000;
+
+// The first correct answer earns 10, and so does anyone within a second of it.
+// Later answers keep the time decay and lose 1 point per player already right.
+export function roundPointsFor(elapsedMs, durationMs, earlierMs = []) {
+  if (!earlierMs.length || elapsedMs - Math.min(...earlierMs) <= SAME_TIME_MS) return 10;
+  return Math.max(1, pointsFor(elapsedMs, durationMs) - earlierMs.length);
+}

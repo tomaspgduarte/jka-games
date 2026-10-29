@@ -57,7 +57,7 @@ Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … →
 - `answer:submit` usa `socket.volatile` no cliente: respostas não ficam em fila através de uma desconexão. Reenvios com o mesmo `requestId` devolvem o recibo original.
 - Mensagens de erro para o utilizador: lançar `GameError` (texto em português). Outros erros são registados e chegam ao cliente como «Erro interno».
 - Limites (validados no servidor e repetidos no `importFile` do cliente; se mudar um, mudar ambos e o README): 1–500 perguntas, tema 60, pergunta 500, 1–10 respostas de 120, duração 5–120 s, objetivo 1–1000, textos 200 KB, imagem 300 KB, total 2 MB, 20 entradas por sala, 100 salas por processo.
-- Fórmula de pontos: `max(1, min(10, ceil(10 × (1 − elapsed / duration))))`. Ordenação: pontos ↓, acertos ↓, soma dos tempos ↑, nickname.
+- Pontos (`roundPointsFor` em `answers.js`): o 1.º a acertar e quem acerta até 1 s depois dele ganham 10; os seguintes ganham `max(1, min(10, ceil(10 × (1 − elapsed / duration))))` menos 1 por cada jogador que já acertou, com mínimo de 1. Ordenação: pontos ↓, acertos ↓, soma dos tempos ↑, nickname.
 
 ## Convenções
 

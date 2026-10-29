@@ -51,10 +51,10 @@ Quem entra a meio assiste e só participa na próxima partida. A lista de jogado
 
 ### Pontuação e medição do tempo
 
-- Uma resposta correta vale **entre 1 e 10 pontos**, em números inteiros, conforme a velocidade.
-- Fórmula: `max(1, min(10, ceil(10 × (1 − elapsedMs / durationMs))))`.
-- Acertar no primeiro décimo do tempo dá 10 pontos; no seguinte, 9; e assim sucessivamente até 1 no último décimo. No limite exato de cada intervalo aplica-se o valor seguinte.
-- Exemplo: acerto aos 5 segundos numa ronda de 20 segundos = **8 pontos**. O total da partida soma os pontos das rondas, podendo ultrapassar 10; 10 é o máximo por acerto.
+- Uma resposta correta vale **entre 1 e 10 pontos**, em números inteiros.
+- **O primeiro a acertar ganha sempre 10 pontos**, seja qual for o tempo. Quem acertar **até 1 segundo depois do primeiro** também ganha 10 (contam como «ao mesmo tempo»).
+- Os seguintes ganham os pontos pelo tempo, `max(1, min(10, ceil(10 × (1 − elapsedMs / durationMs))))` (10 no primeiro décimo do tempo, 9 no seguinte, até 1 no último), **menos 1 ponto por cada jogador que já acertou** nessa ronda, com um mínimo de 1.
+- Exemplo numa ronda de 20 s: o 1.º acerta aos 5 s (**10**), o 2.º aos 5,5 s (**10**), o 3.º aos 8 s fica com 6 − 2 = **4** e o 4.º aos 10 s fica com 5 − 3 = **2**. O total da partida soma os pontos das rondas; 10 é o máximo por acerto.
 - Respostas erradas não retiram pontos. Cada jogador só pontua uma vez em cada ronda.
 - O relógio de referência é **o do servidor**, usando `performance.now()` (monotónico). Começa no instante de início programado e termina na receção da resposta correta. O servidor ignora pontos, datas ou tempos enviados pelo cliente.
 - Inclui o tempo de a pergunta chegar, a leitura, a escrita e o envio da resposta. **Não há compensação de latência**. A precisão apresentada de 0,001 s não significa igualdade de condições na rede.

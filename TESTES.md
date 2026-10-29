@@ -104,3 +104,12 @@ O tema passa a aparecer numa etiqueta grande por cima da pergunta (1,25 rem; 1,0
 - Classificação: durante a pergunta e a revelação da resposta, quem já acertou fica com ✓, nome e estado a verde e uma barra verde à esquerda. Verificado no browser numa sala com uma pergunta conhecida: o jogador que respondeu «lisboa» ficou com a classe `solved` e o nome na cor de sucesso; o outro manteve a cor normal.
 - Respostas: revistas as 436 perguntas. 40 perguntas de texto ganharam alternativas na língua que faltava: números por extenso em inglês (`Five`, `Ten`, `Three`…), termos de Cabo Verde (`Blue Sharks`, `Creole`, `Windward`/`Leeward`, `Sal Island`…), personagens (`Master Yoda`, `Incredible Hulk`) e expressões dos memes (`Moth`, `Big Brother Brazil`, `Gato Rabugento`…). As restantes já aceitavam as duas línguas ou têm como resposta nomes próprios, iguais nas duas. Confirmado com `isCorrect`, com e sem tolerância, para exemplos em português e em inglês.
 - `npm test`: 17 testes passaram, 0 falharam; `npm run build` concluído; ficheiros de `examples/` regenerados.
+
+## Pontos: o primeiro ganha 10 e os seguintes perdem mais — 29 de outubro de 2026
+
+Nova regra em `roundPointsFor` (`server/answers.js`): o primeiro a acertar ganha 10, tal como quem acertar até 1 s depois dele; os seguintes ganham os pontos pelo tempo menos 1 por cada jogador que já acertou, com mínimo de 1.
+
+- Teste unitário novo com o primeiro tardio (10), o empate dentro de 1 s (10), −1 e −2 por ordem e o mínimo de 1. O teste de 6 jogadores verifica agora que o primeiro e os que acertam logo a seguir recebem 10.
+- Ronda real de 20 s com 3 jogadores: 540 ms → 10 pontos; 3053 ms → 8 (9 pelo tempo − 1); 6068 ms → 5 (7 pelo tempo − 2).
+- Regras dentro do jogo (português e inglês), README e CLAUDE.md atualizados.
+- `npm test`: **18 testes passaram, 0 falharam**. `npm run build` concluído.

@@ -1,6 +1,6 @@
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
-import { normalize, isCorrect, pointsFor } from './answers.js';
+import { normalize, isCorrect, roundPointsFor } from './answers.js';
 import { defaultConfig } from './defaults.js';
 import { decodeImage, MAX_CONFIG_BYTES } from './images.js';
 
@@ -324,7 +324,7 @@ export function attachGame(io, options = {}) {
       attempts.add(normalized); round.attempts.set(player.id, attempts); round.lastAttempt.set(player.id, receivedAt);
       const correct = isCorrect(raw.answer, room.deck[room.index].answers, room.config.fuzzy);
       const elapsedMs = Math.max(0, Math.round(elapsed));
-      const result = { correct, roundId: round.id, elapsedMs, points: correct ? pointsFor(elapsed, round.durationMs) : 0 };
+      const result = { correct, roundId: round.id, elapsedMs, points: correct ? roundPointsFor(elapsed, round.durationMs, [...round.solved.values()].map(s => s.elapsedMs)) : 0 };
       round.requests.set(requestKey, result);
       if (correct) {
         round.solved.set(player.id, result); player.score += result.points;

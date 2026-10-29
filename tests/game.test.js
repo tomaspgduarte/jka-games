@@ -26,11 +26,12 @@ test('6 jogadores: partida completa, pontos, duplicados, tempos, espectador e re
   await sleep(310);
   const right = await submit(host, firstAnswer === 'Lisboa' ? 'LISBÓA!!!' : 'MÁRTE!!!', 'right-0001');
   assert.equal(right.correct, true); assert.ok(right.elapsedMs >= 300 && right.elapsedMs < 5000);
-  assert.ok(right.points >= 1 && right.points <= 10);
+  assert.equal(right.points, 10, 'o primeiro a acertar ganha 10');
   assert.deepEqual(await submit(host, firstAnswer, 'right-0001'), right, 'repetir o pedido devolve o mesmo recibo');
   assert.equal((await submit(host, 'Lisboa', 'right-0002')).ok, false);
   const results = await Promise.all(players.slice(1).map((p, i) => submit(p, answerFor(p), `answer-000${i}`)));
   assert.ok(results.every(r => r.ok && r.correct));
+  assert.ok(results.every(r => r.points === 10), 'quem acerta até 1 s depois do primeiro também ganha 10');
   await until(() => host.state.phase === 'results');
   assert.ok(host.state.players.every(p => p.correct === 1 && p.score >= 1 && p.score <= 10 && p.responseMs !== null));
   assert.equal(host.state.players.find(p => p.id === host.state.meId).score, right.points);

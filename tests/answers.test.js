@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { distance, isCorrect, normalize, pointsFor } from '../server/answers.js';
+import { distance, isCorrect, normalize, pointsFor, roundPointsFor } from '../server/answers.js';
 import { validateConfig, shuffleQuestions } from '../server/game.js';
 import { config } from './helpers.js';
 
@@ -29,6 +29,13 @@ test('pontos calculados a partir do tempo de receção no servidor', () => {
   assert.equal(pointsFor(10000, 20000), 5);
   assert.equal(pointsFor(19999, 20000), 1);
   assert.equal(pointsFor(20000, 20000), 1);
+});
+test('o primeiro a acertar e quem acerta até 1 s depois ganham 10; depois desce com a ordem e o tempo', () => {
+  assert.equal(roundPointsFor(18000, 20000, []), 10, 'o primeiro ganha 10 mesmo tarde');
+  assert.equal(roundPointsFor(6000, 20000, [5000]), 10, 'quase ao mesmo tempo também ganha 10');
+  assert.equal(roundPointsFor(6001, 20000, [5000]), 6, '7 pelo tempo − 1 por um jogador antes');
+  assert.equal(roundPointsFor(8000, 20000, [5000, 5500]), 4, '6 pelo tempo − 2');
+  assert.equal(roundPointsFor(19000, 20000, [1000, 2000, 3000]), 1, 'nunca menos de 1');
 });
 test('configuração rejeita valores inválidos e limita perguntas e respostas', () => {
   assert.deepEqual(validateConfig(config()), config());
