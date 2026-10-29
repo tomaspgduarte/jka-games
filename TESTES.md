@@ -98,3 +98,9 @@ A expulsão não é um banimento: o jogador pode voltar a entrar com o código, 
 ## Tema da pergunta em destaque — 29 de outubro de 2026
 
 O tema passa a aparecer numa etiqueta grande por cima da pergunta (1,25 rem; 1,05 rem em ecrãs estreitos), com o número da pergunta e o objetivo numa linha pequena por baixo. Verificado no browser em largura de computador e de telemóvel (375 px) com uma pergunta de «Memes». `npm test`: 17 testes passaram, 0 falharam; `npm run build` concluído.
+
+## Quem acertou a verde e respostas em português e inglês — 29 de outubro de 2026
+
+- Classificação: durante a pergunta e a revelação da resposta, quem já acertou fica com ✓, nome e estado a verde e uma barra verde à esquerda. Verificado no browser numa sala com uma pergunta conhecida: o jogador que respondeu «lisboa» ficou com a classe `solved` e o nome na cor de sucesso; o outro manteve a cor normal.
+- Respostas: revistas as 436 perguntas. 40 perguntas de texto ganharam alternativas na língua que faltava: números por extenso em inglês (`Five`, `Ten`, `Three`…), termos de Cabo Verde (`Blue Sharks`, `Creole`, `Windward`/`Leeward`, `Sal Island`…), personagens (`Master Yoda`, `Incredible Hulk`) e expressões dos memes (`Moth`, `Big Brother Brazil`, `Gato Rabugento`…). As restantes já aceitavam as duas línguas ou têm como resposta nomes próprios, iguais nas duas. Confirmado com `isCorrect`, com e sem tolerância, para exemplos em português e em inglês.
+- `npm test`: 17 testes passaram, 0 falharam; `npm run build` concluído; ficheiros de `examples/` regenerados.

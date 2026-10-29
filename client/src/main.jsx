@@ -212,8 +212,8 @@ function Ranking({ room, isHost, disabled, action }) {
   }
   return <aside className="panel ranking"><h2>{t(room.phase === 'lobby' ? 'Jogadores' : 'Classificação')}</h2>
     <p className="muted">{t('{count} ligados · máximo 20', { count: room.players.filter(p => p.connected).length })}<br /><strong>{t('Objetivo: {points} pontos', { points: room.targetPoints })}</strong></p>
-    <ol className="player-list">{room.players.map(p => <li key={p.id}>
-      <div className="player-main"><div><strong>{p.name}</strong>{p.id === room.meId && <small> {t('tu')}</small>}
+    <ol className="player-list">{room.players.map(p => <li key={p.id} className={p.solved && ['question', 'results'].includes(room.phase) ? 'solved' : undefined}>
+      <div className="player-main"><div><strong className="player-name">{p.solved && ['question', 'results'].includes(room.phase) && <span aria-hidden="true">✓ </span>}{p.name}</strong>{p.id === room.meId && <small> {t('tu')}</small>}
         <div className="muted player-status">{p.id === room.hostId ? `${t('Host')} · ` : ''}{t(p.kicked ? 'Expulso' : p.left ? 'Saiu' : !p.connected ? 'Desligado' : room.phase === 'lobby' ? 'No lobby' : !p.participating ? 'Espectador' : p.solved ? 'Acertou' : reveal ? 'Sem acerto' : 'A responder')}</div>
         {isHost && p.id !== room.meId && !p.left && <button className="quiet danger kick" disabled={disabled} onClick={() => kick(p)} aria-label={t('Expulsar {name}', { name: p.name })}>{t('Expulsar')}</button>}
       </div><strong className="points">{p.score}<small> pts</small></strong></div>

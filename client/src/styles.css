@@ -97,6 +97,8 @@ input[type=file] { font-size: .8rem; }
 .player-main > div { min-width: 0; overflow-wrap: anywhere; }
 .player-status { font-size: .75rem; margin-top: 3px; }
 .points { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.player-list li.solved { box-shadow: inset 3px 0 0 var(--success); padding-left: 12px; }
+.player-list li.solved .player-name, .player-list li.solved .player-status { color: var(--success); }
 .round-stats { font-size: .75rem; color: var(--muted); margin-top: 5px; font-variant-numeric: tabular-nums; }
 .settings { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin: 20px 0; }
 .settings input[type=number] { max-width: 120px; }
