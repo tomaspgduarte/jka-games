@@ -1,0 +1,645 @@
+[
+  {
+    "prompt": "Qual é a capital de Cabo Verde?",
+    "file": "praia-harbor.jpg",
+    "clue": "a cidade da Praia",
+    "credit": "Xandu · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Praia_Harbor.jpg",
+    "commonsFile": "Praia Harbor.jpg"
+  },
+  {
+    "prompt": "Que ilha de Cabo Verde não tem habitantes permanentes?",
+    "file": "santa-luzia-cabo-verde.jpg",
+    "clue": "a ilha de Santa Luzia",
+    "credit": "Manuel de Sousa · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Santa_Luzia_(Cabo_Verde).JPG",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Santa Luzia (Cabo Verde).JPG"
+  },
+  {
+    "prompt": "Qual é o ponto mais alto de Cabo Verde?",
+    "file": "pico-94-117-13.jpg",
+    "clue": "o vulcão",
+    "credit": "Holger Reineccius · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pico-94-117-13.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "commonsFile": "Pico-94-117-13.jpg"
+  },
+  {
+    "prompt": "Em que ilha fica o vulcão que entrou em erupção em 2014?",
+    "file": "cha-de-caldeira-destructions-pico-de-fogo-erupti.jpg",
+    "clue": "a erupção de 2014",
+    "credit": "Zinneke · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Cha_de_Caldeira_-_destructions_Pico_de_Fogo_eruption_2014-15._--2.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Cha de Caldeira - destructions Pico de Fogo eruption 2014-15. --2.jpg"
+  },
+  {
+    "prompt": "Que antiga capital, em Santiago, é Património Mundial da UNESCO desde 2009?",
+    "file": "cidade-velha-bord-de-mer-2.jpg",
+    "clue": "as ruínas e o pelourinho",
+    "credit": "Ji-Elle · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Cidade_Velha-Bord_de_mer_(2).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Cidade Velha-Bord de mer (2).jpg"
+  },
+  {
+    "prompt": "Qual é a principal cidade da ilha de São Vicente?",
+    "file": "mindelo-s-vicente-cabo-verde.jpg",
+    "clue": "a baía da cidade",
+    "credit": "Manuel de Sousa · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Mindelo_(S_Vicente,_Cabo_Verde).JPG",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Mindelo (S Vicente, Cabo Verde).JPG"
+  },
+  {
+    "prompt": "Que monte de Mindelo parece o rosto de uma pessoa deitada?",
+    "file": "mindelo-montcara2000.jpg",
+    "clue": "o monte",
+    "credit": "Lka · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Mindelo-MontCara2000.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "commonsFile": "Mindelo-MontCara2000.jpg"
+  },
+  {
+    "prompt": "Que ilha é famosa pelas salinas de Pedra de Lume?",
+    "file": "pedra-lume-cv.jpg",
+    "clue": "as salinas",
+    "credit": "Ingo Wölbern · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Pedra_Lume_CV.jpg",
+    "commonsFile": "Pedra Lume CV.jpg"
+  },
+  {
+    "prompt": "Que ilha tem o Deserto de Viana e praias onde desovam tartarugas?",
+    "file": "deserto-viana-boa-vista.jpg",
+    "clue": "as dunas",
+    "credit": "Ingo Wölbern · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Deserto_Viana,_Boa_Vista.jpg",
+    "commonsFile": "Deserto Viana, Boa Vista.jpg"
+  },
+  {
+    "prompt": "Que ilha, a mais pequena das habitadas, é conhecida como Ilha das Flores?",
+    "file": "furna-cape-verde.jpg",
+    "clue": "a ilha",
+    "credit": "Ingo Wölbern · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Furna_Cape_Verde.jpg",
+    "commonsFile": "Furna Cape Verde.jpg"
+  },
+  {
+    "prompt": "Que ilha montanhosa de Barlavento é famosa pelo vale do Paul e pelo grogue?",
+    "file": "vale-do-paul-santo-antao-cape-verde.jpg",
+    "clue": "o vale do Paul",
+    "credit": "CaptainDarwin · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Vale_do_Pa%C3%BAl,_Santo_Ant%C3%A3o,_Cape_Verde.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Vale do Paúl, Santo Antão, Cape Verde.jpg"
+  },
+  {
+    "prompt": "Que campo prisional de Santiago ficou conhecido como Campo da Morte Lenta?",
+    "file": "tarrafal-concentration-camp-1.jpg",
+    "clue": "as celas do campo",
+    "credit": "Gagum from Lisbon, Portugal · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Tarrafal_concentration_camp_(1).jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "Tarrafal concentration camp (1).jpg"
+  },
+  {
+    "prompt": "Que líder sul-africano dá nome ao aeroporto internacional da Praia?",
+    "file": "praia-international-airport.jpg",
+    "clue": "o aeroporto",
+    "credit": "Xandu · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Praia_International_Airport.jpg",
+    "commonsFile": "Praia International Airport.jpg"
+  },
+  {
+    "prompt": "Em que cidade se faz o carnaval mais famoso de Cabo Verde?",
+    "file": "2023-21.jpg",
+    "clue": "o desfile",
+    "credit": "Hanay · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:%D7%A7%D7%A8%D7%A0%D7%91%D7%9C_%D7%9E%D7%99%D7%A0%D7%93%D7%9C%D7%95_%D7%91%D7%90%D7%99_%D7%A1%D7%90%D7%95_%D7%95%D7%99%D7%A1%D7%A0%D7%98%D7%94_%D7%91%D7%90%D7%99%D7%99_%D7%9B%D7%A3_%D7%95%D7%A8%D7%93%D7%94_%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8_2023_21.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "קרנבל מינדלו באי סאו ויסנטה באיי כף ורדה פברואר 2023 21.jpg"
+  },
+  {
+    "prompt": "Em que ilha fica Santa Maria, destino famoso de kitesurf e windsurf?",
+    "file": "santa-maria-sal-cabo-verde3.jpg",
+    "clue": "a praia de Santa Maria",
+    "credit": "Adrião · CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Santa_Maria_Sal_Cabo_Verde3.JPG",
+    "license": "https://creativecommons.org/licenses/by/3.0",
+    "commonsFile": "Santa Maria Sal Cabo Verde3.JPG"
+  },
+  {
+    "prompt": "Que criptomoeda usa a cara do cão do meme Doge?",
+    "file": "shiba-inu-taiki.jpg",
+    "clue": "um shiba inu",
+    "credit": "Roberto Vasarri · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Shiba_inu_taiki.jpg",
+    "commonsFile": "Shiba inu taiki.jpg"
+  },
+  {
+    "prompt": "Que gorila de um zoo dos EUA se tornou meme em 2016?",
+    "file": "silverback-gorilla-04.jpg",
+    "clue": "um gorila (não o Harambe)",
+    "credit": "Adesolive · CC0",
+    "source": "https://commons.wikimedia.org/wiki/File:SILVERBACK_GORILLA_04.jpg",
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "commonsFile": "SILVERBACK GORILLA 04.jpg"
+  },
+  {
+    "prompt": "Que hipopótamo-pigmeu bebé da Tailândia se tornou viral em 2024?",
+    "file": "pygmy-hippopotamus-hipopotamek-kar-owaty-choerop.jpg",
+    "clue": "um hipopótamo-pigmeu adulto",
+    "credit": "Krigore · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Pygmy_hippopotamus_%E2%80%93_Hipopotamek_kar%C5%82owaty_%E2%80%93_Choeropsis_liberiensis.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Pygmy hippopotamus – Hipopotamek karłowaty – Choeropsis liberiensis.jpg"
+  },
+  {
+    "prompt": "Que senador americano virou meme sentado de luvas de lã numa tomada de posse em 2021?",
+    "file": "blue-and-pink-thrummed-mittens.jpg",
+    "clue": "luvas de lã",
+    "credit": "Kara Babcock from Thunder Bay, Canada · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Blue_and_pink_thrummed_mittens.jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "Blue and pink thrummed mittens.jpg"
+  },
+  {
+    "prompt": "Que chef turco ficou famoso por deixar cair o sal de forma teatral?",
+    "file": "saltmill.jpg",
+    "clue": "sal grosso",
+    "credit": "ElinorD · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Saltmill.jpg",
+    "commonsFile": "Saltmill.jpg"
+  },
+  {
+    "prompt": "Que sapo verde de banda desenhada se tornou um dos memes mais usados da internet?",
+    "file": "teichfrosch-pelophylax-esculentus-gruga-003.jpg",
+    "clue": "uma rã verde",
+    "credit": "Tuxyso · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Teichfrosch_Pelophylax_esculentus_Gruga_003.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Teichfrosch Pelophylax esculentus Gruga 003.jpg"
+  },
+  {
+    "prompt": "Que gato com corpo de bolacha voa pelo espaço a deixar um arco-íris?",
+    "file": "pop-tarts-frosted-strawberry.jpg",
+    "clue": "Pop-Tarts",
+    "credit": "Scott Ehardt · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Pop-Tarts_Frosted_Strawberry.jpg",
+    "commonsFile": "Pop-Tarts Frosted Strawberry.jpg"
+  },
+  {
+    "prompt": "Que série de vídeos tem cabeças a cantar dentro de sanitas?",
+    "file": "london-museum-docklands-toilet-cubicle-tower-ham.jpg",
+    "clue": "uma sanita",
+    "credit": "Acabashi · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:London_Museum_Docklands_toilet_cubicle_Tower_Hamlets_London_England_02.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "London Museum Docklands toilet cubicle Tower Hamlets London England 02.jpg"
+  },
+  {
+    "prompt": "Que coelho dos Looney Tunes deu origem ao meme Big Chungus?",
+    "file": "englishspotrabbitchocolate1-cropped.jpg",
+    "clue": "um coelho gordo",
+    "credit": "Kat Chzhen · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:EnglishSpotRabbitChocolate1(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "EnglishSpotRabbitChocolate1(cropped).jpg"
+  },
+  {
+    "prompt": "Que canção coreana de 2012 foi o primeiro vídeo a chegar a mil milhões de visualizações no YouTube?",
+    "file": "teheran-ro-yeongdong-daero-crossing-7.jpg",
+    "clue": "o bairro de Gangnam",
+    "credit": "kallerna · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Teheran-ro_Yeongdong-daero_crossing_7.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Teheran-ro Yeongdong-daero crossing 7.jpg"
+  },
+  {
+    "prompt": "Como ficou conhecido o meme dos carregadores do Gana que dançam com um caixão?",
+    "file": "hennensarg-von-kudjo-affutu-2008.jpg",
+    "clue": "caixões de fantasia do Gana",
+    "credit": "Regula Tschumi · CC BY-SA 3.0 de",
+    "source": "https://commons.wikimedia.org/wiki/File:Hennensarg_von_Kudjo_Affutu_2008.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+    "commonsFile": "Hennensarg von Kudjo Affutu 2008.jpg"
+  },
+  {
+    "prompt": "Que dança viral de 2013 começava com uma pessoa sozinha e acabava em caos geral?",
+    "file": "harlem-manhattan-february-2026.jpg",
+    "clue": "o bairro de Harlem",
+    "credit": "Kidfly182 · CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Harlem_Manhattan_February_2026.jpg",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "commonsFile": "Harlem Manhattan February 2026.jpg"
+  },
+  {
+    "prompt": "Que apresentador perguntava «Quem quer dinheiro?» e atirava aviõezinhos de notas ao público?",
+    "file": "glybbs-paper-plane.jpg",
+    "clue": "um aviãozinho de papel",
+    "credit": "RegiegeigeR at German Wikipedia · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Glybbs_Paper_Plane.jpg",
+    "commonsFile": "Glybbs Paper Plane.jpg"
+  },
+  {
+    "prompt": "Que capitão do BOPE, de Tropa de Elite, deu origem ao meme «Pede para sair!»?",
+    "file": "brasao-do-batalhao-de-operacoes-policias-especia.png",
+    "clue": "o BOPE",
+    "credit": "Batalhão de Operações Policias Especiais BOPE-PMERJ - Redesenhado por Richard Nunes · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Bras%C3%A3o_do_Batalh%C3%A3o_de_Opera%C3%A7%C3%B5es_Pol%C3%ADcias_Especiais_-_BOPE_-_PMERJ.png",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Brasão do Batalhão de Operações Polícias Especiais - BOPE - PMERJ.png"
+  },
+  {
+    "prompt": "Que filme brasileiro de 2002 tem o traficante Zé Pequeno?",
+    "file": "cidade-de-deus.jpg",
+    "clue": "o bairro Cidade de Deus",
+    "credit": "Junius · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Cidade_de_Deus.JPG",
+    "commonsFile": "Cidade de Deus.JPG"
+  },
+  {
+    "prompt": "Que cão sem raça, de pelo cor de mel, é o símbolo não oficial dos memes brasileiros?",
+    "file": "vira-lata-social-analogico-3084200705.jpg",
+    "clue": "um vira-lata",
+    "credit": "Alessandro Martins from Curitiba, Brasil · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Vira-lata_Social-anal%C3%B3gico_(3084200705).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Vira-lata Social-analógico (3084200705).jpg"
+  },
+  {
+    "prompt": "Que jogador disse «Qué mirás, bobo?» numa entrevista do Mundial 2022?",
+    "file": "wout-weghorst-2016.jpg",
+    "clue": "o Weghorst",
+    "credit": "Кирилл Венедиктов · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Wout_Weghorst_2016.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Wout Weghorst 2016.jpg"
+  },
+  {
+    "prompt": "A que avançado neerlandês Messi disse «Qué mirás, bobo?»?",
+    "file": "leo-messi-argentina-v-egypt-7-july-2026-1.jpg",
+    "clue": "o Messi",
+    "credit": "Bryan Berlin · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Leo Messi Argentina v Egypt 7 July 2026-1.jpg"
+  },
+  {
+    "prompt": "Que seleção venceu o Brasil por 7-1 na meia-final do Mundial 2014?",
+    "file": "mineirao-aerea.jpg",
+    "clue": "o Mineirão",
+    "credit": "Rodrigo Lima/Portal da Copa · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Mineir%C3%A3o_A%C3%A9rea.jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "Mineirão Aérea.jpg"
+  },
+  {
+    "prompt": "Que treinador português se apresentou em Inglaterra como «Special One»?",
+    "file": "london-stamford-bridge.jpg",
+    "clue": "Stamford Bridge",
+    "credit": "Arne Müseler · CC BY-SA 3.0 de",
+    "source": "https://commons.wikimedia.org/wiki/File:London_Stamford_Bridge.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+    "commonsFile": "London Stamford Bridge.jpg"
+  },
+  {
+    "prompt": "Que avançado uruguaio mordeu Chiellini no Mundial 2014?",
+    "file": "sergio-mattarella-meets-italy-national-football.jpg",
+    "clue": "o Chiellini",
+    "credit": "Presidenza della Repubblica, recorte de Danyele · Attribution",
+    "source": "https://commons.wikimedia.org/wiki/File:Sergio_Mattarella_meets_Italy_national_football_team_and_Matteo_Berrettini_(12_July_2021)_30_-_Chiellini_(cropped).jpg",
+    "commonsFile": "Sergio Mattarella meets Italy national football team and Matteo Berrettini (12 July 2021) 30 - Chiellini (cropped).jpg"
+  },
+  {
+    "prompt": "Que francês deu uma cabeçada em Materazzi na final do Mundial 2006?",
+    "file": "marco-materazzi-2020.jpg",
+    "clue": "o Materazzi",
+    "credit": "Анна Нэсси · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Marco_Materazzi_2020.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Marco Materazzi 2020.jpg"
+  },
+  {
+    "prompt": "Que guarda-redes do Liverpool ficou nos memes pelos erros na final da Champions de 2018?",
+    "file": "kyiv-nsc-olimpiyskyi-5.jpg",
+    "clue": "o estádio da final de 2018",
+    "credit": "Валерий Дед · CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Kyiv_NSC_Olimpiyskyi_5.jpg",
+    "license": "https://creativecommons.org/licenses/by/3.0",
+    "commonsFile": "Kyiv NSC Olimpiyskyi 5.jpg"
+  },
+  {
+    "prompt": "Que guarda-redes colombiano fez a defesa do escorpião em Wembley, em 1995?",
+    "file": "black-scorpion.jpg",
+    "clue": "um escorpião",
+    "credit": "Per-Anders Olsson · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Black_scorpion.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "commonsFile": "Black scorpion.jpg"
+  },
+  {
+    "prompt": "Que treinador escocês mascava pastilha elástica no banco do Manchester United?",
+    "file": "streifenkaugummi.jpg",
+    "clue": "pastilhas elásticas",
+    "credit": "Gohnarch · CC BY-SA 3.0 de",
+    "source": "https://commons.wikimedia.org/wiki/File:Streifenkaugummi.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+    "commonsFile": "Streifenkaugummi.jpg"
+  },
+  {
+    "prompt": "Que inseto pousou na cara de Cristiano Ronaldo na final do Euro 2016?",
+    "file": "stadefrancenationsleague2018.jpg",
+    "clue": "o Stade de France",
+    "credit": "Darthvadrouw · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:StadeFranceNationsLeague2018.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "StadeFranceNationsLeague2018.jpg"
+  },
+  {
+    "prompt": "Por que clube jogava Ronaldo quando fez o gesto «Calma, calma» em Camp Nou, em 2012?",
+    "file": "camp-nou-aerial-cropped.jpg",
+    "clue": "Camp Nou",
+    "credit": "Oh-Barcelona.com from Barcelona, Spain · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Camp_Nou_aerial_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "Camp Nou aerial (cropped).jpg"
+  },
+  {
+    "prompt": "Que herói da Marvel é o alter ego de Tony Stark?",
+    "file": "robert-downey-jr-2014-comic-con-cropped.jpg",
+    "clue": "o Robert Downey Jr.",
+    "credit": "Gage Skidmore · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Robert_Downey_Jr_2014_Comic_Con_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Robert Downey Jr 2014 Comic Con (cropped).jpg"
+  },
+  {
+    "prompt": "Que herói da Marvel é o alter ego de Peter Parker?",
+    "file": "tomholland-byphilipromano.jpg",
+    "clue": "o Tom Holland",
+    "credit": "PhilipRomano · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:TomHolland-byPhilipRomano.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "TomHolland-byPhilipRomano.jpg"
+  },
+  {
+    "prompt": "Que personagem da Marvel é um gigante verde ligado a Bruce Banner?",
+    "file": "mark-ruffalo-36201774756-cropped.jpg",
+    "clue": "o Mark Ruffalo",
+    "credit": "Gage Skidmore from Peoria, AZ, United States of America · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Mark_Ruffalo_(36201774756)_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Mark Ruffalo (36201774756) (cropped).jpg"
+  },
+  {
+    "prompt": "Que herói da DC é o alter ego de Bruce Wayne?",
+    "file": "christian-bale-7837.jpg",
+    "clue": "o Christian Bale",
+    "credit": "Harald Krichel · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Christian_Bale-7837.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Christian Bale-7837.jpg"
+  },
+  {
+    "prompt": "Que herói da DC trabalha como jornalista com o nome Clark Kent?",
+    "file": "henry-cavill-48417913146-cropped.jpg",
+    "clue": "o Henry Cavill",
+    "credit": "Gage Skidmore from Peoria, AZ, United States of America · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Henry_Cavill_(48417913146)_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Henry Cavill (48417913146) (cropped).jpg"
+  },
+  {
+    "prompt": "Que arqui-inimigo do Batman tem um sorriso enorme e é conhecido como Príncipe Palhaço do Crime?",
+    "file": "heath-ledger.jpg",
+    "clue": "o Heath Ledger",
+    "credit": "Howie · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Heath_Ledger.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Heath Ledger.jpg"
+  },
+  {
+    "prompt": "Que deus do trovão da Marvel empunha o martelo Mjolnir?",
+    "file": "chris-hemsworth-crime-101.jpg",
+    "clue": "o Chris Hemsworth",
+    "credit": "Kevin Paul · CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Chris_Hemsworth_-_Crime_101.jpg",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "commonsFile": "Chris Hemsworth - Crime 101.jpg"
+  },
+  {
+    "prompt": "Que vilão da Marvel procura reunir as Joias do Infinito?",
+    "file": "josh-brolin-tiff-2025-cropped.jpg",
+    "clue": "o Josh Brolin",
+    "credit": "Max Surprenant · CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Josh_Brolin_TIFF_2025_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "commonsFile": "Josh Brolin TIFF 2025 (cropped).jpg"
+  },
+  {
+    "prompt": "Que vilão de Star Wars usa uma máscara preta e é pai de Luke?",
+    "file": "james-earl-jones-baltimore.jpg",
+    "clue": "o James Earl Jones (a voz)",
+    "credit": "Kingkongphoto & www.celebrity-photos.com from Laurel · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:James_Earl_Jones_Baltimore.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "James Earl Jones Baltimore.jpg"
+  },
+  {
+    "prompt": "Que pequeno mestre Jedi verde fala de uma forma muito característica?",
+    "file": "2024-03-08-sxsw-2024-comedy-directors-1.jpg",
+    "clue": "o Frank Oz (marioneta e voz)",
+    "credit": "Jay Dixit · CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:2024-03-08_SXSW-2024_comedy-directors_1.jpg",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "commonsFile": "2024-03-08 SXSW-2024 comedy-directors 1.jpg"
+  },
+  {
+    "prompt": "Que feiticeiro de O Senhor dos Anéis diz que o Balrog não passará?",
+    "file": "mckellenrichmnd040219-5-46275370484-cropped.jpg",
+    "clue": "o Ian McKellen",
+    "credit": "Raph_PH · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:McKellenRichmnd040219-5_(46275370484)_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "McKellenRichmnd040219-5 (46275370484) (cropped).jpg"
+  },
+  {
+    "prompt": "Que hobbit recebe a missão de levar o Um Anel até Mordor?",
+    "file": "elijah-wood-47955397556-cropped.jpg",
+    "clue": "o Elijah Wood",
+    "credit": "Gage Skidmore from Peoria, AZ, United States of America · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Elijah_Wood_(47955397556)_(cropped).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Elijah Wood (47955397556) (cropped).jpg"
+  },
+  {
+    "prompt": "Que arqueóloga dos videojogos protagoniza Tomb Raider?",
+    "file": "angelina-jolie-64408.jpg",
+    "clue": "a Angelina Jolie",
+    "credit": "Harald Krichel · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Angelina_Jolie-64408.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Angelina Jolie-64408.jpg"
+  },
+  {
+    "prompt": "Que esponja amarela vive num ananás no fundo do mar?",
+    "file": "fmib-42175-zimocca-sponge-mediterranean-sea-side.jpg",
+    "clue": "uma esponja-do-mar",
+    "credit": "Henry Frank Moore · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:FMIB_42175_Zimocca_sponge,_Mediterranean_Sea_Side_view.jpeg",
+    "commonsFile": "FMIB 42175 Zimocca sponge, Mediterranean Sea Side view.jpeg"
+  },
+  {
+    "prompt": "Que personagem de SpongeBob é uma estrela-do-mar cor-de-rosa?",
+    "file": "royal-starfish-astropecten-articulatus-on-the-be.jpg",
+    "clue": "uma estrela-do-mar",
+    "credit": "TheMargue · CC BY 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Royal_starfish_(Astropecten_articulatus)_on_the_beach.jpg",
+    "license": "https://creativecommons.org/licenses/by/2.0",
+    "commonsFile": "Royal starfish (Astropecten articulatus) on the beach.jpg"
+  },
+  {
+    "prompt": "Que ouriço azul da Sega é conhecido pela velocidade?",
+    "file": "erinaceus-europaeus-linnaeus-1758.jpg",
+    "clue": "um ouriço",
+    "credit": "Michael Gäbler · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Erinaceus_europaeus_(Linnaeus,_1758).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Erinaceus europaeus (Linnaeus, 1758).jpg"
+  },
+  {
+    "prompt": "Que clube inglês joga em Anfield?",
+    "file": "liverpool-anfield-road-stadium.jpg",
+    "clue": "Anfield",
+    "credit": "Arne Müseler · CC BY-SA 3.0 de",
+    "source": "https://commons.wikimedia.org/wiki/File:Liverpool_anfield_road_stadium.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+    "commonsFile": "Liverpool anfield road stadium.jpg"
+  },
+  {
+    "prompt": "Que clube inglês joga em Old Trafford?",
+    "file": "old-trafford-and-salford-docks-from-the-air-geog.jpg",
+    "clue": "Old Trafford visto do ar",
+    "credit": "Mike Pennington · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Old_Trafford_and_Salford_docks_from_the_air_(geograph_4887111).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "Old Trafford and Salford docks from the air (geograph 4887111).jpg"
+  },
+  {
+    "prompt": "Que clube espanhol joga no Santiago Bernabéu?",
+    "file": "estadio-santiago-bernabeu-01.jpg",
+    "clue": "o Bernabéu",
+    "credit": "Carlos Delgado · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Estadio_Santiago_Bernab%C3%A9u_-_01.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Estadio Santiago Bernabéu - 01.jpg"
+  },
+  {
+    "prompt": "Que clube alemão joga tradicionalmente de vermelho e está sediado em Munique?",
+    "file": "munchen-allianz-arena-luftbild.jpg",
+    "clue": "a Allianz Arena",
+    "credit": "Maximilian Dörrbecker (Chumwa) · CC BY-SA 2.5",
+    "source": "https://commons.wikimedia.org/wiki/File:M%C3%BCnchen_-_Allianz-Arena_(Luftbild).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.5",
+    "commonsFile": "München - Allianz-Arena (Luftbild).jpg"
+  },
+  {
+    "prompt": "Que jogador português ficou conhecido como Pantera Negra?",
+    "file": "luzlissabon.jpg",
+    "clue": "o Estádio da Luz",
+    "credit": "Massimo Catarinella · CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:LuzLissabon.jpg",
+    "license": "https://creativecommons.org/licenses/by/3.0",
+    "commonsFile": "LuzLissabon.jpg"
+  },
+  {
+    "prompt": "Que argentino marcou a famosa Mão de Deus no Mundial de 1986?",
+    "file": "vista-aerea-del-estadio-azteca-2026-02.jpg",
+    "clue": "o Estádio Azteca",
+    "credit": "ProtoplasmaKid · CC BY 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Vista_a%C3%A9rea_del_Estadio_Azteca_-_2026_-_02.jpg",
+    "license": "https://creativecommons.org/licenses/by/4.0",
+    "commonsFile": "Vista aérea del Estadio Azteca - 2026 - 02.jpg"
+  },
+  {
+    "prompt": "Como se chama o circuito italiano conhecido como Templo da Velocidade?",
+    "file": "1975-italian-gp-race-start-niki-lauda-clay-regaz.jpg",
+    "clue": "o circuito",
+    "credit": "Rainer W. Schlegelmilch · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:1975_Italian_GP_race_start_-_Niki_Lauda_%26_Clay_Regazzoni_(Ferrari_312T).jpg",
+    "commonsFile": "1975 Italian GP race start - Niki Lauda & Clay Regazzoni (Ferrari 312T).jpg"
+  },
+  {
+    "prompt": "Em que país fica o circuito de Spa-Francorchamps?",
+    "file": "2022-6-hours-of-spa-francorchamps-eau-rouge-corn.jpg",
+    "clue": "o circuito",
+    "credit": "United Autosports · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:2022_6_Hours_of_Spa-Francorchamps_-_Eau_Rouge_Corner_stands.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "2022 6 Hours of Spa-Francorchamps - Eau Rouge Corner stands.jpg"
+  },
+  {
+    "prompt": "Em que país fica o circuito de Silverstone?",
+    "file": "mclaren-mp4-16a-2015-mclaren-mp4-16a-shakedown-2.jpg",
+    "clue": "o circuito",
+    "credit": "United Autosports · CC BY-SA 2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:McLaren_MP4-16A_2015_McLaren_MP4-16A_shakedown_(21219267118).jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/2.0",
+    "commonsFile": "McLaren MP4-16A 2015 McLaren MP4-16A shakedown (21219267118).jpg"
+  },
+  {
+    "prompt": "Que pequeno principado recebe uma famosa corrida de F1 nas suas ruas?",
+    "file": "monaco-formula-1-turn-1-panoramio.jpg",
+    "clue": "o circuito nas ruas",
+    "credit": "otterboris · CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:MONACO_FORMULA_1_TURN_1_-_panoramio.jpg",
+    "license": "https://creativecommons.org/licenses/by/3.0",
+    "commonsFile": "MONACO FORMULA 1 TURN 1 - panoramio.jpg"
+  },
+  {
+    "prompt": "Em que cidade-estado se disputou o primeiro Grande Prémio noturno de F1, em 2008?",
+    "file": "singapore-sg-marina-bay-street-circuit-f1-pit-bu.jpg",
+    "clue": "o circuito à noite",
+    "credit": "Dietmar Rabich · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Singapore_(SG),_Marina_Bay_Street_Circuit,_F1_Pit_Building_--_2019_--_4478.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Singapore (SG), Marina Bay Street Circuit, F1 Pit Building -- 2019 -- 4478.jpg"
+  },
+  {
+    "prompt": "Em que cidade fica o circuito urbano de F1 do Azerbaijão?",
+    "file": "aerial-view-of-baku-may-2012.jpg",
+    "clue": "o circuito",
+    "credit": "Khortan · CC BY-SA 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Aerial_View_of_Baku,_May_2012.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/3.0",
+    "commonsFile": "Aerial View of Baku, May 2012.jpg"
+  },
+  {
+    "prompt": "Que equipa da NBA joga em Boston?",
+    "file": "td-garden.jpg",
+    "clue": "o TD Garden",
+    "credit": "Nywalton at English Wikipedia · Public domain",
+    "source": "https://commons.wikimedia.org/wiki/File:TD_Garden.JPG",
+    "commonsFile": "TD Garden.JPG"
+  },
+  {
+    "prompt": "Que equipa de Los Angeles usa tradicionalmente roxo e dourado?",
+    "file": "crypto-com-arena-exterior-2023.jpg",
+    "clue": "a arena",
+    "credit": "Troutfarm27 · CC BY-SA 4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Crypto.com_Arena_exterior_2023.jpg",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0",
+    "commonsFile": "Crypto.com Arena exterior 2023.jpg"
+  },
+  {
+    "prompt": "Que rapper de Compton lançou good kid, m.A.A.d city?",
+    "file": "compton-martin-luther-king-monument.jpg",
+    "clue": "Compton",
+    "credit": "Epolk at English Wikipedia · CC BY 3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Compton_martin_luther_king_monument.jpg",
+    "license": "https://creativecommons.org/licenses/by/3.0",
+    "commonsFile": "Compton martin luther king monument.jpg"
+  }
+]

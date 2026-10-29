@@ -37,6 +37,7 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/defaults.js` | Configuração inicial de cada sala nova |
 | `server/content/text-questions.js` | 424 perguntas de texto em 14 temas (`'pergunta', 'resp1\|resp2'`) |
 | `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
+| `server/content/images/` + `question-images.json` | 73 fotografias-pista (Commons, licença livre, até 300 KB) ligadas a perguntas de texto pelo texto exato da pergunta em `defaults.js`; servidas por `loadBankImage` |
 | `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor` (opções e categorias da partida), `Question`, `Ranking`, `Rules`, `LanguageToggle` |
 | `client/src/sounds.js` | Sons sintetizados (Web Audio): `playCorrect`, `playOtherCorrect`, ligar/desligar em `localStorage` (`jka-sound`) |
 | `client/src/i18n.js` | Dicionário PT → EN, `useT()` e `useMessage()`; idioma guardado em `localStorage` (`jka-lang`) |
@@ -67,7 +68,7 @@ Fases da sala: `lobby` → `question` → `results` (3 s) → `question` … →
 - Opções de tempo (`countdownMs`, `resultsMs`, `hostGraceMs`, `emptyTtlMs`, …) são injetáveis em `attachGame` para os testes correrem depressa.
 - Ao mudar comportamento: atualizar o README (secção correspondente) e acrescentar uma secção datada ao [TESTES.md](TESTES.md) com o que foi verificado e como.
 - Banco de perguntas: texto original, sem letras de músicas, factos datados em vez de plantéis atuais. Ao mudar contagens, atualizar `FONTES-PERGUNTAS.md`, `examples/resumo-banco.json`, os ficheiros em `examples/` e `tests/content.test.js`.
-- Fotografias: só com licença adequada e créditos registados em [IMAGENS.md](IMAGENS.md). As três da VLR.gg (aspas, TenZ, Sacy) **não têm licença confirmada** e devem ser substituídas antes de uma publicação pública.
+- Fotografias: só com licença adequada e créditos registados em [IMAGENS.md](IMAGENS.md). As fotografias-pista nunca mostram a resposta (nem escrita num letreiro): ator em vez da personagem, objeto ou lugar relacionado em vez do que se pergunta. As três da VLR.gg (aspas, TenZ, Sacy) **não têm licença confirmada** e devem ser substituídas antes de uma publicação pública.
 
 ## Limitações conhecidas / direções
 

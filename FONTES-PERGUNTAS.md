@@ -1,22 +1,22 @@
 # Banco de perguntas JKA games
 
-436 perguntas em português: **424 de texto + 12 com fotografia**, em 14 temas. As perguntas e pistas foram escritas para este projeto; não foram copiadas de listas de quizzes. Preferem-se factos históricos, nomes de personagens, alcunhas e músicas identificadas por título. Não foram incluídas letras de músicas.
+436 perguntas em português, em 14 temas: **424 de texto e 12 de «Quem é?» com fotografia**. **85 têm imagem**: as 12 de «Quem é?» e 73 de texto com uma fotografia-pista que ajuda sem mostrar a resposta (ver [IMAGENS.md](IMAGENS.md)). As perguntas e pistas foram escritas para este projeto; não foram copiadas de listas de quizzes. Preferem-se factos históricos, nomes de personagens, alcunhas e músicas identificadas por título. Não foram incluídas letras de músicas.
 
 | Tema | Perguntas | Com fotografia |
 | --- | ---: | ---: |
 | VALORANT | 33 | 3 |
 | Counter-Strike | 30 | 0 |
-| F1 | 32 | 2 |
-| Basquetebol | 32 | 2 |
-| Futebol | 32 | 2 |
-| Hip-hop / Rap | 33 | 3 |
+| F1 | 32 | 8 |
+| Basquetebol | 32 | 4 |
+| Futebol | 32 | 8 |
+| Hip-hop / Rap | 33 | 4 |
 | Músicas | 30 | 0 |
-| Personagens | 30 | 0 |
-| Cabo Verde | 33 | 0 |
-| Desporto de Cabo Verde | 26 | 0 |
-| Memes | 34 | 0 |
-| Memes brasileiros | 24 | 0 |
-| Memes do futebol | 25 | 0 |
+| Personagens | 30 | 16 |
+| Cabo Verde | 33 | 14 |
+| Desporto de Cabo Verde | 26 | 1 |
+| Memes | 34 | 12 |
+| Memes brasileiros | 24 | 4 |
+| Memes do futebol | 25 | 11 |
 | Emojis | 42 | 0 |
 
 O host escolhe no lobby que categorias entram na partida (todas, por omissão). Cada banco aceita no máximo 500 perguntas, por isso ainda cabem mais 64 se acrescentares perguntas ao código.

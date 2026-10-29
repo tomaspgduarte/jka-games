@@ -147,3 +147,11 @@ O painel do host deixou de permitir editar, acrescentar, remover, importar ou ex
 - Browser: sala nova com as 14 categorias escolhidas; **Todas** tirou todas e mostrou «Escolhe pelo menos uma categoria» com o botão de guardar desativado; escolhidas Cabo Verde e Memes → 67 perguntas; «Guardar e iniciar partida» começou com uma pergunta de Memes.
 - Regras do jogo e README corrigidos: o host já não conhece as respostas.
 - `npm test`: **19 testes passaram, 0 falharam**. `npm run build` concluído.
+
+## Fotografias-pista nas perguntas de texto — 29 de outubro de 2026
+
+73 perguntas de texto ganharam uma fotografia que ajuda sem mostrar a resposta (o ator em vez da personagem, um animal parecido em vez do animal do meme, o estádio em vez do clube, a paisagem em vez do nome da ilha). Fluxo: pesquisa de candidatas no Wikidata/Commons só com licenças livres, folha de miniaturas revista no browser, 12 candidatas trocadas ou retiradas (letreiros com a resposta, crânios em vez de gorila, imagens minúsculas), aprovação do utilizador e descarga de versões de 500 px (máximo 225 KB; cerca de 5 MB no total) para `server/content/images/`. As imagens ficam em ficheiros, lidas por `loadBankImage` e guardadas em memória; o banco em JSON continua com cerca de 1,2 MB.
+
+- Testes novos: 73 pistas em ficheiro, todas válidas, com crédito e fonte do Commons, sem ficheiros repetidos; nomes com caminho (`../`) rejeitados; numa ronda real a imagem dá 404 durante a contagem, é servida como `image/jpeg` com os mesmos bytes depois de a pergunta começar, e o crédito só aparece depois da resposta.
+- Browser: sala com três perguntas com pista; «Que herói da DC é o alter ego de Bruce Wayne?» mostrou a fotografia de Christian Bale (500 px, carregada) e «batman» foi aceite com 10 pontos.
+- `npm test`: **20 testes passaram, 0 falharam**. `npm run build` concluído. Ficheiros de `examples/` regenerados, com a contagem de fotografias por tema.

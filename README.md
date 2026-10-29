@@ -74,7 +74,7 @@ Bloqueia a repetição de uma tentativa normalizada. Intervalo mínimo de 300 ms
 
 ## Perguntas e categorias
 
-O jogo inclui **436 perguntas: 424 de texto e 12 com fotografia**, em 14 categorias: VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas, personagens, Cabo Verde, desporto de Cabo Verde, memes, memes brasileiros, memes do futebol e emojis (adivinhar filmes, séries, jogos e canções). Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
+O jogo inclui **436 perguntas: 424 de texto e 12 com fotografia**, em 14 categorias: VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas, personagens, Cabo Verde, desporto de Cabo Verde, memes, memes brasileiros, memes do futebol e emojis (adivinhar filmes, séries, jogos e canções). Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. Além disso, 73 perguntas de texto mostram uma **fotografia-pista** que ajuda sem dar a resposta: o ator em vez da personagem (Christian Bale para o Batman), um animal parecido em vez do animal do meme, o estádio em vez do clube, a paisagem de Cabo Verde em vez do nome da ilha. Os créditos aparecem depois de revelada a resposta. O banco é carregado automaticamente nas novas salas. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
 
 No lobby, o host tem o painel **Opções da partida**:
 
@@ -85,7 +85,7 @@ No lobby, o host tem o painel **Opções da partida**:
 
 A ordem é sempre aleatória e só entram perguntas das categorias escolhidas, mesmo quando o baralho recomeça. As perguntas e respostas nunca são enviadas aos jogadores, nem ao host: o browser recebe só os nomes e tamanhos das categorias e, durante a ronda, a pergunta em curso. As fotografias são servidas por HTTP apenas quando a sua pergunta começa; o tempo de carregamento faz parte da latência e não é descontado.
 
-As perguntas já não se editam na interface. Para acrescentar ou corrigir perguntas, edita `server/content/text-questions.js` (ou `server/content/photo-questions.json`) e reinicia o servidor. Em `examples/` há uma cópia do banco em JSON, completo e por categoria, para consulta. Limites validados pelo servidor: 1–500 perguntas por banco; tema de 60 caracteres; pergunta de 500; 1–10 alternativas por pergunta, de 120 caracteres cada; textos e créditos até 200 KB; imagem até 300 KB; total com imagens até 2 MB.
+As perguntas já não se editam na interface. Para acrescentar ou corrigir perguntas, edita `server/content/text-questions.js` (ou `server/content/photo-questions.json`) e reinicia o servidor. Para dar uma fotografia-pista a uma pergunta de texto, põe o ficheiro em `server/content/images/` (JPEG ou PNG, até 300 KB, nome só com minúsculas, números e hífenes) e acrescenta uma entrada em `server/content/question-images.json` com a pergunta exata, o ficheiro, o crédito e as ligações; regista-a também no [IMAGENS.md](IMAGENS.md). Em `examples/` há uma cópia do banco em JSON, completo e por categoria, para consulta. Limites validados pelo servidor: 1–500 perguntas por banco; tema de 60 caracteres; pergunta de 500; 1–10 alternativas por pergunta, de 120 caracteres cada; textos e créditos até 200 KB; imagem até 300 KB; total com imagens até 2 MB.
 
 ## Desconexões e sessões
 

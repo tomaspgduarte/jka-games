@@ -2,7 +2,7 @@ import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import { performance } from 'node:perf_hooks';
 import { normalize, isCorrect, roundPointsFor } from './answers.js';
 import { defaultConfig } from './defaults.js';
-import { decodeImage, MAX_CONFIG_BYTES } from './images.js';
+import { decodeImage, loadBankImage, MAX_CONFIG_BYTES } from './images.js';
 
 class GameError extends Error {}
 const requireThat = (condition, message) => { if (!condition) throw new GameError(message); };
@@ -26,12 +26,13 @@ export function validateConfig(raw) {
       prefix + 'indica entre 1 e 10 respostas aceites.');
     requireThat(q.answers.every(a => safeString(a, 120) && normalize(a)), prefix + 'resposta inválida (máximo 120 caracteres).');
     requireThat(q.image === undefined || q.image === '' || decodeImage(q.image), prefix + 'imagem inválida (PNG, JPEG ou WebP; máximo 300 KB).');
+    requireThat(q.imageFile === undefined || loadBankImage(q.imageFile), prefix + 'imagem inválida (PNG, JPEG ou WebP; máximo 300 KB).');
     requireThat(q.imageCredit === undefined || safeString(q.imageCredit, 500), prefix + 'crédito de imagem inválido.');
     for (const field of ['imageSource', 'imageLicense']) {
       requireThat(q[field] === undefined || (safeString(q[field], 1000) && /^https:\/\/[^\s]+$/.test(q[field])), prefix + 'link de imagem inválido.');
     }
     return { theme: q.theme.trim() || 'Geral', prompt: q.prompt.trim(), answers: [...new Set(q.answers.map(a => a.trim()))],
-      ...(q.image ? { image: q.image,
+      ...(q.image || q.imageFile ? { ...(q.image ? { image: q.image } : { imageFile: q.imageFile }),
         ...(q.imageCredit ? { imageCredit: q.imageCredit } : {}),
         ...(q.imageSource ? { imageSource: q.imageSource } : {}),
         ...(q.imageLicense ? { imageLicense: q.imageLicense } : {}),
@@ -118,7 +119,7 @@ export function attachGame(io, options = {}) {
       round: round ? { id: round.id, number: room.roundNumber,
         startsAt: round.startsAt, deadline: round.deadline, durationMs: round.durationMs,
         theme: current.theme, prompt: performance.now() >= round.startMono || reveal ? current.prompt : null,
-        imageUrl: current.image && (performance.now() >= round.startMono || reveal) ? `/media/${room.code}/${round.id}` : null,
+        imageUrl: (current.image || current.imageFile) && (performance.now() >= round.startMono || reveal) ? `/media/${room.code}/${round.id}` : null,
         answers: reveal ? current.answers : undefined,
         imageCredit: reveal ? current.imageCredit : undefined,
         imageSource: reveal ? current.imageSource : undefined,
@@ -359,7 +360,8 @@ export function attachGame(io, options = {}) {
     getRoundImage(code, roundId) {
       const room = rooms.get(code);
       if (!room?.round || room.round.id !== roundId || performance.now() < room.round.startMono) return null;
-      return decodeImage(room.deck[room.index].image);
+      const question = room.deck[room.index];
+      return question.image ? decodeImage(question.image) : loadBankImage(question.imageFile);
     },
     dispose() { clearInterval(cleanup); for (const timer of timers) clearTimeout(timer); timers.clear(); },
   };
