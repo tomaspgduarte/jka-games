@@ -6,10 +6,10 @@ import { decodeImage } from '../server/images.js';
 import { validateConfig } from '../server/game.js';
 import { fixture, group, ok, until } from './helpers.js';
 
-test('banco de 252 perguntas: 8 temas, respostas válidas, 12 fotos e configuração exportável', () => {
+test('banco de 436 perguntas: 14 temas, respostas válidas, 12 fotos e configuração exportável', () => {
   const bank = validateConfig(defaultConfig);
-  assert.equal(bank.questions.length, 252);
-  assert.equal(new Set(bank.questions.map(q => q.theme)).size, 8);
+  assert.equal(bank.questions.length, 436);
+  assert.equal(new Set(bank.questions.map(q => q.theme)).size, 14);
   const signatures = new Set();
   for (const q of bank.questions) {
     assert.ok(q.answers.every(a => normalize(a) && isCorrect(a, q.answers, false)));
@@ -27,8 +27,8 @@ test('banco completo passa por Socket.IO; aspas serve fotografia e só revela re
   const f = await fixture(t);
   const { host, players } = await group(f, 2);
   await ok(host, 'config:save', { revision: host.state.revision, config: defaultConfig });
-  assert.equal(host.state.config.questions.length, 252);
-  await until(() => players[1].state.questionCount === 252);
+  assert.equal(host.state.config.questions.length, 436);
+  await until(() => players[1].state.questionCount === 436);
   assert.equal(players[1].state.config, undefined);
   const aspas = defaultConfig.questions.find(q => q.image && q.answers.includes('aspas'));
   await ok(host, 'config:save', { revision: host.state.revision, config: { ...defaultConfig, targetPoints: 1, questions: [aspas] } });

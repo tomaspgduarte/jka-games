@@ -38,5 +38,35 @@
     "theme": "Personagens",
     "count": 30,
     "photos": 0
+  },
+  {
+    "theme": "Cabo Verde",
+    "count": 33,
+    "photos": 0
+  },
+  {
+    "theme": "Desporto de Cabo Verde",
+    "count": 26,
+    "photos": 0
+  },
+  {
+    "theme": "Memes",
+    "count": 34,
+    "photos": 0
+  },
+  {
+    "theme": "Memes brasileiros",
+    "count": 24,
+    "photos": 0
+  },
+  {
+    "theme": "Memes do futebol",
+    "count": 25,
+    "photos": 0
+  },
+  {
+    "theme": "Emojis",
+    "count": 42,
+    "photos": 0
   }
 ]

@@ -62,3 +62,14 @@ Compilação de produção concluída. No endereço público, verificados no bro
 ## Tema azul escuro e logo — 29 de outubro de 2026
 
 Compilação de produção e verificação de diferenças concluídas. Revisão no browser pelo endereço público: catálogo, entrada no Trigo, criação de sala, lobby/editor, início de partida, campo de resposta, foco, temporizador, classificação e feedback de resposta errada. A sala de teste foi abandonada no fim. Cores centralizadas em variáveis CSS; contraste calculado de 14,13:1 para texto nos painéis, 9,02:1 para texto secundário nos painéis e 5,14:1 para texto branco nos botões principais. O PNG corrigido conserva transparência e dimensões de 1536 × 1024; o ficheiro servido pelo endereço público tem o mesmo SHA-256 do ficheiro local. O logo é apresentado em branco por CSS sobre o fundo escuro.
+
+## Novos temas: Cabo Verde, memes e emojis — 29 de outubro de 2026
+
+Executado em Windows 11 com Node.js 26.13.0. Banco alargado de 252 para **436 perguntas** (424 de texto + 12 com fotografia) em 14 temas, com seis temas novos: Cabo Verde (33), Desporto de Cabo Verde (26), Memes (34), Memes brasileiros (24), Memes do futebol (25) e Emojis (42). Os factos recentes (Mundial 2026, CAN 2023, Mundial de basquetebol 2023, Paris 2024, Vozinha, morna na UNESCO) foram conferidos nas fontes indicadas em `FONTES-PERGUNTAS.md`.
+
+- `npm test`: **16 testes passaram, 0 falharam**; duração aproximada de 15 segundos. O teste do banco valida 436 perguntas, 14 temas, ausência de duplicados exatos, alternativas aceites e transmissão do banco completo por Socket.IO.
+- `npm run build`: compilação de produção concluída.
+- Ficheiros de `examples/` gerados a partir do banco do servidor; os oito ficheiros de temas antigos ficaram idênticos byte a byte.
+- Browser (`npm run dev`): sala nova com 436/500 perguntas; filtro do editor com os 14 temas e contagens corretas; tema Emojis com 42 perguntas em 5 páginas e emojis apresentados corretamente.
+
+Não foi jogada uma ronda no browser com uma pergunta específica dos temas novos, porque a ordem é aleatória; a aceitação das respostas é coberta pelos testes.

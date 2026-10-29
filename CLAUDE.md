@@ -34,7 +34,7 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/answers.js` | `normalize`, Damerau-Levenshtein limitado, `isCorrect`, `pointsFor` |
 | `server/images.js` | Validação de data URLs PNG/JPEG/WebP (bytes mágicos, máx. 300 KB) |
 | `server/defaults.js` | Configuração inicial de cada sala nova |
-| `server/content/text-questions.js` | 240 perguntas de texto, agrupadas por tema (`'pergunta', 'resp1\|resp2'`) |
+| `server/content/text-questions.js` | 424 perguntas de texto em 14 temas (`'pergunta', 'resp1\|resp2'`) |
 | `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
 | `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules` |
 | `client/src/styles.css` | Tema azul escuro; cores só em variáveis `:root` |

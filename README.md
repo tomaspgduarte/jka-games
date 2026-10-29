@@ -67,13 +67,13 @@ Quem entra a meio assiste e só participa na próxima partida. A lista de jogado
 
 Ignora maiúsculas/minúsculas e acentos, converte pontuação em espaços e reduz espaços repetidos. `LISBÓA!` equivale a `Lisboa`. Usa alternativas para sinónimos, traduções, abreviaturas ou respostas com palavras diferentes.
 
-Com **Aceitar pequenas gralhas** ligado, cada resposta esperada com 5–9 caracteres normalizados aceita uma edição, e com 10 ou mais aceita duas: inserção, remoção, substituição ou troca de duas letras adjacentes. Respostas esperadas com até 4 caracteres exigem correspondência exata após normalização. As sequências numéricas têm de ser iguais, mesmo em respostas longas: `Toy Story 4` não conta como `Toy Story 3`. É uma aproximação textual, não uma avaliação semântica; desliga a tolerância para perguntas com nomes muito parecidos.
+Com **Aceitar pequenos erros de escrita** ligado, cada resposta esperada com 5–9 caracteres normalizados aceita uma edição, e com 10 ou mais aceita duas: inserção, remoção, substituição ou troca de duas letras adjacentes. Respostas esperadas com até 4 caracteres exigem correspondência exata após normalização. As sequências numéricas têm de ser iguais, mesmo em respostas longas: `Toy Story 4` não conta como `Toy Story 3`. É uma aproximação textual, não uma avaliação semântica; desliga a tolerância para perguntas com nomes muito parecidos.
 
 Bloqueia a repetição de uma tentativa normalizada. Intervalo mínimo de 300 ms e máximo de 50 tentativas por jogador/ronda. Reenvios do mesmo pedido devolvem o recibo original e não somam pontos. O browser não guarda respostas para enviar depois de uma reconexão.
 
 ## As tuas perguntas
 
-O jogo já inclui **252 perguntas: 240 de texto e 12 com fotografia**, sobre VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas e personagens. Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas.
+O jogo já inclui **436 perguntas: 424 de texto e 12 com fotografia**, em 14 temas: VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas, personagens, Cabo Verde, desporto de Cabo Verde, memes, memes brasileiros, memes do futebol e emojis (adivinhar filmes, séries, jogos e canções). Como cada sala aceita até 500 perguntas, sobra espaço para mais 64. Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas.
 
 O editor mostra dez perguntas por página e permite filtrar o tema para facilitar a edição. Esse filtro não altera o sorteio da partida: todas as perguntas guardadas entram no jogo. Para jogar apenas um tema, podes importar o ficheiro correspondente de `examples/temas/`. O banco completo está em `examples/banco-completo.json`. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
 
