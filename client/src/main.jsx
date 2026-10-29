@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { io } from 'socket.io-client';
 import { LangContext, loadLang, saveLang, useMessage, useT } from './i18n.js';
 import { playCorrect, playOtherCorrect, setSoundEnabled, soundEnabled, unlockAudio } from './sounds.js';
+import '@fontsource/baloo-2/500.css';
+import '@fontsource/baloo-2/700.css';
+import '@fontsource/baloo-2/800.css';
 import './styles.css';
 
 const socket = io({ autoConnect: false, reconnection: true });
@@ -19,6 +22,9 @@ function BrandLogo() {
   const t = useT();
   return <a className="brand" href="/" aria-label={t('JKA games — todos os jogos')}><img src="/jka-games-logo.png?v=g2" alt="JKA games" width="102" height="68" /></a>;
 }
+
+// The ten stars of the Cabo Verde flag, as decoration.
+const Stars = () => <span className="stars" aria-hidden="true">★★★★★★★★★★</span>;
 
 function LanguageToggle() {
   const { lang, setLang } = useContext(LangContext);
@@ -41,7 +47,7 @@ function GamesHome() {
   const saved = getStored(SESSION_KEY);
   const resumeCode = typeof saved?.code === 'string' && /^[A-Z0-9]{6}$/.test(saved.code) ? saved.code : null;
   return <main>
-    <header className="site-header"><div className="brand-row"><BrandLogo /><span className="tagline">{t('Jogos para juntar os amigos.')}</span></div><LanguageToggle /></header>
+    <header className="site-header"><div className="brand-row"><BrandLogo /><span className="tagline">{t('Jogos para juntar os amigos.')}<Stars /></span></div><LanguageToggle /></header>
     <section className="games-home" aria-labelledby="games-title">
       <h1 id="games-title">{t('Escolhe o teu jogo')}</h1>
       <p className="muted">{t('Uma marca, vários jogos. Junta os amigos e começa uma partida.')}</p>
@@ -221,7 +227,7 @@ function Ranking({ room, isHost, disabled, action }) {
   }
   return <aside className="panel ranking"><h2>{t(room.phase === 'lobby' ? 'Jogadores' : 'Classificação')}</h2>
     <p className="muted">{t('{count} ligados · máximo 20', { count: room.players.filter(p => p.connected).length })}<br /><strong>{t('Objetivo: {points} pontos', { points: room.targetPoints })}</strong></p>
-    <ol className="player-list">{room.players.map(p => <li key={p.id} className={p.solved && ['question', 'results'].includes(room.phase) ? 'solved' : undefined}>
+    <ol className={room.phase === 'lobby' ? 'player-list' : 'player-list scored'}>{room.players.map(p => <li key={p.id} className={p.solved && ['question', 'results'].includes(room.phase) ? 'solved' : undefined}>
       <div className="player-main"><div><strong className="player-name">{p.solved && ['question', 'results'].includes(room.phase) && <span aria-hidden="true">✓ </span>}{p.name}</strong>{p.id === room.meId && <small> {t('tu')}</small>}
         <div className="muted player-status">{p.id === room.hostId ? `${t('Host')} · ` : ''}{t(p.kicked ? 'Expulso' : p.left ? 'Saiu' : !p.connected ? 'Desligado' : room.phase === 'lobby' ? 'No lobby' : !p.participating ? 'Espectador' : p.solved ? 'Acertou' : reveal ? 'Sem acerto' : 'A responder')}</div>
         {isHost && p.id !== room.meId && !p.left && <button className="quiet danger kick" disabled={disabled} onClick={() => kick(p)} aria-label={t('Expulsar {name}', { name: p.name })}>{t('Expulsar')}</button>}
@@ -400,7 +406,7 @@ function App() {
   const disabled = !connected || busy || restoring;
   const canStart = !disabled && room?.players.some(p => p.connected);
   return <main>
-    <header className="site-header"><div className="brand-row"><BrandLogo /><div className="game-identity"><strong>{QUIZ_NAME}</strong><span>{t('Um jogo JKA games')}</span></div></div>
+    <header className="site-header"><div className="brand-row"><BrandLogo /><div className="game-identity"><strong>{QUIZ_NAME}</strong><span>{t('Um jogo JKA games')}</span><Stars /></div></div>
       <div className="row"><SoundToggle /><LanguageToggle /><span className={`connection ${connected ? 'online' : ''}`} role="status">{t(restoring ? 'A recuperar sessão…' : connected ? 'Ligado' : 'A ligar…')}</span></div></header>
     {error && <div className="banner error" role="alert">{show(error)}</div>}
     {notice && <div className="banner" role="status">{show(notice)}</div>}

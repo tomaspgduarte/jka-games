@@ -130,3 +130,11 @@ Quem chegava por link via o botão **Criar sala privada** logo a seguir ao nickn
 - Sem convite: **Criar sala privada** destacado; ao escrever um código de 6 caracteres o destaque passa para **Entrar na sala**. Enter no nickname cria a sala (ou entra, se já houver código completo).
 - Browser: convite para uma sala real, nickname escrito sem clicar e Enter → entrou nessa sala como jogador. Sem convite: botão principal «Criar sala privada», que passou a «Entrar na sala» com «ABC234»; Enter no nickname criou uma sala nova.
 - `npm test`: 18 testes passaram, 0 falharam; `npm run build` concluído.
+
+## Novo aspeto «Morabeza» — 29 de outubro de 2026
+
+Escolhido entre três direções mostradas lado a lado (arcade noturno, Morabeza e pop vibrante). Fundo azul do mar em degradê, cartões claros com sombra, botões amarelo-estrela com relevo, tema da pergunta e «Fechar sala» no vermelho da bandeira, classificação em linhas arredondadas com o 1.º lugar a amarelo durante a partida e as dez estrelas no cabeçalho. Letra Baloo 2 via `@fontsource/baloo-2` 5.3.0 (OFL), empacotada pelo Vite.
+
+- Browser, em largura de telemóvel (405 px) e de computador (1280 px): catálogo, ecrã de convite, lobby do host, editor, pergunta a decorrer, «Correto!», jogador que acertou a verde e líder marcado. Corrigida a cor das estrelas, que saía branca por causa de uma regra do cabeçalho.
+- Contraste calculado: texto azul-escuro nos cartões ≈ 15:1; texto secundário nos cartões ≈ 5,6:1; azul-escuro no amarelo ≈ 11:1; branco no fundo mais claro do mar ≈ 6:1.
+- `npm test`: 18 testes passaram, 0 falharam; `npm run build` concluído.

@@ -4,7 +4,7 @@
 
 Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, com um botão **English** no cabeçalho para mudar a interface para inglês (as perguntas continuam como estão no banco) e um botão 🔊/🔇 para o som. Sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
 
-Tema azul escuro, com painéis e campos em tons de azul e texto claro. As cores estão centralizadas nas variáveis de `client/src/styles.css`.
+Estilo «Morabeza», inspirado em Cabo Verde: fundo azul do mar, cartões claros com sombra, botões principais no amarelo das estrelas da bandeira, tema da pergunta no vermelho da bandeira e as dez estrelas no cabeçalho. A letra é a Baloo 2 (licença OFL), instalada como pacote `@fontsource/baloo-2` e servida pelo próprio jogo, sem pedidos ao Google. As cores estão centralizadas nas variáveis de `client/src/styles.css`; os cartões (`.panel`) redefinem `--muted`, `--focus` e `--link` para o fundo claro.
 
 Logo da marca em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho e apresentado em branco por CSS para contrastar com o tema escuro. O «g» de «games» foi corrigido com edição de imagem (imagegen), mantendo o desenho manuscrito. O nome do jogo é apresentado em separado. O nome interno do pacote/pasta continua a ser `popsala`.
 
