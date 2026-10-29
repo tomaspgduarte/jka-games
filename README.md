@@ -4,7 +4,9 @@
 
 Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
 
-Logo da marca em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho. O nome do jogo é apresentado em separado, sem alterar o logo da JKA games. O nome interno do pacote/pasta continua a ser `popsala`.
+Tema azul escuro, com painéis e campos em tons de azul e texto claro. As cores estão centralizadas nas variáveis de `client/src/styles.css`.
+
+Logo da marca em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho e apresentado em branco por CSS para contrastar com o tema escuro. O «g» de «games» foi corrigido com edição de imagem (imagegen), mantendo o desenho manuscrito. O nome do jogo é apresentado em separado. O nome interno do pacote/pasta continua a ser `popsala`.
 
 ## Correr no teu computador
 

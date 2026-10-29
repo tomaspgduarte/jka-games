@@ -58,3 +58,7 @@ Versão de produção servida por HTTPS através de Cloudflare Quick Tunnel, sem
 ## Marca e nome do jogo — 29 de outubro de 2026
 
 Compilação de produção concluída. No endereço público, verificados no browser: página inicial JKA games com o jogo Trigo; entrada em `/trigo` com título «Trigo | JKA games»; criação de sala com 252 perguntas; convite em `/trigo?sala=CODIGO`; retorno à página da marca e recuperação da sala pelo botão «Retomar sala»; convites antigos `/?sala=CODIGO` continuam a abrir o Trigo com o código preenchido. A exportação de perguntas usa o nome `trigo-perguntas.json`.
+
+## Tema azul escuro e logo — 29 de outubro de 2026
+
+Compilação de produção e verificação de diferenças concluídas. Revisão no browser pelo endereço público: catálogo, entrada no Trigo, criação de sala, lobby/editor, início de partida, campo de resposta, foco, temporizador, classificação e feedback de resposta errada. A sala de teste foi abandonada no fim. Cores centralizadas em variáveis CSS; contraste calculado de 14,13:1 para texto nos painéis, 9,02:1 para texto secundário nos painéis e 5,14:1 para texto branco nos botões principais. O PNG corrigido conserva transparência e dimensões de 1536 × 1024; o ficheiro servido pelo endereço público tem o mesmo SHA-256 do ficheiro local. O logo é apresentado em branco por CSS sobre o fundo escuro.

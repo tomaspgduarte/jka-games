@@ -14,7 +14,7 @@ const shortCode = value => value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0
 const makeId = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 function BrandLogo() {
-  return <a className="brand" href="/" aria-label="JKA games — todos os jogos"><img src="/jka-games-logo.png" alt="JKA games" width="102" height="68" /></a>;
+  return <a className="brand" href="/" aria-label="JKA games — todos os jogos"><img src="/jka-games-logo.png?v=g2" alt="JKA games" width="102" height="68" /></a>;
 }
 
 function GamesHome() {
