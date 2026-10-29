@@ -6,7 +6,7 @@ Guia para agentes de AI neste repositório. O [README.md](README.md) é a refer�
 
 - **JKA games** é a marca; **Trigo** é o primeiro (e por agora único) jogo: quiz multijogador em tempo real entre amigos.
 - `/` mostra o catálogo de jogos (`GamesHome`); `/trigo` abre o Trigo (`App`). Convites antigos `/?sala=CODIGO` também abrem o Trigo e têm de continuar a funcionar.
-- Interface e textos para o utilizador em **português de Portugal** (tu, «ecrã», «ligação», «guardar»). Comentários no código em inglês, curtos, a explicar o porquê.
+- Interface e mensagens em **português de Portugal** (tu, «ecrã», «ligação», «guardar»). Por pedido do utilizador, as **252 perguntas e os oito temas estão em inglês**; preservar nomes/títulos originais e as alternativas portuguesas das respostas. Comentários no código em inglês, curtos, a explicar o porquê.
 - Nome interno antigo: `popsala` (pacote, `render.yaml`, imagem Docker, chave `popsala-session` no `sessionStorage`). Não renomear a chave da sessão sem pensar nas sessões existentes.
 
 ## Comandos
@@ -35,7 +35,7 @@ Um único processo Node serve frontend e Socket.IO. **Todo o estado vive em mem�
 | `server/images.js` | Validação de data URLs PNG/JPEG/WebP (bytes mágicos, máx. 300 KB) |
 | `server/defaults.js` | Configuração inicial de cada sala nova |
 | `server/content/text-questions.js` | 240 perguntas de texto, agrupadas por tema (`'pergunta', 'resp1\|resp2'`) |
-| `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB, uma linha) |
+| `server/content/photo-questions.json` | 12 perguntas com fotografia em base64 + créditos (~1,2 MB) |
 | `client/src/main.jsx` | Todo o frontend: `GamesHome`, `App`, `Editor`, `Question`, `Ranking`, `Rules` |
 | `client/src/styles.css` | Tema azul escuro; cores só em variáveis `:root` |
 | `tests/` | Integração com clientes Socket.IO reais (`helpers.js`), conteúdo do banco, carga |
