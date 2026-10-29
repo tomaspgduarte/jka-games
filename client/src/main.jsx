@@ -158,7 +158,7 @@ function Editor({ room, busy, connected, action, onDirty }) {
     <div className="settings">
       <label>Segundos por pergunta<input type="number" min="5" max="120" step="1" value={draft.durationSeconds} onChange={e => change({ ...draft, durationSeconds: Number(e.target.value) })} /></label>
       <label>Pontos para ganhar<input type="number" min="1" max="1000" step="1" value={draft.targetPoints} onChange={e => change({ ...draft, targetPoints: Number(e.target.value) })} /></label>
-      <label className="check"><input type="checkbox" checked={draft.fuzzy} onChange={e => change({ ...draft, fuzzy: e.target.checked })} /> Aceitar pequenas gralhas</label>
+      <label className="check"><input type="checkbox" checked={draft.fuzzy} onChange={e => change({ ...draft, fuzzy: e.target.checked })} /> Aceitar pequenos erros de escrita</label>
       <span className="muted small">Perguntas sempre aleatórias · resposta visível durante 3 s</span>
     </div>
     <div className="editor-navigation">
