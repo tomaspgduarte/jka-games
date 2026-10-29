@@ -1,8 +1,10 @@
 # JKA games
 
+**JKA games é a marca principal. Trigo é o primeiro jogo**, de perguntas e adivinhas. A página `/` apresenta os jogos da marca; o Trigo abre em `/trigo`, com o seu próprio nome no cabeçalho e no título do browser. Os convites antigos `/?sala=CODIGO` continuam a abrir diretamente o jogo. O repositório é da marca e pode acolher outros jogos com nomes próprios.
+
 Jogo de adivinhas entre amigos: React + Vite no browser, Node.js + Express + Socket.IO no servidor. Interface simples em português, sem serviços externos nem contas de jogador. Perguntas aleatórias com imagens opcionais, avanço automático, 1–10 pontos por acerto e vitória por objetivo de pontos.
 
-Logo personalizado em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho. O nome interno do pacote/pasta continua a ser `popsala`.
+Logo da marca em `client/public/jka-games-logo.png`, com fundo transparente, aplicado no cabeçalho. O nome do jogo é apresentado em separado, sem alterar o logo da JKA games. O nome interno do pacote/pasta continua a ser `popsala`.
 
 ## Correr no teu computador
 

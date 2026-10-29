@@ -54,3 +54,7 @@ O Dockerfile e o ficheiro Render foram preparados, mas não foi criada uma conta
 ## Acesso público — 28 de outubro de 2026
 
 Versão de produção servida por HTTPS através de Cloudflare Quick Tunnel, sem expor Vite. Seis clientes simultâneos pelo endereço público: banco completo com 252 perguntas, duas rondas, WebSockets, fallback polling, normalização, recibos duplicados sem pontos extra, reconexão com recuperação de estado, avanço automático e ranking final passaram. Confirmações das seis respostas: mediana ~94 ms, máximo ~134 ms. Clientes executados no mesmo computador, com tráfego pelo endereço público; não simula seis redes domésticas diferentes. O browser criou uma sala pública com sucesso. O acesso temporário requer o computador e ambos os processos ligados.
+
+## Marca e nome do jogo — 29 de outubro de 2026
+
+Compilação de produção concluída. No endereço público, verificados no browser: página inicial JKA games com o jogo Trigo; entrada em `/trigo` com título «Trigo | JKA games»; criação de sala com 252 perguntas; convite em `/trigo?sala=CODIGO`; retorno à página da marca e recuperação da sala pelo botão «Retomar sala»; convites antigos `/?sala=CODIGO` continuam a abrir o Trigo com o código preenchido. A exportação de perguntas usa o nome `trigo-perguntas.json`.

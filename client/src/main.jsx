@@ -5,11 +5,38 @@ import './styles.css';
 
 const socket = io({ autoConnect: false, reconnection: true });
 const SESSION_KEY = 'popsala-session';
+const QUIZ_NAME = 'Trigo';
+const QUIZ_PATH = '/trigo';
 const getStored = key => { try { return JSON.parse(sessionStorage.getItem(key)); } catch { return null; } };
 const setStored = (key, value) => { try { value === null ? sessionStorage.removeItem(key) : sessionStorage.setItem(key, JSON.stringify(value)); } catch { /* Current connection still works without storage. */ } };
 const secs = ms => `${(ms / 1000).toFixed(3)} s`;
 const shortCode = value => value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
 const makeId = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+function BrandLogo() {
+  return <a className="brand" href="/" aria-label="JKA games — todos os jogos"><img src="/jka-games-logo.png" alt="JKA games" width="102" height="68" /></a>;
+}
+
+function GamesHome() {
+  const saved = getStored(SESSION_KEY);
+  const resumeCode = typeof saved?.code === 'string' && /^[A-Z0-9]{6}$/.test(saved.code) ? saved.code : null;
+  return <main>
+    <header className="site-header"><div className="brand-row"><BrandLogo /><span className="tagline">Jogos para juntar os amigos.</span></div></header>
+    <section className="games-home" aria-labelledby="games-title">
+      <h1 id="games-title">Escolhe o teu jogo</h1>
+      <p className="muted">Uma marca, vários jogos. Junta os amigos e começa uma partida.</p>
+      <article className="panel game-card" aria-labelledby="quiz-title">
+        <span className="eyebrow">Perguntas e adivinhas · 1 a 20 jogadores</span>
+        <h2 id="quiz-title">{QUIZ_NAME}</h2>
+        <p>Reconhece jogadores, descobre personagens e responde sobre os teus temas favoritos. Quem acerta mais depressa ganha mais pontos.</p>
+        <p className="muted small">Salas privadas · perguntas personalizadas · fotografias</p>
+        <div className="row wrap"><a className="button-link primary" href={QUIZ_PATH}>Jogar {QUIZ_NAME}</a>
+          {resumeCode && <a className="button-link" href={`${QUIZ_PATH}?sala=${resumeCode}`}>Retomar sala {resumeCode}</a>}</div>
+      </article>
+    </section>
+    <footer>JKA games · jogos para amigos</footer>
+  </main>;
+}
 
 function request(event, data = {}) {
   return new Promise((resolve, reject) => {
@@ -122,7 +149,7 @@ function Editor({ room, busy, connected, action, onDirty }) {
   }
   function exportFile() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json' }));
-    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'popsala-perguntas.json'; anchor.click();
+    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'trigo-perguntas.json'; anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   return <section className="panel">
@@ -229,6 +256,7 @@ function Question({ room, connected, busy, action, offset }) {
 }
 
 function App() {
+  useEffect(() => { document.title = `${QUIZ_NAME} | JKA games`; }, []);
   const [connected, setConnected] = useState(false);
   const [restoring, setRestoring] = useState(true);
   const [room, setRoom] = useState(null);
@@ -309,13 +337,14 @@ function App() {
   }
   const disabled = !connected || busy || restoring;
   return <main>
-    <header className="site-header"><div className="brand-row"><a className="brand" href="/" aria-label="JKA games — início"><img src="/jka-games-logo.png" alt="JKA games" width="102" height="68" /></a><span className="tagline">Perguntas tuas. Amigos em direto.</span></div>
+    <header className="site-header"><div className="brand-row"><BrandLogo /><div className="game-identity"><strong>{QUIZ_NAME}</strong><span>Um jogo JKA games</span></div></div>
       <span className={`connection ${connected ? 'online' : ''}`} role="status">{restoring ? 'A recuperar sessão…' : connected ? 'Ligado' : 'A ligar…'}</span></header>
     {error && <div className="banner error" role="alert">{error}</div>}
     {notice && <div className="banner" role="status">{notice}</div>}
     {room && !connected && <div className="banner notice">A ligação caiu. A reconexão é automática; os pontos mantêm-se e o tempo da ronda continua.</div>}
     {!room ? <div className="home">
-      <section className="panel"><h1>Junta os amigos.<br />Quem sabe mais depressa?</h1>
+      <section className="panel"><span className="eyebrow">Perguntas e adivinhas</span><h1>{QUIZ_NAME}</h1>
+        <p>Junta os amigos. Quem sabe mais depressa?</p>
         <p className="muted">Salas privadas para 1 a 20 pessoas. Testa sozinho ou convida os amigos para jogar no computador ou no telemóvel.</p>
         <label htmlFor="nickname">O teu nickname<input id="nickname" maxLength="24" value={nickname} onChange={e => setNickname(e.target.value)} placeholder="Como te chamas no jogo?" autoComplete="nickname" /></label>
         <button className="primary full" disabled={disabled || !nickname.trim()} onClick={() => enter('create')}>Criar sala privada</button>
@@ -343,8 +372,10 @@ function App() {
         <Rules fuzzy={room.settings.fuzzy} />
       </div><Ranking room={room} /></div>
     </>}
-    <footer>JKA games · versão 1 · um jogo independente inspirado em jogos de adivinhas</footer>
+    <footer>{QUIZ_NAME} · um jogo JKA games · <a href="/">Todos os jogos</a></footer>
   </main>;
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+// Older invitations used /?sala=CODE. Keep them opening the quiz directly.
+const quizRoute = location.pathname.replace(/\/+$/, '') === QUIZ_PATH || new URLSearchParams(location.search).has('sala');
+createRoot(document.getElementById('root')).render(quizRoute ? <App /> : <GamesHome />);

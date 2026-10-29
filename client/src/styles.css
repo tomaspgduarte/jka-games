@@ -7,6 +7,10 @@ button { border: 1px solid #cbd0ca; border-radius: 5px; padding: 10px 15px; back
 button:hover:not(:disabled) { background: #eef1ed; }
 button.primary { color: #fff; background: #256348; border-color: #256348; }
 button.primary:hover:not(:disabled) { background: #1b513a; }
+.button-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #cbd0ca; border-radius: 5px; padding: 10px 15px; color: inherit; background: #fff; font-weight: 600; text-decoration: none; }
+.button-link:hover { background: #eef1ed; }
+.button-link.primary { color: #fff; background: #256348; border-color: #256348; }
+.button-link.primary:hover { background: #1b513a; }
 button:disabled { opacity: .5; cursor: not-allowed; }
 button.quiet { background: transparent; border-color: transparent; }
 button.danger { color: #a23226; }
@@ -33,6 +37,12 @@ small, .small { font-size: .8rem; font-weight: 400; }
 .brand { display: inline-flex; color: inherit; text-decoration: none; flex-shrink: 0; }
 .brand img { display: block; width: 102px; height: 68px; object-fit: contain; }
 .tagline { margin-left: 18px; color: #606a62; font-size: .85rem; }
+.game-identity { margin-left: 20px; padding-left: 20px; border-left: 1px solid #d9ded7; }
+.game-identity strong { display: block; font-size: 1.2rem; line-height: 1.3; }
+.game-identity span { display: block; margin-top: 3px; font-size: .75rem; color: #606a62; }
+.games-home { max-width: 740px; margin: 40px auto; }
+.game-card { margin-top: 28px; }
+.game-card h2 { margin: 10px 0; font-size: 1.6rem; }
 .connection { font-size: .8rem; color: #795124; white-space: nowrap; }
 .connection::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; margin-right: 6px; }
 .online { color: #256348; }
@@ -104,6 +114,9 @@ footer { text-align: center; font-size: .75rem; color: #727c70; padding: 40px 0 
   .game-layout { grid-template-columns: 1fr; }
   .panel, .home .panel { padding: 20px; }
   .home { margin: 24px auto; }
+  .games-home { margin: 24px auto; }
+  .game-identity { margin-left: 14px; padding-left: 14px; }
+  .game-identity strong { font-size: 1.1rem; }
   .room-heading { align-items: flex-start; }
   .room-heading .row { justify-content: flex-end; gap: 4px; }
   .room-heading button { padding: 8px 10px; font-size: .8rem; }
