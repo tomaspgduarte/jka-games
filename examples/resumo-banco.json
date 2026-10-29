@@ -15,12 +15,12 @@
     "photos": 2
   },
   {
-    "theme": "Basquetebol",
+    "theme": "Basketball",
     "count": 32,
     "photos": 2
   },
   {
-    "theme": "Futebol",
+    "theme": "Football",
     "count": 32,
     "photos": 2
   },
@@ -30,12 +30,12 @@
     "photos": 3
   },
   {
-    "theme": "Músicas",
+    "theme": "Songs",
     "count": 30,
     "photos": 0
   },
   {
-    "theme": "Personagens",
+    "theme": "Characters",
     "count": 30,
     "photos": 0
   }

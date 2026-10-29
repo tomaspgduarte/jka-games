@@ -1,17 +1,17 @@
 # Banco de perguntas JKA games
 
-252 perguntas em português: **240 de texto + 12 com fotografia**. As perguntas e pistas foram escritas para este projeto; não foram copiadas de listas de quizzes. Preferem-se factos históricos, nomes de personagens, alcunhas e músicas identificadas por título. Não foram incluídas letras de músicas.
+252 perguntas em inglês: **240 de texto + 12 com fotografia**. Os oito temas também são apresentados em inglês. Mantêm-se os nomes próprios e títulos originais, com respostas em inglês e alternativas portuguesas já aceites. As perguntas e pistas foram escritas para este projeto; não foram copiadas de listas de quizzes. Preferem-se factos históricos, nomes de personagens, alcunhas e músicas identificadas por título. Não foram incluídas letras de músicas.
 
 | Tema | Perguntas | Com fotografia |
 | --- | ---: | ---: |
 | VALORANT | 33 | 3 |
 | Counter-Strike | 30 | 0 |
 | F1 | 32 | 2 |
-| Basquetebol | 32 | 2 |
-| Futebol | 32 | 2 |
+| Basketball | 32 | 2 |
+| Football | 32 | 2 |
 | Hip-hop / Rap | 33 | 3 |
-| Músicas | 30 | 0 |
-| Personagens | 30 | 0 |
+| Songs | 30 | 0 |
+| Characters | 30 | 0 |
 
 ## Referências e verificação
 

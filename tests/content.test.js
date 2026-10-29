@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { defaultConfig } from '../server/defaults.js';
 import { normalize, isCorrect } from '../server/answers.js';
 import { decodeImage } from '../server/images.js';
@@ -10,6 +11,17 @@ test('banco de 252 perguntas: 8 temas, respostas válidas, 12 fotos e configura�
   const bank = validateConfig(defaultConfig);
   assert.equal(bank.questions.length, 252);
   assert.equal(new Set(bank.questions.map(q => q.theme)).size, 8);
+  assert.deepEqual([...new Set(bank.questions.map(q => q.theme))], ['VALORANT', 'Counter-Strike', 'F1', 'Basketball', 'Football', 'Hip-hop / Rap', 'Songs', 'Characters']);
+  assert.ok(bank.questions.every(q => /^(Which|What|Who|How|In|On)\b.*\?$/.test(q.prompt)), 'todas as perguntas estão em inglês');
+  assert.deepEqual(JSON.parse(readFileSync(new URL('../examples/banco-completo.json', import.meta.url), 'utf8')), defaultConfig, 'o ficheiro de importação usa o banco inglês atual');
+  const rebound = bank.questions.find(q => q.prompt === 'What is recovering the ball after a missed shot called?');
+  assert.ok(isCorrect('REBOUND', rebound.answers, false));
+  assert.ok(isCorrect('ressalto', rebound.answers, false), 'preserva respostas portuguesas já aceites');
+  const five = bank.questions.find(q => q.prompt === 'How many players are on each team in a standard competitive Counter-Strike match?');
+  assert.ok(isCorrect('five', five.answers, false));
+  const flag = bank.questions.find(q => q.prompt === 'Which flag signals the end of an F1 race?');
+  assert.ok(isCorrect('chequered flag', flag.answers, false));
+  assert.ok(isCorrect('checkered flag', flag.answers, false));
   const signatures = new Set();
   for (const q of bank.questions) {
     assert.ok(q.answers.every(a => normalize(a) && isCorrect(a, q.answers, false)));

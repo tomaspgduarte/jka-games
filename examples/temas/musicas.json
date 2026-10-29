@@ -1,1 +1,233 @@
-{"durationSeconds":20,"targetPoints":50,"fuzzy":true,"shuffle":true,"questions":[{"theme":"Músicas","prompt":"Quem canta Lose Yourself, da banda sonora de 8 Mile?","answers":["Eminem"]},{"theme":"Músicas","prompt":"Quem canta God's Plan?","answers":["Drake"]},{"theme":"Músicas","prompt":"Quem canta HUMBLE., do álbum DAMN.?","answers":["Kendrick Lamar","Kendrick"]},{"theme":"Músicas","prompt":"Quem canta SICKO MODE com participação de Drake?","answers":["Travis Scott","Travis"]},{"theme":"Músicas","prompt":"Quem canta In da Club?","answers":["50 Cent","50cent"]},{"theme":"Músicas","prompt":"Quem canta o single Without Me lançado em 2002?","answers":["Eminem"]},{"theme":"Músicas","prompt":"Que banda lançou a versão original de Bohemian Rhapsody?","answers":["Queen"]},{"theme":"Músicas","prompt":"Quem lançou Billie Jean em 1982?","answers":["Michael Jackson","MJ"]},{"theme":"Músicas","prompt":"Que banda lançou Smells Like Teen Spirit?","answers":["Nirvana"]},{"theme":"Músicas","prompt":"Que banda lançou Numb no álbum Meteora?","answers":["Linkin Park"]},{"theme":"Músicas","prompt":"Que banda lançou Viva la Vida?","answers":["Coldplay"]},{"theme":"Músicas","prompt":"Quem canta Blinding Lights?","answers":["The Weeknd","Weeknd"]},{"theme":"Músicas","prompt":"Quem canta Shape of You?","answers":["Ed Sheeran"]},{"theme":"Músicas","prompt":"Quem canta Hello, do álbum 25?","answers":["Adele"]},{"theme":"Músicas","prompt":"Quem lançou Rolling in the Deep?","answers":["Adele"]},{"theme":"Músicas","prompt":"Que banda gravou a versão de estúdio original de Wonderwall?","answers":["Oasis"]},{"theme":"Músicas","prompt":"Que banda lançou Seven Nation Army?","answers":["The White Stripes","White Stripes"]},{"theme":"Músicas","prompt":"Quem canta Bad Guy, lançado em 2019?","answers":["Billie Eilish","Billie"]},{"theme":"Músicas","prompt":"Quem canta Flowers, lançado em 2023?","answers":["Miley Cyrus","Miley"]},{"theme":"Músicas","prompt":"Quem canta a versão original de Bad Romance?","answers":["Lady Gaga","Gaga"]},{"theme":"Músicas","prompt":"Que artista lançou o álbum e a música Purple Rain em 1984?","answers":["Prince"]},{"theme":"Músicas","prompt":"Que banda lançou a música Yellow em 2000?","answers":["Coldplay"]},{"theme":"Músicas","prompt":"Que banda lançou a versão original de A Sky Full of Stars?","answers":["Coldplay"]},{"theme":"Músicas","prompt":"Que cantora portuguesa lançou A Vida Toda no álbum Casa?","answers":["Carolina Deslandes"]},{"theme":"Músicas","prompt":"Que grupo português canta a versão original de Dunas?","answers":["GNR","Grupo Novo Rock"]},{"theme":"Músicas","prompt":"Que grupo português canta a versão original de Contentores?","answers":["Xutos e Pontapés","Xutos"]},{"theme":"Músicas","prompt":"Que grupo português lançou o álbum Viagens, com a música Não Há Estrelas no Céu?","answers":["Pedro Abrunhosa e os Bandemónio","Pedro Abrunhosa","Bandemonio"]},{"theme":"Músicas","prompt":"Quem canta Amar Pelos Dois, vencedor da Eurovisão de 2017?","answers":["Salvador Sobral","Salvador"]},{"theme":"Músicas","prompt":"Quem canta a versão original de Despacito com Daddy Yankee?","answers":["Luis Fonsi","Fonsi"]},{"theme":"Músicas","prompt":"Que artista belga canta Alors on danse?","answers":["Stromae"]}]}
+{
+  "durationSeconds": 20,
+  "targetPoints": 50,
+  "fuzzy": true,
+  "shuffle": true,
+  "questions": [
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Lose Yourself from the 8 Mile soundtrack?",
+      "answers": [
+        "Eminem"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs God's Plan?",
+      "answers": [
+        "Drake"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs HUMBLE. from the album DAMN.?",
+      "answers": [
+        "Kendrick Lamar",
+        "Kendrick"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs SICKO MODE featuring Drake?",
+      "answers": [
+        "Travis Scott",
+        "Travis"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs In da Club?",
+      "answers": [
+        "50 Cent",
+        "50cent"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs the single Without Me released in 2002?",
+      "answers": [
+        "Eminem"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released the original version of Bohemian Rhapsody?",
+      "answers": [
+        "Queen"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who released Billie Jean?",
+      "answers": [
+        "Michael Jackson",
+        "MJ"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released Smells Like Teen Spirit?",
+      "answers": [
+        "Nirvana"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released Numb on the album Meteora?",
+      "answers": [
+        "Linkin Park"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released Viva la Vida?",
+      "answers": [
+        "Coldplay"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Blinding Lights?",
+      "answers": [
+        "The Weeknd",
+        "Weeknd"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Shape of You?",
+      "answers": [
+        "Ed Sheeran"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Hello from the album 25?",
+      "answers": [
+        "Adele"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who released Rolling in the Deep?",
+      "answers": [
+        "Adele"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band recorded the original studio version of Wonderwall?",
+      "answers": [
+        "Oasis"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released Seven Nation Army?",
+      "answers": [
+        "The White Stripes",
+        "White Stripes"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Bad Guy, released in 2019?",
+      "answers": [
+        "Billie Eilish",
+        "Billie"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Flowers, released in 2023?",
+      "answers": [
+        "Miley Cyrus",
+        "Miley"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs the original version of Bad Romance?",
+      "answers": [
+        "Lady Gaga",
+        "Gaga"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which artist released the album and song Purple Rain in 1984?",
+      "answers": [
+        "Prince"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released the song Yellow in 2000?",
+      "answers": [
+        "Coldplay"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which band released the original version of A Sky Full of Stars?",
+      "answers": [
+        "Coldplay"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which Portuguese singer released A Vida Toda on the album Casa?",
+      "answers": [
+        "Carolina Deslandes"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which Portuguese group performs the original version of Dunas?",
+      "answers": [
+        "GNR",
+        "Grupo Novo Rock"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which Portuguese group performs the original version of Contentores?",
+      "answers": [
+        "Xutos e Pontapés",
+        "Xutos"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which Portuguese group released the album Viagens, featuring Não Há Estrelas no Céu?",
+      "answers": [
+        "Pedro Abrunhosa e os Bandemónio",
+        "Pedro Abrunhosa",
+        "Bandemonio"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs Amar Pelos Dois, the winner of Eurovision 2017?",
+      "answers": [
+        "Salvador Sobral",
+        "Salvador"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Who performs the original version of Despacito with Daddy Yankee?",
+      "answers": [
+        "Luis Fonsi",
+        "Fonsi"
+      ]
+    },
+    {
+      "theme": "Songs",
+      "prompt": "Which Belgian artist performs Alors on danse?",
+      "answers": [
+        "Stromae"
+      ]
+    }
+  ]
+}

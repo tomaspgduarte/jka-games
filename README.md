@@ -73,7 +73,7 @@ Bloqueia a repetição de uma tentativa normalizada. Intervalo mínimo de 300 ms
 
 ## As tuas perguntas
 
-O jogo já inclui **252 perguntas: 240 de texto e 12 com fotografia**, sobre VALORANT, Counter-Strike, F1, basquetebol, futebol, hip-hop/rap, músicas e personagens. Inclui «Quem é o jogador?» com fotografias de aspas, TenZ e Sacy. O banco é carregado automaticamente nas novas salas.
+O jogo já inclui **252 perguntas em inglês: 240 de texto e 12 com fotografia**, sobre VALORANT, Counter-Strike, F1, Basketball, Football, Hip-hop / Rap, Songs e Characters. Inclui «Who is the VALORANT player in the photo?» com fotografias de aspas, TenZ e Sacy. As respostas em inglês são aceites e as alternativas portuguesas anteriores foram preservadas. Nomes próprios e títulos de músicas/álbuns mantêm a sua grafia original. A interface continua em português. O banco é carregado automaticamente nas novas salas.
 
 O editor mostra dez perguntas por página e permite filtrar o tema para facilitar a edição. Esse filtro não altera o sorteio da partida: todas as perguntas guardadas entram no jogo. Para jogar apenas um tema, podes importar o ficheiro correspondente de `examples/temas/`. O banco completo está em `examples/banco-completo.json`. Consulta [fontes e resumo](FONTES-PERGUNTAS.md) e [créditos das fotografias](IMAGENS.md).
 
@@ -92,7 +92,7 @@ Também podes importar/exportar um JSON. O ficheiro `examples/perguntas.json` co
   "fuzzy": true,
   "shuffle": true,
   "questions": [
-    { "theme": "Geografia", "prompt": "Capital de Portugal?", "answers": ["Lisboa", "Lisbon"] }
+    { "theme": "Geography", "prompt": "What is the capital of Portugal?", "answers": ["Lisbon", "Lisboa"] }
   ]
 }
 ```

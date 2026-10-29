@@ -62,3 +62,9 @@ Compilação de produção concluída. No endereço público, verificados no bro
 ## Tema azul escuro e logo — 29 de outubro de 2026
 
 Compilação de produção e verificação de diferenças concluídas. Revisão no browser pelo endereço público: catálogo, entrada no Trigo, criação de sala, lobby/editor, início de partida, campo de resposta, foco, temporizador, classificação e feedback de resposta errada. A sala de teste foi abandonada no fim. Cores centralizadas em variáveis CSS; contraste calculado de 14,13:1 para texto nos painéis, 9,02:1 para texto secundário nos painéis e 5,14:1 para texto branco nos botões principais. O PNG corrigido conserva transparência e dimensões de 1536 × 1024; o ficheiro servido pelo endereço público tem o mesmo SHA-256 do ficheiro local. O logo é apresentado em branco por CSS sobre o fundo escuro.
+
+## Perguntas em inglês e novo acesso público — 29 de outubro de 2026
+
+As 252 perguntas (240 textuais e 12 com fotografia) e os oito temas passaram para inglês. Mantiveram-se nomes próprios, títulos e aliases portugueses, acrescentando equivalentes ingleses quando necessário. O teste do banco confirma perguntas em inglês, igualdade entre o banco predefinido e o JSON completo, e aceitação de «five», «rebound», «chequered flag» e «checkered flag». As fotografias e os créditos foram preservados.
+
+Os 16 testes passaram e a compilação de produção terminou com sucesso. Através do novo endereço HTTPS da Cloudflare, seis clientes carregaram o banco inglês completo e jogaram duas rondas; também passaram normalização, proteção contra duplicados, recuperação de sessão, avanço automático, classificação final, WebSockets e fallback polling. Confirmações das seis respostas: mediana de 264 ms e máximo de 275 ms nesta execução. Os clientes correram no mesmo computador, com tráfego pelo endereço público; estes valores não representam seis redes domésticas diferentes. O acesso continua temporário e depende do computador, servidor e túnel ligados.

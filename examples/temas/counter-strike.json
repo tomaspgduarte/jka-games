@@ -1,1 +1,251 @@
-{"durationSeconds":20,"targetPoints":50,"fuzzy":true,"shuffle":true,"questions":[{"theme":"Counter-Strike","prompt":"Que empresa desenvolve e publica o Counter-Strike 2?","answers":["Valve","Valve Corporation"]},{"theme":"Counter-Strike","prompt":"Quantos jogadores tem cada equipa num jogo competitivo padrão de Counter-Strike?","answers":["5","Cinco"]},{"theme":"Counter-Strike","prompt":"Qual dos lados pode comprar uma AK-47 no início da ronda?","answers":["Terroristas","Terrorists","T","TR"]},{"theme":"Counter-Strike","prompt":"Que rifle dos CT tem um silenciador e o nome acaba em A1-S?","answers":["M4A1-S","M4A1S"]},{"theme":"Counter-Strike","prompt":"Como se chama a sniper clássica famosa pelos tiros muito poderosos?","answers":["AWP"]},{"theme":"Counter-Strike","prompt":"Qual é a alcunha da pistola Desert Eagle?","answers":["Deagle"]},{"theme":"Counter-Strike","prompt":"Que sniper também é conhecida por Scout?","answers":["SSG 08","SSG08"]},{"theme":"Counter-Strike","prompt":"Que mapa clássico tem Long A, portas do meio e túneis para B?","answers":["Dust 2","Dust2","de_dust2"]},{"theme":"Counter-Strike","prompt":"Que mapa tem posições chamadas Palace, Connector e Window no meio?","answers":["Mirage","de_mirage"]},{"theme":"Counter-Strike","prompt":"Em que mapa a posição Banana é uma passagem famosa para B?","answers":["Inferno","de_inferno"]},{"theme":"Counter-Strike","prompt":"Que mapa de uma central nuclear tem os dois bombsites em pisos sobrepostos?","answers":["Nuke","de_nuke"]},{"theme":"Counter-Strike","prompt":"Que mapa clássico decorre num pátio ferroviário cheio de comboios?","answers":["Train","de_train"]},{"theme":"Counter-Strike","prompt":"Que mapa decorre numa obra no topo de um arranha-céus?","answers":["Vertigo","de_vertigo"]},{"theme":"Counter-Strike","prompt":"Que mapa tem nome de uma divindade egípcia com cabeça de chacal?","answers":["Anubis","de_anubis"]},{"theme":"Counter-Strike","prompt":"Que mapa decorre entre ruínas antigas na selva e tem o nome em inglês de antigo?","answers":["Ancient","de_ancient"]},{"theme":"Counter-Strike","prompt":"Que mapa tem um parque e o famoso bombsite B por baixo de uma ponte?","answers":["Overpass","de_overpass"]},{"theme":"Counter-Strike","prompt":"Em que ano foi lançado o Counter-Strike: Global Offensive?","answers":["2012"]},{"theme":"Counter-Strike","prompt":"Em que ano foi lançado o Counter-Strike 2?","answers":["2023"]},{"theme":"Counter-Strike","prompt":"Como se chama o motor gráfico usado no Counter-Strike 2?","answers":["Source 2","Source2"]},{"theme":"Counter-Strike","prompt":"De que país é o jogador s1mple?","answers":["Ucrânia","Ukraine"]},{"theme":"Counter-Strike","prompt":"De que país é o jogador ZywOo?","answers":["França","France"]},{"theme":"Counter-Strike","prompt":"De que país é o jogador NiKo?","answers":["Bósnia e Herzegovina","Bósnia","Bosnia and Herzegovina","Bosnia"]},{"theme":"Counter-Strike","prompt":"Qual é o nickname do jovem jogador russo Danil Kryshkovets?","answers":["donk"]},{"theme":"Counter-Strike","prompt":"Que jogador brasileiro de Counter-Strike é conhecido como Professor?","answers":["FalleN","Gabriel Toledo"]},{"theme":"Counter-Strike","prompt":"Que jogador fez o famoso jumping AWP no Mirage no Major de Columbus de 2016?","answers":["coldzera","Marcelo David"]},{"theme":"Counter-Strike","prompt":"Que equipa venceu o PGL Major Stockholm 2021 com s1mple?","answers":["NAVI","Natus Vincere","Na Vi"]},{"theme":"Counter-Strike","prompt":"Que equipa brasileira venceu o Major MLG Columbus 2016?","answers":["Luminosity","Luminosity Gaming","LG"]},{"theme":"Counter-Strike","prompt":"De que país era o núcleo de jogadores da dinastia da Astralis nos Majors de 2018 e 2019?","answers":["Dinamarca","Denmark"]},{"theme":"Counter-Strike","prompt":"Que equipa sueca venceu o Major de Katowice em 2015?","answers":["Fnatic"]},{"theme":"Counter-Strike","prompt":"Que nome completo é abreviado para CS?","answers":["Counter-Strike","Counter Strike","Counterstrike"]}]}
+{
+  "durationSeconds": 20,
+  "targetPoints": 50,
+  "fuzzy": true,
+  "shuffle": true,
+  "questions": [
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which company develops and publishes Counter-Strike 2?",
+      "answers": [
+        "Valve",
+        "Valve Corporation"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "How many players are on each team in a standard competitive Counter-Strike match?",
+      "answers": [
+        "5",
+        "Five",
+        "Cinco"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which side can buy an AK-47 at the start of a round?",
+      "answers": [
+        "Terrorists",
+        "T",
+        "TR",
+        "Terroristas"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which CT rifle has a silencer and a name ending in A1-S?",
+      "answers": [
+        "M4A1-S",
+        "M4A1S"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "What is the classic sniper rifle famous for its powerful shots called?",
+      "answers": [
+        "AWP"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "What is the Desert Eagle pistol's nickname?",
+      "answers": [
+        "Deagle"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which sniper rifle is also known as the Scout?",
+      "answers": [
+        "SSG 08",
+        "SSG08"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which classic map has Long A, mid doors and tunnels leading to B?",
+      "answers": [
+        "Dust 2",
+        "Dust2",
+        "de_dust2"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which map has positions called Palace, Connector and Window at mid?",
+      "answers": [
+        "Mirage",
+        "de_mirage"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "On which map is Banana a famous route to B?",
+      "answers": [
+        "Inferno",
+        "de_inferno"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which nuclear power plant map has its two bombsites on different floors, one above the other?",
+      "answers": [
+        "Nuke",
+        "de_nuke"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which classic map is set in a railway yard full of trains?",
+      "answers": [
+        "Train",
+        "de_train"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which map is set on a construction site at the top of a skyscraper?",
+      "answers": [
+        "Vertigo",
+        "de_vertigo"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which map is named after a jackal-headed Egyptian deity?",
+      "answers": [
+        "Anubis",
+        "de_anubis"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which map is set among jungle ruins and takes its name from a word meaning very old?",
+      "answers": [
+        "Ancient",
+        "de_ancient"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which map has a park and a famous B bombsite under a bridge?",
+      "answers": [
+        "Overpass",
+        "de_overpass"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "In which year was Counter-Strike: Global Offensive released?",
+      "answers": [
+        "2012"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "In which year was Counter-Strike 2 released?",
+      "answers": [
+        "2023"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "What is the game engine used in Counter-Strike 2 called?",
+      "answers": [
+        "Source 2",
+        "Source2"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which country is s1mple from?",
+      "answers": [
+        "Ukraine",
+        "Ucrânia"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which country is ZywOo from?",
+      "answers": [
+        "France",
+        "França"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which country is NiKo from?",
+      "answers": [
+        "Bosnia and Herzegovina",
+        "Bosnia",
+        "Bósnia e Herzegovina",
+        "Bósnia"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "What is Russian player Danil Kryshkovets's nickname?",
+      "answers": [
+        "donk"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which Brazilian Counter-Strike player is known as the Professor?",
+      "answers": [
+        "FalleN",
+        "Gabriel Toledo"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which player made the famous jumping AWP play on Mirage at the 2016 Columbus Major?",
+      "answers": [
+        "coldzera",
+        "Marcelo David"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which team won PGL Major Stockholm 2021 with s1mple?",
+      "answers": [
+        "NAVI",
+        "Natus Vincere",
+        "Na Vi"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which Brazilian team won the MLG Columbus 2016 Major?",
+      "answers": [
+        "Luminosity",
+        "Luminosity Gaming",
+        "LG"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which country was the core of the Astralis roster from during its 2018 and 2019 Major dynasty?",
+      "answers": [
+        "Denmark",
+        "Dinamarca"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "Which Swedish team won the Katowice Major in 2015?",
+      "answers": [
+        "Fnatic"
+      ]
+    },
+    {
+      "theme": "Counter-Strike",
+      "prompt": "What full name does CS stand for?",
+      "answers": [
+        "Counter-Strike",
+        "Counter Strike",
+        "Counterstrike"
+      ]
+    }
+  ]
+}

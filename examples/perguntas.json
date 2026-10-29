@@ -5,19 +5,19 @@
   "shuffle": true,
   "questions": [
     {
-      "theme": "O nosso grupo",
-      "prompt": "Qual foi a cidade da nossa primeira viagem juntos?",
+      "theme": "Our group",
+      "prompt": "Which city did we visit on our first trip together?",
       "answers": ["Porto", "O Porto"]
     },
     {
-      "theme": "Música",
-      "prompt": "Que banda britânica lançou Bohemian Rhapsody?",
+      "theme": "Songs",
+      "prompt": "Which British band released Bohemian Rhapsody?",
       "answers": ["Queen"]
     },
     {
-      "theme": "Geografia",
-      "prompt": "Qual é a capital de Portugal?",
-      "answers": ["Lisboa", "Lisbon"]
+      "theme": "Geography",
+      "prompt": "What is the capital of Portugal?",
+      "answers": ["Lisbon", "Lisboa"]
     }
   ]
 }
