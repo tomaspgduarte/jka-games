@@ -164,3 +164,7 @@ Mais 146 perguntas de texto com fotografia-pista (219 no total; 231 perguntas co
 - Descarga de 146 imagens de 500 px (ou menos), todas JPEG/PNG até 266 KB; pasta com cerca de 16 MB. Créditos acrescentados ao `IMAGENS.md` e a `server/content/question-images.json`.
 - O dono do projeto decidiu que, por o jogo ser entre amigos, imagens sem licença livre são aceitáveis; registado no CLAUDE.md (marcar como «sem licença livre» no `IMAGENS.md`). Esta leva continua a ser só de imagens livres.
 - `npm test`: **20 testes passaram, 0 falharam** (o teste do banco verifica as 219 pistas). `npm run build` concluído. Ficheiros de `examples/` regenerados.
+
+## Pull e arranque local — 30 de outubro de 2026
+
+Atualização de main por fast-forward até 95687cf. A primeira execução encontrou duas falhas de conteúdo: quatro fotografias ainda usavam Football/Basketball, enquanto as perguntas textuais usavam Futebol/Basquetebol, criando 16 categorias em vez de 14. Uniformizaram-se esses quatro rótulos e regeneraram-se os JSON de consulta a partir do banco atual, sem alterar perguntas ou respostas. Os 20 testes passaram e a compilação de produção terminou com sucesso: 436 perguntas, 14 categorias e 231 imagens. O servidor de produção foi iniciado em 127.0.0.1:3000 e /health respondeu com sucesso. A rede atual bloqueou a ligação do túnel Cloudflare à porta 7844; o acesso foi aberto localmente.

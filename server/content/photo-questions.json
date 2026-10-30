@@ -59,7 +59,7 @@
     "imageLicense": "https://creativecommons.org/licenses/by-sa/4.0"
   },
   {
-    "theme": "Football",
+    "theme": "Futebol",
     "prompt": "Who is the football player in the photo?",
     "answers": [
       "Cristiano Ronaldo",
@@ -72,7 +72,7 @@
     "imageLicense": "https://creativecommons.org/licenses/by-sa/4.0"
   },
   {
-    "theme": "Football",
+    "theme": "Futebol",
     "prompt": "Who is the football player in the photo?",
     "answers": [
       "Lionel Messi",
@@ -84,7 +84,7 @@
     "imageLicense": "https://creativecommons.org/licenses/by-sa/4.0"
   },
   {
-    "theme": "Basketball",
+    "theme": "Basquetebol",
     "prompt": "Who is the basketball player in the photo?",
     "answers": [
       "LeBron James",
@@ -96,7 +96,7 @@
     "imageLicense": "https://creativecommons.org/licenses/by/2.0"
   },
   {
-    "theme": "Basketball",
+    "theme": "Basquetebol",
     "prompt": "Who is the basketball player in the photo?",
     "answers": [
       "Stephen Curry",
